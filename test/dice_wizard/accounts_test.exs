@@ -6,24 +6,19 @@ defmodule DiceWizard.AccountsTest do
   describe "users" do
     alias DiceWizard.Accounts.User
 
-    @valid_attrs %{
-      nickname: "nickname",
-      image: "https://images.io/nickname",
-      discord_uid: "1234567890"
-    }
-    @invalid_attrs %{nickname: nil, discord_uid: nil}
-
-    def user_fixture(attrs \\ %{}) do
-      {:ok, user} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Accounts.create_user()
-
-      user
+    test "get_user!/1 returns the user with given id" do
+      user = insert(:user)
+      assert Accounts.get_user!(user.id) == user
     end
 
     test "create_user/1 with valid data creates a user" do
-      assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
+      assert {:ok, %User{} = user} =
+               Accounts.create_user(%{
+                 nickname: "nickname",
+                 image: "https://images.io/nickname",
+                 discord_uid: "1234567890"
+               })
+
       assert user.nickname == "nickname"
       assert user.image == "https://images.io/nickname"
       assert user.discord_uid == "1234567890"
