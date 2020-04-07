@@ -30,14 +30,15 @@ defmodule DiceWizard.AccountsTest do
     end
 
     test "create_user/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_user(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.create_user(%{nickname: nil, discord_uid: nil})
     end
 
     test "create_user/1 with duplicate discord_uid returns error changeset" do
-      user = user_fixture()
+      insert(:user, discord_uid: "discord0")
+      params = params_for(:user, discord_uid: "discord0")
 
-      assert {:error, %Ecto.Changeset{}} =
-               Accounts.create_user(%{@valid_attrs | discord_uid: user.discord_uid})
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_user(params)
     end
 
     test "find_or_create_user/1 creates new user" do
@@ -55,8 +56,8 @@ defmodule DiceWizard.AccountsTest do
     end
 
     test "find_or_create_user/1 returns existing user" do
-      auth = %Ueberauth.Auth{uid: "1234567890"}
-      user = user_fixture(%{discord_uid: "1234567890"})
+      user = insert(:user, discord_uid: "discord0")
+      auth = %Ueberauth.Auth{uid: "discord0"}
       assert {:ok, ^user} = Accounts.find_or_create_user(auth)
     end
   end

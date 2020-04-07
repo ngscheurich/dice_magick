@@ -24,6 +24,7 @@ defmodule DiceWizard.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import DiceWizard.DataCase
+      import DiceWizard.Factory
     end
   end
 

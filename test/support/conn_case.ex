@@ -22,6 +22,7 @@ defmodule DiceWizardWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       alias DiceWizardWeb.Router.Helpers, as: Routes
+      import DiceWizard.Factory
 
       # The default endpoint for testing
       @endpoint DiceWizardWeb.Endpoint
