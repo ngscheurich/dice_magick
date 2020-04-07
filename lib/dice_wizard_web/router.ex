@@ -9,10 +9,6 @@ defmodule DiceWizardWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", DiceWizardWeb do
     pipe_through :browser
 
@@ -25,9 +21,4 @@ defmodule DiceWizardWeb.Router do
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", DiceWizardWeb do
-  #   pipe_through :api
-  # end
 end
