@@ -13,7 +13,12 @@
       <section class="container">
         <nav role="navigation">
           <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
+            <%= if @current_user do %>
+              <li>Logged in as <%= @current_user.nickname %></li>
+              <li><%= link "Logout", to: Routes.session_path(@conn, :logout), method: :delete%></li>
+            <% else %>
+              <li><%= link "Login with Discord", to: discord_oauth_url() %></li>
+            <% end %>
           </ul>
         </nav>
         <a href="https://phoenixframework.org/" class="phx-logo">
