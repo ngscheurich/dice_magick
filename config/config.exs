@@ -30,8 +30,8 @@ config :phoenix, :json_library, Jason
 config :ueberauth, Ueberauth, providers: [discord: {Ueberauth.Strategy.Discord, []}]
 
 config :ueberauth, Ueberauth.Strategy.Discord.OAuth,
-  client_id: System.fetch_env!("DISCORD_CLIENT_ID"),
-  client_secret: System.fetch_env!("DISCORD_CLIENT_SECRET")
+  client_id: System.get_env("DISCORD_CLIENT_ID"),
+  client_secret: System.get_env("DISCORD_CLIENT_SECRET")
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

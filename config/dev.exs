@@ -74,7 +74,3 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
-
-config :ueberauth, Ueberauth.Strategy.Discord.OAuth,
-  client_id: "DISCORD_CLIENT_ID",
-  client_secret: "DISCORD_CLIENT_SECRET"
