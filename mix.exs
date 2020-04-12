@@ -1,9 +1,9 @@
-defmodule DiceWizard.MixProject do
+defmodule DiceMagick.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :dice_wizard,
+      app: :dice_magick,
       version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule DiceWizard.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {DiceWizard.Application, []},
+      mod: {DiceMagick.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

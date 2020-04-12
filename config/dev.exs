@@ -1,10 +1,10 @@
 use Mix.Config
 
 # Configure your database
-config :dice_wizard, DiceWizard.Repo,
+config :dice_magick, DiceMagick.Repo,
   username: "postgres",
   password: "postgres",
-  database: "dice_wizard_dev",
+  database: "dice_magick_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -15,7 +15,7 @@ config :dice_wizard, DiceWizard.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :dice_wizard, DiceWizardWeb.Endpoint,
+config :dice_magick, DiceMagickWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -55,13 +55,13 @@ config :dice_wizard, DiceWizardWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :dice_wizard, DiceWizardWeb.Endpoint,
+config :dice_magick, DiceMagickWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/dice_wizard_web/(live|views)/.*(ex)$",
-      ~r"lib/dice_wizard_web/templates/.*(eex)$"
+      ~r"lib/dice_magick_web/(live|views)/.*(ex)$",
+      ~r"lib/dice_magick_web/templates/.*(eex)$"
     ]
   ]
 

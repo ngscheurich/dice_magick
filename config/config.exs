@@ -7,16 +7,16 @@
 # General application configuration
 use Mix.Config
 
-config :dice_wizard,
-  ecto_repos: [DiceWizard.Repo],
+config :dice_magick,
+  ecto_repos: [DiceMagick.Repo],
   generators: [binary_id: true]
 
 # Configures the endpoint
-config :dice_wizard, DiceWizardWeb.Endpoint,
+config :dice_magick, DiceMagickWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "qFN2SYdwyU3kFUFKBwes2Z2jgUMiblp5XqW/YEjwWK0AfyTwEe9sKp69LfAEdaju",
-  render_errors: [view: DiceWizardWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: DiceWizard.PubSub, adapter: Phoenix.PubSub.PG2],
+  render_errors: [view: DiceMagickWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: DiceMagick.PubSub, adapter: Phoenix.PubSub.PG2],
   live_view: [signing_salt: "J3lKKxgK"]
 
 # Configures Elixir's Logger

@@ -1,4 +1,4 @@
-# DiceWizard
+# DiceMagick
 
 Perish all who gaze upon the Dice Wizard.
 
