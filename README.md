@@ -1,6 +1,8 @@
-# DiceMagick
+# DiceWizard
 
-Perish all who gaze upon the Dice Wizard.
+![Elixir](https://github.com/ngscheurich/dice_magick/workflows/Elixir/badge.svg)
+
+> Perish all who gaze upon the Dice Wizard.
 
 To start your Phoenix server:
 
