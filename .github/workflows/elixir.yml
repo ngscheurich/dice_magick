@@ -1,14 +1,22 @@
-name: Elixir
+name: build
 
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+on: [pull_request]
 
 jobs:
   test:
+    name: OTP ${{matrix.otp}} + Elixir ${{matrix.elixir}}
+
     runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: "test"
+
+    strategy:
+      matrix:
+        elixir: ["1.10.2"]
+        include:
+          - elixir: "1.10.2"
+            otp: "22.3.2"
 
     services:
       postgres:
@@ -23,9 +31,11 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - uses: actions/cache@v1
+      - name: Restore cache
+        uses: actions/cache@v1
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
@@ -35,8 +45,8 @@ jobs:
       - name: Setup Elixir
         uses: actions/setup-elixir@v1
         with:
-          otp-version: 22.3.2
-          elixir-version: 1.10.2
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
 
       - name: Install dependencies
         run: mix deps.get
