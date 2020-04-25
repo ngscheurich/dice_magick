@@ -48,6 +48,7 @@ defmodule DiceMagick.MixProject do
       {:phoenix_live_view, "~> 0.11.1"},
       {:floki, ">= 0.0.0", only: :test},
       {:ecto_enum, "~> 1.4"},
+      {:assert_identity, "~> 0.1.0"}
     ]
   end
 

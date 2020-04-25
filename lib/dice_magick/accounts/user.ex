@@ -6,10 +6,14 @@ defmodule DiceMagick.Accounts.User do
   use DiceMagick.Schema
   import Ecto.Changeset
 
+  alias DiceMagick.Characters.Character
+
   schema "users" do
     field :nickname, :string
     field :image, :string
     field :discord_uid, :string
+
+    has_many :characters, Character
 
     timestamps()
   end
