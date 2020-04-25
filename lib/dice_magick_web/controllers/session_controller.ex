@@ -4,9 +4,7 @@ defmodule DiceMagickWeb.SessionController do
 
   alias DiceMagick.Accounts
 
-  def new(conn, _params) do
-    render(conn, "new.html")
-  end
+  def new(conn, _params), do: render(conn, "new.html")
 
   def create(%{assigns: %{ueberauth_failure: _}} = conn, _) do
     conn
@@ -18,9 +16,8 @@ defmodule DiceMagickWeb.SessionController do
     case Accounts.find_or_create_user(auth) do
       {:ok, user} ->
         conn
+        |> DiceMagickWeb.Auth.login(user)
         |> put_flash(:info, "Success! Welcome, #{user.nickname}.")
-        |> put_session(:user_id, user.id)
-        |> configure_session(renew: true)
         |> redirect(to: Routes.page_path(conn, :index))
 
       {:error, reason} ->
@@ -30,10 +27,10 @@ defmodule DiceMagickWeb.SessionController do
     end
   end
 
-  def logout(conn, _) do
+  def delete(conn, _) do
     conn
+    |> DiceMagickWeb.Auth.logout()
     |> put_flash(:info, "You have been logged out!")
-    |> configure_session(drop: true)
     |> redirect(to: Routes.page_path(conn, :index))
   end
 end
