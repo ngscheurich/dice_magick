@@ -1,3 +1,72 @@
-/* This file is for your main application css. */
+@import "./normalize.css";
+@import "../node_modules/nprogress/nprogress.css";
 
-@import "./phoenix.css";
+body {
+  background-color: #eee;
+  color: #222;
+  font: 300 18px/1.2 "Grenze", serif;
+  max-width: 60rem;
+  margin: auto;
+  padding: 2rem;
+}
+
+p {
+  line-height: 1.45;
+}
+
+strong {
+  font-weight: 400;
+}
+
+hr {
+  height: 1px;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+a {
+  color: brown;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+.alert-info {
+  color: green;
+}
+
+.alert-error {
+  color: red;
+}
+
+.input {
+  margin-bottom: 1rem;  
+}
+
+.input input {
+  display: block;
+  width: 100%;
+}
+
+.modifier {
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.error {
+  color: red;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.ability-scores {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 1rem;
+}
+
