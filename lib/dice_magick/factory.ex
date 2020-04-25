@@ -4,7 +4,14 @@ defmodule DiceMagick.Factory do
   def user_factory do
     %DiceMagick.Accounts.User{
       nickname: "Bobson Dugnutt",
-      discord_uid: "discord"
+      discord_uid: sequence("discord")
+    }
+  end
+
+  def character_factory do
+    %DiceMagick.Characters.Character{
+      name: "Baldur",
+      user: build(:user)
     }
   end
 end

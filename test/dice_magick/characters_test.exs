@@ -11,8 +11,7 @@ defmodule DiceMagick.CharactersTest do
     test "list_characters_for_user/1 returns all characters for user" do
       user = insert(:user)
       character = insert(:character, user: user)
-      assert [result] = Characters.list_characters_for_user(user)
-      assert result.id == character.id
+      assert_ids_match(Characters.list_characters_for_user(user), [character])
     end
 
     test "get_character!/1 returns the character with given id" do

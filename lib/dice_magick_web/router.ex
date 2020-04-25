@@ -23,6 +23,11 @@ defmodule DiceMagickWeb.Router do
     end
   end
 
+  scope "/manage", DiceMagickWeb do
+    pipe_through [:browser, :authenticate_user]
 
+    resources "/characters", CharacterController, only: [:index]
+
+    live "/characters/new", CharacterLive.New
   end
 end

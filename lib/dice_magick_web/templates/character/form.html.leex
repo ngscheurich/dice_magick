@@ -1,0 +1,7 @@
+<%= f = form_for @changeset, "#", [phx_change: :update, phx_submit: :save] %>
+  <div class="input">
+    <%= text_input f, :name, placeholder: "Name"  %>
+    <div class="error"><%= error_tag f, :name %></div>
+  </div>
+  <%= submit "Save"%>
+</form>

@@ -23,8 +23,10 @@ defmodule DiceMagick.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import AssertIdentity
       import DiceMagick.DataCase
       import DiceMagick.Factory
+      import DiceMagick.AuthHelpers
     end
   end
 
