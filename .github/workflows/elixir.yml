@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   test:
-    name: OTP ${{matrix.otp}} + Elixir ${{matrix.elixir}}
+    name: Erlang/OTP ${{matrix.otp}} + Elixir ${{matrix.elixir}}
 
     runs-on: ubuntu-latest
 
