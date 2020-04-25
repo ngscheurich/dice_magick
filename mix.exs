@@ -44,7 +44,10 @@ defmodule DiceMagick.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ueberauth_discord, "~> 0.5"},
-      {:ex_machina, "~> 2.4"}
+      {:ex_machina, "~> 2.4"},
+      {:phoenix_live_view, "~> 0.11.1"},
+      {:floki, ">= 0.0.0", only: :test},
+      {:ecto_enum, "~> 1.4"},
     ]
   end
 

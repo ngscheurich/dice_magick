@@ -23,6 +23,8 @@ defmodule DiceMagickWeb do
 
       import Plug.Conn
       import DiceMagickWeb.Gettext
+      import DiceMagickWeb.Auth, only: [authenticate_user: 2]
+      import Phoenix.LiveView.Controller
       alias DiceMagickWeb.Router.Helpers, as: Routes
     end
   end
@@ -41,6 +43,7 @@ defmodule DiceMagickWeb do
 
       import DiceMagickWeb.ErrorHelpers
       import DiceMagickWeb.Gettext
+      import Phoenix.LiveView.Helpers
       alias DiceMagickWeb.Router.Helpers, as: Routes
     end
   end
@@ -50,6 +53,8 @@ defmodule DiceMagickWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
+      import DiceMagickWeb.Auth, only: [authenticate_user: 2]
     end
   end
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= assigns[:page_title] || "DiceMagick · Phoenix Framework" %></title>
+    <link href="<%= Routes.static_path(@conn, "/css/app.css") %>" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <%= csrf_meta_tag() %>
+  </head>
+
+  <body>
+    <header>
+      <h1>
+        <%= link "Dice Magick", to: Routes.page_path(@conn, :index) %></h1>
+
+        <%= if @current_user do %>
+          <p>
+            👤 Logged in as <%= @current_user.nickname %>.
+            <%= link "Logout",
+                  to: Routes.session_path(@conn, :delete, @current_user),
+                  method: :delete %>
+          </p>
+
+          <nav role="navigation">
+            <ul>
+              <li><%= link "Your Characters", to: Routes.character_path(@conn, :index) %></li>
+            </ul>
+          </nav>
+        <% else %>
+          <p>🔒 <%= link "Login with Discord", to: discord_oauth_url() %></p>
+        <% end %>
+    </header>
+
+    <hr>
+
+    <main role="main">
+      <%= @inner_content %>
+    </main>
+
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>
+
