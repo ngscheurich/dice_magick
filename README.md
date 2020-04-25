@@ -1,6 +1,6 @@
 # DiceWizard
 
-![build](https://github.com/ngscheurich/dice_magick/workflows/Elixir/badge.svg)
+![build](https://github.com/ngscheurich/dice_magick/workflows/build/badge.svg)
 
 > Perish all who gaze upon the Dice Wizard.
 
