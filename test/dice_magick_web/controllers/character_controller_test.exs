@@ -25,16 +25,16 @@ defmodule DiceMagickWeb.CharacterControllerTest do
     end
   end
 
-  describe "new" do
-    test "renders character form", %{conn: conn} do
-      conn =
-        conn
-        |> authenticate()
-        |> get(Routes.character_path(conn, :new))
+  # describe "new" do
+  #   test "renders character form", %{conn: conn} do
+  #     conn =
+  #       conn
+  #       |> authenticate()
+  #       |> get(Routes.character_path(conn, :new))
 
-      assert html_response(conn, 200) =~ "New Character"
-    end
-  end
+  #     assert html_response(conn, 200) =~ "New Character"
+  #   end
+  # end
 
   # describe "create character" do
   #   test "redirects to show when data is valid", %{conn: conn} do
