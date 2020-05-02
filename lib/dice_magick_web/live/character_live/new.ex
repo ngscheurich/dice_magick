@@ -5,18 +5,9 @@ defmodule DiceMagickWeb.CharacterLive.New do
   alias DiceMagick.Characters
   alias DiceMagick.Characters.Character
 
-  @default_scores %{
-    strength: 10,
-    dexterity: 10,
-    constitution: 10,
-    intelligence: 10,
-    wisdom: 10,
-    charisma: 10
-  }
-
   @impl true
   def mount(_params, %{"user_id" => user_id}, socket) do
-    changeset = Characters.change_character(%Character{}, %{stats: @default_scores})
+    changeset = Characters.change_character(%Character{}, %{})
     {:ok, assign(socket, user_id: user_id, changeset: changeset)}
   end
 
