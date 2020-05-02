@@ -2,10 +2,10 @@ defmodule DiceMagick.Repo.Migrations.AddArchetypeToCharacters do
   use Ecto.Migration
 
   def up do
-    CharacterArchetypeEnum.create_type()
+    execute "CREATE TYPE character_archetypes AS ENUM ('custom', 'dnd5e');"
 
     alter table(:characters) do
-      add :archetype, CharacterArchetypeEnum.type(), null: false, default: "custom"
+      add :archetype, :string, null: false, default: "custom"
     end
   end
 
@@ -14,6 +14,6 @@ defmodule DiceMagick.Repo.Migrations.AddArchetypeToCharacters do
       remove :archetype
     end
 
-    CharacterArchetypeEnum.drop_type()
+    execute "DROP TYPE character_archetypes;"
   end
 end
