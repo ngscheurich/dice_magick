@@ -1,3 +1,4 @@
-alias DiceMagick.{Accounts, Characters, Archetypes}
+alias DiceMagick.{Repo, Accounts, Characters, Rolls}
+alias Accounts.{User}
 alias Characters.{Character}
-alias Archetypes.{Archetype, DND5E}
+alias Rolls.{Roll, Encoder, CSVEncoder}
