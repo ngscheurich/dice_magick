@@ -6,6 +6,8 @@ defmodule DiceMagick.RollsTest do
   describe "rolls" do
     alias Rolls.Roll
 
+    # [fixme] Creating a roll like this works interactively, but not in the
+    #         test. What's that all about?
     test "create_roll/1 with valid data creates a roll" do
       character = insert(:character)
 

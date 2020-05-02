@@ -14,4 +14,16 @@ defmodule DiceMagick.Factory do
       user: build(:user)
     }
   end
+
+  def roll_factory do
+    %DiceMagick.Rolls.Roll{
+      name: "Constitution Save",
+      character: build(:character),
+      parts: build_list(1, :roll_part)
+    }
+  end
+
+  def roll_part_factory do
+    %DiceMagick.Rolls.Roll.Part{num: 1, die: 20, mod: 3}
+  end
 end

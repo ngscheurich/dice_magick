@@ -27,9 +27,11 @@ defmodule DiceMagick.Rolls.Roll do
   @doc false
   def changeset(%Roll{} = roll, params) do
     roll
-    |> cast(params, ~w(name character_id)a)
+    |> cast(params, [:name, :character_id])
     |> cast_embed(:parts, with: &parts_changeset/2, required: true)
-    |> validate_required(~w(name character_id)a)
+    |> validate_required([:name, :character_id])
+    |> assoc_constraint(:character)
+    |> unique_constraint(:name)
   end
 
   defp parts_changeset(%Roll.Part{} = parts, params) do
