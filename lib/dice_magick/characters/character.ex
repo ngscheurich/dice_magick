@@ -1,6 +1,23 @@
 defmodule DiceMagick.Characters.Character do
   @moduledoc """
-  A user’s character.
+  A `DiceMagick.Accounts.User`’s character.
+
+  ## Fields
+
+  * `name` - A human-readable label
+  * `user_id` - UUID identifying the owner
+
+  ## Associations
+
+  * `user` - `DiceMagick.Accounts.User` that the character belongs to
+  * `rolls` - `DiceMagick.Rolls.Roll`s associated with this character
+
+  ## Validations
+
+  * `name` - Required
+  * `user_id` - Required
+  * `user` - Must exist
+
   """
 
   use DiceMagick.Schema
