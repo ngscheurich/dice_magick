@@ -10,7 +10,19 @@ defmodule DiceMagick.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      name: "DiceMagick",
+      source_url: "https://github.com/ngscheurich/dice_magick",
+      homepage_url: "https://github.com/ngscheurich/dice_magick",
+      docs: [
+        main: "DiceMagick",
+        authors: ["N. G. Scheurich <nick@scheurich.me>"],
+        # [todo] Add logo
+        # logo: "path/to/logo.png",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -50,7 +62,8 @@ defmodule DiceMagick.MixProject do
       {:ecto_enum, "~> 1.4"},
       {:assert_identity, "~> 0.1.0"},
       {:nimble_csv, "~> 0.6"},
-      {:nimble_parsec, "~> 0.5"}
+      {:nimble_parsec, "~> 0.5"},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 
