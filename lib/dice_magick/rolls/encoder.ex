@@ -5,7 +5,6 @@ defmodule DiceMagick.Rolls.Encoder do
   """
 
   @type result() :: {:ok, [Roll.t()]} | {:error, any()}
-  @type roll_parts() :: {integer(), integer(), integer()}
 
   @callback format() :: atom()
   @callback encode(any()) :: result()

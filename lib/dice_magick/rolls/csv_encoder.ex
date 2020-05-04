@@ -41,22 +41,32 @@ defmodule DiceMagick.Rolls.CSVEncoder do
       |> parse_parts([])
 
     case parsed_parts do
-      error_msg when is_binary(error_msg) -> error_msg
-      parts -> %Roll{name: name, parts: parts}
+      error_msg when is_binary(error_msg) ->
+        error_msg
+
+      parts ->
+        part_structs =
+          Enum.map(parts, fn {num, sides, mod} ->
+            %Roll.Part{num: num, sides: sides, mod: mod}
+          end)
+
+        %Roll{name: name, parts: part_structs}
     end
   end
 
+  defp encode_row(row), do: "Unable to parse data"
+
   @spec parse_parts([String.t()], [Encoder.parts()] | String.t()) ::
-          [Encoder.parts()] | String.t()
+          [{integer(), integer(), integer()}] | String.t()
   defp parse_parts(_, error_msg) when is_binary(error_msg), do: error_msg
   defp parse_parts([], parsed), do: parsed
 
   defp parse_parts([head | tail], acc) do
     next =
       case Parsers.roll_part(head) do
-        {:ok, [num, die, "+", mod], _, _, _, _} -> acc ++ [{num, die, mod}]
-        {:ok, [num, die, "-", mod], _, _, _, _} -> acc ++ [{num, die, -mod}]
-        {:ok, [num, die], _, _, _, _} -> acc ++ [{num, die, 0}]
+        {:ok, [num, sides, "+", mod], _, _, _, _} -> acc ++ [{num, sides, mod}]
+        {:ok, [num, sides, "-", mod], _, _, _, _} -> acc ++ [{num, sides, -mod}]
+        {:ok, [num, sides], _, _, _, _} -> acc ++ [{num, sides, 0}]
         {:error, error_msg, _, _, _, _} -> error_msg
       end
 

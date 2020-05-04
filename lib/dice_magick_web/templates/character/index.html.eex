@@ -2,7 +2,7 @@
 
 <ul>
   <%= for character <- @characters do %>
-    <li><%= character.name %></li>
+    <li><%= link character.name, to: Routes.character_path(@conn, :show, character) %></li>
   <% end %>
 </ul>
 
