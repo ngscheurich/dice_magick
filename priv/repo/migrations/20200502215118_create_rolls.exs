@@ -6,7 +6,7 @@ defmodule DiceMagick.Repo.Migrations.CreateRolls do
       add :id, :binary_id, primary_key: true
       add :name, :string, null: false
       add :parts, :map, null: false
-      add :character_id, references(:users, type: :binary_id), null: false, on_delete: :delete_all
+      add :character_id, references(:characters, type: :binary_id), null: false, on_delete: :delete_all
 
       timestamps()
     end
