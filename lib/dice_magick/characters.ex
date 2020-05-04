@@ -31,6 +31,10 @@ defmodule DiceMagick.Characters do
 
   Raises `Ecto.NoResultsError` if the `Character` does not exist.
 
+  ## Options
+
+    * `preload` - Specifies which associations, if any, to preload.
+
   ## Examples
 
       iex> get_character!("123")
@@ -40,8 +44,14 @@ defmodule DiceMagick.Characters do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_character!(Ecto.UUID.t()) :: Character.t()
-  def get_character!(id), do: Repo.get!(Character, id)
+  @spec get_character!(Ecto.UUID.t(), preload: [atom()]) :: Character.t()
+  def get_character!(id, opts \\ []) do
+    preload = Keyword.get(opts, :preload, [])
+
+    Character
+    |> Repo.get!(id)
+    |> Repo.preload(preload)
+  end
 
   @doc """
   Creates a `Character`.
