@@ -14,12 +14,12 @@ defmodule DiceMagick.RollsTest do
       assert {:ok, %Roll{} = roll} =
                Rolls.create_roll(%{
                  name: "Sneak Attack",
-                 parts: [%{num: 1, die: 20, mod: 3}, %{num: 1, die: 6, mod: 0}],
+                 parts: [%{num: 1, sides: 20, mod: 3}, %{num: 1, sides: 6, mod: 0}],
                  character_id: character.id
                })
 
       assert roll.name == "Sneak Attack"
-      assert roll.parts == [%{num: 1, die: 20, mod: 3}, %{num: 1, die: 6, mod: 0}]
+      assert roll.parts == [%{num: 1, sides: 20, mod: 3}, %{num: 1, sides: 6, mod: 0}]
       assert roll.character == character
     end
 

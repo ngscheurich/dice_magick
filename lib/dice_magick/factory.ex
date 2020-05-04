@@ -24,6 +24,6 @@ defmodule DiceMagick.Factory do
   end
 
   def roll_part_factory do
-    %DiceMagick.Rolls.Roll.Part{num: 1, die: 20, mod: 3}
+    %DiceMagick.Rolls.Roll.Part{num: 1, sides: 20, mod: 3}
   end
 end

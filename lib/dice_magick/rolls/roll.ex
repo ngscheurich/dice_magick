@@ -17,7 +17,7 @@ defmodule DiceMagick.Rolls.Roll do
 
     embeds_many :parts, Part do
       field :num, :integer
-      field :die, :integer
+      field :sides, :integer
       field :mod, :integer
     end
 
@@ -31,12 +31,13 @@ defmodule DiceMagick.Rolls.Roll do
     |> cast_embed(:parts, with: &parts_changeset/2, required: true)
     |> validate_required([:name, :character_id])
     |> assoc_constraint(:character)
+    |> foreign_key_constraint(:character_id, name: :rolls_character_id_fkey)
     |> unique_constraint(:name)
   end
 
   defp parts_changeset(%Roll.Part{} = parts, params) do
     parts
-    |> cast(params, ~w(num die mod)a)
-    |> validate_required(~w(num die mod)a)
+    |> cast(params, ~w(num sides mod)a)
+    |> validate_required(~w(num sides mod)a)
   end
 end
