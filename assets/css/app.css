@@ -48,11 +48,6 @@ h1, h2, h3 {
   margin-bottom: 1rem;  
 }
 
-.input input {
-  display: block;
-  width: 100%;
-}
-
 .modifier {
   text-transform: uppercase;
   font-size: 0.9em;
