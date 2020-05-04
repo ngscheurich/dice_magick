@@ -1,0 +1,11 @@
+<h2><%= @character.name %></h2>
+
+<section>
+  <h3>Rolls</h3>
+  <dl>
+    <%= for roll <- @character.rolls do %>
+      <dt><%= roll.name %></dt>
+      <dd><%= roll_parts(roll) %></dd>
+    <% end %>
+  </dl>
+</section>

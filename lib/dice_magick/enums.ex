@@ -1,3 +1,5 @@
-import EctoEnum
+defmodule DiceMagick.Enums do
+  import EctoEnum
 
-defenum(DataFormatEnum, :data_format, [:csv])
+  defenum(DataFormatEnum, :data_format, [:csv])
+end

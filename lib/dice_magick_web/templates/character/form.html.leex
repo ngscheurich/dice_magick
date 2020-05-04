@@ -5,7 +5,13 @@
   </div>
 
   <div class="input">
-    <%= textarea f, :stats, placeholder: "Stats"  %>
+    <%= select f, :data_format, [CSV: :csv] %>
+    <div class="error"><%= error_tag f, :data_format %></div>
+  </div>
+
+  <div class="input">
+    <%= textarea f, :roll_data, placeholder: "Roll Data"  %>
+    <div class="error"><%= error_tag f, :roll_data %></div>
   </div>
 
   <%= submit "Save"%>

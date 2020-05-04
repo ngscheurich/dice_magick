@@ -26,8 +26,8 @@ defmodule DiceMagickWeb.Router do
   scope "/manage", DiceMagickWeb do
     pipe_through [:browser, :authenticate_user]
 
-    resources "/characters", CharacterController, only: [:index]
-
     live "/characters/new", CharacterLive.New
+
+    resources "/characters", CharacterController, only: [:index, :show]
   end
 end
