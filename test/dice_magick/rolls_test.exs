@@ -4,10 +4,8 @@ defmodule DiceMagick.RollsTest do
   alias DiceMagick.Rolls
 
   describe "rolls" do
-    alias Rolls.Roll
+    alias Rolls.{Roll, Roll.Part}
 
-    # [fixme] Creating a roll like this works interactively, but not in the
-    #         test. What's that all about?
     test "create_roll/1 with valid data creates a roll" do
       character = insert(:character)
 
@@ -19,8 +17,8 @@ defmodule DiceMagick.RollsTest do
                })
 
       assert roll.name == "Sneak Attack"
-      assert roll.parts == [%{num: 1, sides: 20, mod: 3}, %{num: 1, sides: 6, mod: 0}]
-      assert roll.character == character
+      assert [%Part{num: 1, sides: 20, mod: 3}, %Part{num: 1, sides: 6, mod: 0}] = roll.parts
+      assert roll.character_id == character.id
     end
 
     test "create_roll/1 with invalid data returns error changeset" do
