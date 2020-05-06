@@ -31,7 +31,6 @@ defmodule DiceMagick.Rolls.Roll do
     |> cast_embed(:parts, with: &parts_changeset/2, required: true)
     |> validate_required([:name, :character_id])
     |> assoc_constraint(:character)
-    |> foreign_key_constraint(:character_id, name: :rolls_character_id_fkey)
     |> unique_constraint(:name)
   end
 
