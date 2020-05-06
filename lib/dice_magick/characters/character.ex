@@ -34,7 +34,7 @@ defmodule DiceMagick.Characters.Character do
     field :data_format, DataFormatEnum, virtual: true
 
     belongs_to :user, User
-    has_many :rolls, Roll
+    has_many :rolls, Roll, on_replace: :delete
 
     timestamps()
   end
@@ -43,10 +43,16 @@ defmodule DiceMagick.Characters.Character do
   def changeset(%__MODULE__{} = character, params) do
     character
     |> cast(params, [:name, :user_id, :roll_data, :data_format])
-    |> cast_assoc(:rolls, with: &Roll.changeset/2, on_replace: :delete)
-    |> validate_required([:name, :user_id, :roll_data, :data_format])
+    |> cast_assoc(:rolls, with: &Roll.changeset/2)
     |> assoc_constraint(:user)
     |> encode_rolls()
+    |> case do
+      %{action: :insert} = changeset ->
+        validate_required(changeset, [:name, :user_id, :roll_data, :data_format])
+
+      changeset ->
+        validate_required(changeset, [:name, :user_id])
+    end
   end
 
   @spec encode_rolls(Ecto.Changeset.t()) :: Ecto.Changeset.t()

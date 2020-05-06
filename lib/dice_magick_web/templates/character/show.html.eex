@@ -9,3 +9,5 @@
     <% end %>
   </dl>
 </section>
+
+<p>➕ <%= link "Edit #{@character.name}", to: Routes.live_path(@conn, CharacterLive.Edit, @character) %></p>
