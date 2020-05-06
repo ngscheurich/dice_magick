@@ -37,7 +37,7 @@ defmodule DiceMagick.Rolls.CSVEncoder do
     parsed_parts =
       parts
       |> String.replace(" ", "")
-      |> String.split(",")
+      |> String.split("&")
       |> parse_parts([])
 
     case parsed_parts do
