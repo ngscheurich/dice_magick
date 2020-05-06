@@ -54,7 +54,7 @@ defmodule DiceMagick.Rolls.CSVEncoder do
     end
   end
 
-  defp encode_row(row), do: "Unable to parse data"
+  defp encode_row(_row), do: "Unable to parse data"
 
   @spec parse_parts([String.t()], [Encoder.parts()] | String.t()) ::
           [{integer(), integer(), integer()}] | String.t()
