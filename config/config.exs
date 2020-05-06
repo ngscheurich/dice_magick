@@ -16,7 +16,7 @@ config :dice_magick, DiceMagickWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "qFN2SYdwyU3kFUFKBwes2Z2jgUMiblp5XqW/YEjwWK0AfyTwEe9sKp69LfAEdaju",
   render_errors: [view: DiceMagickWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: DiceMagick.PubSub, adapter: Phoenix.PubSub.PG2],
+  pubsub_server: DiceMagick.PubSub,
   live_view: [signing_salt: "J3lKKxgK"]
 
 # Configures Elixir's Logger
