@@ -13,7 +13,9 @@ defmodule DiceMagick.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: DiceMagick.PubSub},
       # Start the endpoint when the application starts
-      DiceMagickWeb.Endpoint
+      DiceMagickWeb.Endpoint,
+      # Start the telemetry system
+      DiceMagickWeb.Telemetry
       # Starts a worker by calling: DiceMagick.Worker.start_link(arg)
       # {DiceMagick.Worker, arg},
     ]
