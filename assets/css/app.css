@@ -1,67 +1,19 @@
-@import "./normalize.css";
-@import "../node_modules/nprogress/nprogress.css";
-
-body {
-  background-color: #eee;
-  color: #222;
-  font: 300 18px/1.2 "Grenze", serif;
-  max-width: 60rem;
-  margin: auto;
-  padding: 2rem;
-}
-
-p {
-  line-height: 1.45;
-}
-
-strong {
-  font-weight: 400;
-}
-
-hr {
-  height: 1px;
-  border: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-}
-
-a {
-  color: brown;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 a:hover {
-  opacity: 0.7;
+  transition: opacity 0.2s;
+  opacity: 0.8;
 }
 
-h1, h2, h3 {
-  font-weight: 600;
+.bg-plant {
+  background-position: 10% bottom;
+  background-repeat: no-repeat;
+  background-image: url("/images/plant.svg");
 }
 
-.alert-info {
-  color: green;
+.bg-keys {
+  background: center top no-repeat url("/images/keys.svg");
+  padding-top: 200px;
 }
-
-.alert-error {
-  color: red;
-}
-
-.input {
-  margin-bottom: 1rem;  
-}
-
-.modifier {
-  text-transform: uppercase;
-  font-size: 0.9em;
-}
-
-.error {
-  color: red;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-}
-
-.ability-scores {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 1rem;
-}
-

@@ -13,7 +13,7 @@ module.exports = (env, options) => ({
     ]
   },
   entry: {
-    './js/app.js': glob.sync('./vendor/**/*.js').concat(['./js/app.js'])
+    './js/app.ts': glob.sync('./vendor/**/*.js').concat(['./js/app.ts'])
   },
   output: {
     filename: 'app.js',
@@ -28,9 +28,15 @@ module.exports = (env, options) => ({
           loader: 'babel-loader'
         }
       },
+       {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        // use: [MiniCssExtractPlugin.loader, 'css-loader']
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"]
       }
     ]
   },

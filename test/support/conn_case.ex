@@ -20,8 +20,9 @@ defmodule DiceMagickWeb.ConnCase do
   using do
     quote do
       # Import conveniences for testing with connections
-      use Phoenix.ConnTest
       alias DiceMagickWeb.Router.Helpers, as: Routes
+      import Plug.Conn
+      import Phoenix.ConnTest
       import AssertIdentity
       import DiceMagick.Factory
       import DiceMagick.AuthHelpers

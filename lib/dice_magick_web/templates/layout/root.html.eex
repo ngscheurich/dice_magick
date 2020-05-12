@@ -6,40 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= assigns[:page_title] || "DiceMagick · Phoenix Framework" %></title>
     <link href="<%= Routes.static_path(@conn, "/css/app.css") %>" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
     <%= csrf_meta_tag() %>
   </head>
 
-  <body>
-    <header>
-      <h1>
-        <%= link "Dice Magick", to: Routes.page_path(@conn, :index) %></h1>
-
-        <%= if @current_user do %>
-          <p>
-            👤 Logged in as <%= @current_user.nickname %>.
-            <%= link "Logout",
-                  to: Routes.session_path(@conn, :delete, @current_user),
-                  method: :delete %>
-          </p>
-
-          <nav role="navigation">
-            <ul>
-              <li><%= link "Your Characters", to: Routes.character_path(@conn, :index) %></li>
-            </ul>
-          </nav>
-        <% else %>
-          <p>🔒 <%= link "Login with Discord", to: discord_oauth_url() %></p>
-        <% end %>
-    </header>
-
-    <hr>
-
-    <main role="main">
+  <%= if @current_user do %>
+    <body class="font-serif text-light antialiased font-thin flex w-screen h-screen items-center justify-center bg-dark">
       <%= @inner_content %>
-    </main>
+      <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    </body>
+  <% else %>
+    <body class="font-serif text-light antialiased font-thin flex w-screen h-screen items-center justify-center bg-dark bg-plant">
+      <main role="main">
+        <h1 class="text-4xl text-center mb-20">Perish all who gaze upon the Dice Wizard.</h1>
+        <p class="bg-keys text-3xl text-center mb-10"><strong class="font-semibold">Will you log in with Discord?</strong></p>
 
-    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
-  </body>
+        <div class="flex justify-center">
+          <%= link "Yes", to: discord_oauth_url(), class: "text-2xl font-semibold uppercase tracking-wider bg-light-red px-12 py-2 rounded-sm mr-6" %>
+          <%= link "No", to: "#", class: "text-2xl font-semibold uppercase tracking-wider border border-brown px-12 py-2 rounded-sm" %>
+        </div>
+      </main>
+
+      <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    </body>
+  <% end %>
+
 </html>
 

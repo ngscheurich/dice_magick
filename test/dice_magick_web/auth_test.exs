@@ -1,6 +1,5 @@
 defmodule DiceMagickWeb.AuthTest do
   use DiceMagickWeb.ConnCase
-  import Plug.Test
 
   alias DiceMagickWeb.Auth
 

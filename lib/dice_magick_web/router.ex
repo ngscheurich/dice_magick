@@ -1,5 +1,7 @@
 defmodule DiceMagickWeb.Router do
   use DiceMagickWeb, :router
+  import Plug.BasicAuth
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -9,6 +11,18 @@ defmodule DiceMagickWeb.Router do
     plug :put_secure_browser_headers
     plug :put_root_layout, {DiceMagickWeb.LayoutView, :root}
     plug DiceMagickWeb.Auth
+  end
+
+  pipeline :protected do
+    # [todo] Configure username/password
+    plug :basic_auth, username: "admin", password: "password"
+  end
+
+  if Mix.env() == :dev do
+    scope "/" do
+      pipe_through [:browser, :protected]
+      live_dashboard "/dashboard", metrics: DiceMagickWeb.Telemetry
+    end
   end
 
   scope "/", DiceMagickWeb do

@@ -2,7 +2,7 @@ defmodule DiceMagickWeb.LayoutView do
   use DiceMagickWeb, :view
 
   @doc """
-  Generate Discord OAuth2 URL.
+  Returns OAuth2 URL for the configured Discord app.
   """
   @spec discord_oauth_url() :: String.t()
   def discord_oauth_url do
