@@ -26,6 +26,7 @@ defmodule DiceMagick.Characters.Character do
   alias DiceMagick.Accounts.User
   alias DiceMagick.Enums.DataFormatEnum
   alias DiceMagick.Rolls.{Roll, CSVEncoder}
+  alias DiceMagick.Taxonomy.Tag
 
   schema "characters" do
     field :name, :string
@@ -34,7 +35,9 @@ defmodule DiceMagick.Characters.Character do
     field :data_format, DataFormatEnum, virtual: true
 
     belongs_to :user, User
+
     has_many :rolls, Roll, on_replace: :delete
+    has_many :tags, Tag
 
     timestamps()
   end
