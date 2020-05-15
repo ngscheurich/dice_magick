@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "@nprogress/nprogress.css";
+
 a:hover {
   transition: opacity 0.2s;
   opacity: 0.8;
