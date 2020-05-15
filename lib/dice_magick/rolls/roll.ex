@@ -8,12 +8,16 @@ defmodule DiceMagick.Rolls.Roll do
 
   alias __MODULE__
   alias DiceMagick.Characters.Character
+  alias DiceMagick.Taxonomy.RollTag
 
   @type part() :: [integer()]
 
   schema "rolls" do
     field :name, :string
+
     belongs_to :character, Character
+
+    many_to_many :tags, Roll, join_through: RollTag
 
     embeds_many :parts, Part do
       field :num, :integer
