@@ -1,3 +1,4 @@
+// @ts-ignore: Cannot find module error
 import { Socket } from "phoenix";
 // @ts-ignore: Cannot find module error
 import LiveSocket from "phoenix_live_view";

@@ -11,6 +11,8 @@ defmodule DiceMagick.Factory do
   def character_factory do
     %DiceMagick.Characters.Character{
       name: "Baldur",
+      source_type: :test,
+      source_params: %{"test" => true},
       user: build(:user)
     }
   end
@@ -18,12 +20,8 @@ defmodule DiceMagick.Factory do
   def roll_factory do
     %DiceMagick.Rolls.Roll{
       name: "Constitution Save",
-      character: build(:character),
-      parts: build_list(1, :roll_part)
+      expression: "1d20 + 5",
+      character: build(:character)
     }
-  end
-
-  def roll_part_factory do
-    %DiceMagick.Rolls.Roll.Part{num: 1, sides: 20, mod: 3}
   end
 end

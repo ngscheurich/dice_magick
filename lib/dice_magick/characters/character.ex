@@ -24,15 +24,15 @@ defmodule DiceMagick.Characters.Character do
   import Ecto.Changeset
 
   alias DiceMagick.Accounts.User
-  alias DiceMagick.Enums.DataFormatEnum
   alias DiceMagick.Rolls.{Roll, CSVEncoder}
   alias DiceMagick.Taxonomy.Tag
+  alias DiceMagick.Sources
+  alias Ecto.Changeset
 
   schema "characters" do
     field :name, :string
-
-    field :roll_data, :string, virtual: true
-    field :data_format, DataFormatEnum, virtual: true
+    field :source_type, SourceTypeEnum
+    field :source_params, :map
 
     belongs_to :user, User
 
@@ -45,31 +45,28 @@ defmodule DiceMagick.Characters.Character do
   @doc false
   def changeset(%__MODULE__{} = character, params) do
     character
-    |> cast(params, [:name, :user_id, :roll_data, :data_format])
-    |> cast_assoc(:rolls, with: &Roll.changeset/2)
+    |> cast(params, [:name, :source_type, :source_params, :user_id])
+    |> validate_required([:name, :source_type, :source_params, :user_id])
+    |> validate_source_params()
     |> assoc_constraint(:user)
-    |> encode_rolls()
-    |> case do
-      %{action: :insert} = changeset ->
-        validate_required(changeset, [:name, :user_id, :roll_data, :data_format])
+  end
 
-      changeset ->
-        validate_required(changeset, [:name, :user_id])
+  @spec validate_source_params(Changeset.t()) :: Changeset.t()
+  defp validate_source_params(%Changeset{changes: %{source_params: params}} = chset) do
+    module =
+      chset
+      |> Changeset.get_field(:source_type)
+      |> source_for_format()
+
+    case module.validate_params(params) do
+      :ok -> chset
+      {:error, msg} -> add_error(chset, :source_params, msg)
     end
   end
 
-  @spec encode_rolls(Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  defp encode_rolls(%Ecto.Changeset{changes: %{roll_data: data, data_format: format}} = changeset) do
-    module = encoder_for_format(format)
+  defp validate_source_params(%Changeset{} = chset), do: chset
 
-    case module.encode(data) do
-      {:ok, rolls} -> put_change(changeset, :rolls, rolls)
-      {:error, error_msg} -> add_error(changeset, :roll_data, error_msg)
-    end
-  end
-
-  defp encode_rolls(%Ecto.Changeset{} = chset), do: chset
-
-  @spec encoder_for_format(atom()) :: atom()
-  defp encoder_for_format(:csv), do: CSVEncoder
+  @spec source_for_format(atom()) :: atom()
+  defp source_for_format(:test), do: Sources.Test
+  defp source_for_format(:google_sheets), do: Sources.GoogleSheets
 end

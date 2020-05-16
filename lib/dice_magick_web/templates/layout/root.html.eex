@@ -11,7 +11,13 @@
   </head>
 
   <%= if @current_user do %>
-    <body class="font-serif text-light antialiased font-thin flex w-screen h-screen items-center justify-center bg-dark">
+    <body class="font-mono text-gray-800 bg-gray-300 antialiased basic">
+      <header class="p-5">
+        <div class="max-w-4xl mx-auto">
+          <h1 class="text-gray-600 text-xl font-bold">DiceMagick</h1>
+        </div>
+      </header>
+
       <%= @inner_content %>
       <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     </body>
@@ -30,6 +36,5 @@
       <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     </body>
   <% end %>
-
 </html>
 
