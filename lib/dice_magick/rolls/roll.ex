@@ -9,21 +9,17 @@ defmodule DiceMagick.Rolls.Roll do
   alias __MODULE__
   alias DiceMagick.Characters.Character
   alias DiceMagick.Taxonomy.RollTag
+  alias Ecto.Changeset
 
   @type part() :: [integer()]
 
   schema "rolls" do
     field :name, :string
+    field :expression, :string
 
     belongs_to :character, Character
 
     many_to_many :tags, Roll, join_through: RollTag
-
-    embeds_many :parts, Part do
-      field :num, :integer
-      field :sides, :integer
-      field :mod, :integer
-    end
 
     timestamps()
   end
@@ -31,16 +27,20 @@ defmodule DiceMagick.Rolls.Roll do
   @doc false
   def changeset(%Roll{} = roll, params) do
     roll
-    |> cast(params, [:name, :character_id])
-    |> cast_embed(:parts, with: &parts_changeset/2, required: true)
-    |> validate_required([:name, :character_id])
+    |> cast(params, [:name, :expression, :character_id])
+    |> validate_required([:name, :expression, :character_id])
+    |> validate_expression()
     |> assoc_constraint(:character)
     |> unique_constraint(:name)
   end
 
-  defp parts_changeset(%Roll.Part{} = parts, params) do
-    parts
-    |> cast(params, ~w(num sides mod)a)
-    |> validate_required(~w(num sides mod)a)
+  @spec validate_expression(Changeset.t()) :: Changeset.t()
+  defp validate_expression(%Changeset{changes: %{expression: expression}} = chset) do
+    case ExDiceRoller.compile(expression) do
+      {:ok, _} -> chset
+      {:error, _} -> add_error(chset, :expression, "Token parsing failed")
+    end
   end
+
+  defp validate_expression(%Changeset{} = chset), do: chset
 end

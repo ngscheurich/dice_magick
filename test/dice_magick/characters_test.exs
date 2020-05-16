@@ -6,7 +6,7 @@ defmodule DiceMagick.CharactersTest do
   describe "characters" do
     alias DiceMagick.Characters.Character
 
-    @invalid_attrs %{name: nil, user_id: nil}
+    @invalid_attrs %{name: nil, source_type: nil, source_params: nil, user_id: nil}
 
     test "list_characters_for_user/1 returns all characters for user" do
       user = insert(:user)
@@ -23,7 +23,12 @@ defmodule DiceMagick.CharactersTest do
       %{id: user_id} = insert(:user)
 
       assert {:ok, %Character{} = character} =
-               Characters.create_character(%{name: "Baldur", user_id: user_id})
+               Characters.create_character(%{
+                 name: "Baldur",
+                 source_type: :test,
+                 source_params: %{"test" => true},
+                 user_id: user_id
+               })
 
       assert character.name == "Baldur"
       assert character.user_id == user_id

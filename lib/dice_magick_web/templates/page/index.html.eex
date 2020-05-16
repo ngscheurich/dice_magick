@@ -1,5 +1,6 @@
 <%= if @current_user do %>
   <p><strong>The world is your oyster.</strong></p>
+  <p><%= link "Have a look at your characters", to: Routes.character_path(@conn, :index) %></p>
 <% else %>
   <p><em>Nothing to see here, pal.</em></p>
 <% end %>

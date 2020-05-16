@@ -19,7 +19,6 @@ defmodule DiceMagickWeb.CharacterControllerTest do
         |> authenticate(user)
         |> get(Routes.character_path(conn, :index))
 
-      assert html_response(conn, 200) =~ "Your Characters"
       assert html_response(conn, 200) =~ "Baldur"
       refute html_response(conn, 200) =~ "Ophelia"
     end
