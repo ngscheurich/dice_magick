@@ -9,7 +9,8 @@ use Mix.Config
 
 config :dice_magick,
   ecto_repos: [DiceMagick.Repo],
-  generators: [binary_id: true]
+  generators: [binary_id: true],
+  google_sheets: DiceMagick.GoogleSheets.HTTPClient
 
 # Configures the endpoint
 config :dice_magick, DiceMagickWeb.Endpoint,

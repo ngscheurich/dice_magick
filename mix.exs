@@ -53,6 +53,7 @@ defmodule DiceMagick.MixProject do
       {:ex_machina, "~> 2.4"},
       {:floki, ">= 0.0.0", only: :test},
       {:gettext, "~> 0.11"},
+      {:httpoison, "~> 1.6"},
       {:jason, "~> 1.0"},
       {:nimble_csv, "~> 0.6"},
       {:nimble_parsec, "~> 0.5"},

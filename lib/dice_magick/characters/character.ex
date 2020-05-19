@@ -24,7 +24,7 @@ defmodule DiceMagick.Characters.Character do
   import Ecto.Changeset
 
   alias DiceMagick.Accounts.User
-  alias DiceMagick.Rolls.{Roll, CSVEncoder}
+  alias DiceMagick.Rolls.Roll
   alias DiceMagick.Taxonomy.Tag
   alias DiceMagick.Sources
   alias Ecto.Changeset
@@ -46,6 +46,8 @@ defmodule DiceMagick.Characters.Character do
   def changeset(%__MODULE__{} = character, params) do
     character
     |> cast(params, [:name, :source_type, :source_params, :user_id])
+    |> cast_assoc(:rolls)
+    |> cast_assoc(:tags)
     |> validate_required([:name, :source_type, :source_params, :user_id])
     |> validate_source_params()
     |> assoc_constraint(:user)
@@ -60,7 +62,7 @@ defmodule DiceMagick.Characters.Character do
 
     case module.validate_params(params) do
       :ok -> chset
-      {:error, msg} -> add_error(chset, :source_params, msg)
+      {:error, errors} -> Enum.reduce(errors, chset, &add_error(&2, :source_params, &1))
     end
   end
 

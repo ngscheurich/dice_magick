@@ -4,5 +4,5 @@ defmodule DiceMagick.Rolls.Parsers do
   `DiceMagick.Roll.Roll`s.
   """
 
-  import NimbleParsec
+  # import NimbleParsec
 end

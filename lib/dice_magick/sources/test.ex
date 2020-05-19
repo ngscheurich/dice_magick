@@ -10,4 +10,10 @@ defmodule DiceMagick.Sources.Test do
       _ -> :ok
     end
   end
+
+  @impl true
+  def fetch_data(_params), do: %{}
+
+  @impl true
+  def generate_rolls(_data), do: []
 end

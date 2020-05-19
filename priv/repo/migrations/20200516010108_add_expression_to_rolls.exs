@@ -7,9 +7,9 @@ defmodule DiceMagick.Repo.Migrations.AddExpressionToRolls do
       remove :parts
     end
 
-      execute "UPDATE rolls SET expression = '1d20' WHERE expression IS NULL"
+    execute "UPDATE rolls SET expression = '1d20' WHERE expression IS NULL"
 
-    alter table(:rolls), do: modify :expression, :string, null: false
+    alter table(:rolls), do: modify(:expression, :string, null: false)
   end
 
   def down do

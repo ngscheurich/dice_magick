@@ -8,6 +8,17 @@ defmodule DiceMagick.Repo.Migrations.AddSourceDataToCharacters do
       add :source_type, SourceTypeEnum.type()
       add :source_params, :map
     end
+
+    execute """
+    UPDATE characters
+    SET source_type = 'test', source_params = '{"test": true}'
+    WHERE source_type IS NULL OR source_params IS NULL
+    """
+
+    alter table(:characters) do
+      modify :source_type, SourceTypeEnum.type(), null: false
+      modify :source_params, :map, null: false
+    end
   end
 
   def down do
