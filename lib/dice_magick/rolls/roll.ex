@@ -8,7 +8,7 @@ defmodule DiceMagick.Rolls.Roll do
 
   alias __MODULE__
   alias DiceMagick.Characters.Character
-  alias DiceMagick.Taxonomy.RollTag
+  alias DiceMagick.Taxonomy.{Tag, RollTag}
   alias Ecto.Changeset
 
   @type part() :: [integer()]
@@ -16,10 +16,12 @@ defmodule DiceMagick.Rolls.Roll do
   schema "rolls" do
     field :name, :string
     field :expression, :string
+    field :metadata, :map
+    field :favorite, :boolean, default: false
 
     belongs_to :character, Character
 
-    many_to_many :tags, Roll, join_through: RollTag
+    many_to_many :tags, Tag, join_through: RollTag
 
     timestamps()
   end
@@ -27,7 +29,8 @@ defmodule DiceMagick.Rolls.Roll do
   @doc false
   def changeset(%Roll{} = roll, params) do
     roll
-    |> cast(params, [:name, :expression, :character_id])
+    |> cast(params, [:name, :expression, :metadata, :favorite, :character_id])
+    |> cast_assoc(:tags)
     |> validate_required([:name, :expression, :character_id])
     |> validate_expression()
     |> assoc_constraint(:character)

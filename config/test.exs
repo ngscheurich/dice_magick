@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :dice_magick, google_sheets: DiceMagick.GoogleSheets.InMemory
+
 # Configure your database
 config :dice_magick, DiceMagick.Repo,
   username: "postgres",
