@@ -35,4 +35,4 @@ npm-debug.log
 
 /.elixir_ls/
 .envrc
-.vscode
+/lib/scratch.ex
