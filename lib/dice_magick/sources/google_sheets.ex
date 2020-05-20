@@ -9,10 +9,7 @@ defmodule DiceMagick.Sources.GoogleSheets do
 
   ## Examples
 
-      %{
-        key: "1sEEi3cUfUqc-suoKGPhMQ0eh7KCPbn3ksgOZ-b5q3QI",
-        worksheet: "Data"
-      }
+      %{key: "1sEEi3cUfUqc-suoKGPhMQ0eh7KCPbn3ksgOZ-b5q3QI", worksheet: "4"}
 
   """
 

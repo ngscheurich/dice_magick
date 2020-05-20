@@ -7,7 +7,8 @@ defmodule DiceMagickWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_dice_magick_key",
-    signing_salt: "M/ixBJS3"
+    signing_salt: "M/ixBJS3",
+     extra: "SameSite=None",
   ]
 
   socket "/socket", DiceMagickWeb.UserSocket,

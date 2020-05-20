@@ -1,3 +1,9 @@
-<h2>Edit <%= @character.name %></h2>
+<section class="section">
+  <h1 class="text-xl font-bold mb-8">Edit <%= @character.name %></h1>
 
-<%= render "form.html", assigns %>
+  <div class="mb-10">
+    <%= render "form.html", assigns %>
+  </div>
+
+  <p>👈 <%= link "Never mind", to: Routes.character_path(@socket, :show, @character), class: "text-gray-600" %></p>
+</section>

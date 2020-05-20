@@ -1,6 +1,8 @@
-<%= if @current_user do %>
-  <p><strong>The world is your oyster.</strong></p>
-  <p><%= link "Have a look at your characters", to: Routes.character_path(@conn, :index) %></p>
-<% else %>
-  <p><em>Nothing to see here, pal.</em></p>
-<% end %>
+<div class="section">
+  <%= if @current_user do %>
+    <p class="mb-2">Welcome, <%= @current_user.nickname %>. <strong>The world is your oyster.</strong></p>
+    <p><%= link "Have a look at your characters?", to: Routes.character_path(@conn, :index), class: "link" %></p>
+  <% else %>
+    <p><em>Nothing to see here, pal.</em></p>
+  <% end %>
+</div>

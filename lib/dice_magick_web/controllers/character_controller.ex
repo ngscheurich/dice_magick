@@ -11,7 +11,7 @@ defmodule DiceMagickWeb.CharacterController do
 
   def show(conn, %{"id" => id}) do
     %{assigns: %{current_user: current_user}} = conn
-    character = Characters.get_character!(id, preload: [:rolls])
+    character = Characters.get_character!(id, preload: [:rolls, :tags])
 
     if character.user_id == current_user.id do
       render(conn, "show.html", character: character)

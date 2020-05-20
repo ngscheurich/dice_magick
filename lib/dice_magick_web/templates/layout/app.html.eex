@@ -1,3 +1,19 @@
-<p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-<p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+<%= if get_flash(@conn, :info) do %>
+  <div class="text-sm bg-green-900 text-green-400" role="alert">
+    <div class="max-w-4xl mx-auto px-10 py-2 flex justify-between items-center">
+      <%= get_flash(@conn, :info) %>
+      <button data-behavior="close" class="cursor-pointer hover:text-green-300">ⓧ</button>
+    </div>
+  </div>
+<% end %>
+
+<%= if get_flash(@conn, :error) do %>
+  <div class="text-sm bg-red-900 text-red-400" role="alert">
+    <div class="max-w-4xl mx-auto px-10 py-2 flex justify-between items-center">
+      <%= get_flash(@conn, :error) %>
+      <button data-behavior="close" class="cursor-pointer hover:text-red-300">ⓧ</button>
+    </div>
+  </div>
+<% end %>
+
 <%= @inner_content %>

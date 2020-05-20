@@ -1,9 +1,14 @@
-<section class="max-w-5xl mx-auto">
-    <ul class="mb-6">
+<section class="section">
+  <h1 class="text-xl font-bold mb-5">Your Characters</h1>
+  <%= if Enum.empty?(@characters) do %>
+    <p class="text-gray-600 mb-5">Looks like no one’s home.</p>
+  <% else %>
+    <ul class="mb-8">
       <%= for character <- @characters do %>
-        <li><%= link character.name, to: Routes.character_path(@conn, :show, character) %></li>
+        <li class="mb-1"><%= link character.name, to: Routes.character_path(@conn, :show, character), class: "link" %></li>
       <% end %>
     </ul>
+  <% end %>
 
-    <p>➕ <%= link "Add someone new", to: Routes.live_path(@conn, CharacterLive.New) %></p>
+  <%= link "Add someone new", to: Routes.live_path(@conn, CharacterLive.New), class: "btn" %>
 </section>
