@@ -26,3 +26,12 @@ window.liveSocket = liveSocket;
 
 window.addEventListener("phx:page-loading-start", () => NProgress.start());
 window.addEventListener("phx:page-loading-stop", () => NProgress.done());
+
+window.addEventListener("DOMContentLoaded", () => {
+  const nodes = document.querySelectorAll('[data-behavior="close"]');
+  nodes.forEach((node) =>
+    node.addEventListener("click", ({ target }) =>
+      (target as HTMLElement).parentElement!.remove()
+    )
+  );
+});

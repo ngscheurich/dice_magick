@@ -1,20 +1,22 @@
-<section class="bg-gray-200 px-5 py-10">
-  <div class="max-w-4xl mx-auto">
+<section class="section">
     <div class="flex justify-between items-center">
       <div>
         <h1 class="text-2xl font-bold"><%= @character.name %></h1>
         <div>
           <h2 class="font-bold inline">Source:</h2>
-          <a href="#">Google Sheets</a>
+          <%= link "Google Sheets",
+                to: "https://docs.google.com/spreadsheets/d/#{@character.source_params["key"]}",
+                class: "link", target: "_blank" %>
         </div>
         <div>
-          <h2 class="font-bold inline">Update:</h2>
+          <h2 class="font-bold inline">Updated:</h2>
           3 days ago
         </div>
       </div>
-      <p>✏️ <%= link "Edit #{@character.name}", to: Routes.live_path(@conn, CharacterLive.Edit, @character) %></p>
+      <%= link "Edit #{@character.name}", to: Routes.live_path(@conn, CharacterLive.Edit, @character), class: "btn"%>
     </div>
 
+    <h2 class="text-lg font-bold mt-5">Rolls</h2>
     <ul>
       <%= for roll <- @character.rolls do %>
         <li>
@@ -22,5 +24,13 @@
         </li>
       <% end %>
     </ul>
-      </div>
+
+    <h2 class="text-lg font-bold mt-5">Tags</h2>
+    <ul>
+      <%= for tag <- @character.tags do %>
+        <li>
+          <%= tag.name %>
+        </li>
+      <% end %>
+    </ul>
 </section>

@@ -8,14 +8,15 @@ defmodule DiceMagickWeb.CharacterLive.New do
   @impl true
   def mount(_params, %{"user_id" => user_id}, socket) do
     changeset = Characters.change_character(%Character{}, %{})
-    {:ok, assign(socket, user_id: user_id, changeset: changeset)}
+    {:ok, assign(socket, user_id: user_id, changeset: changeset, key: "", worksheet: "")}
   end
 
   @impl true
   def render(assigns), do: Phoenix.View.render(DiceMagickWeb.CharacterView, "new.html", assigns)
 
   @impl true
-  def handle_event("update", %{"character" => character_params}, socket) do
+  def handle_event("update", params, socket) do
+    %{"character" => character_params, "key" => key, "worksheet" => worksheet} = params
     character_params = Map.put(character_params, "user_id", socket.assigns.user_id)
 
     changeset =
@@ -23,12 +24,17 @@ defmodule DiceMagickWeb.CharacterLive.New do
       |> Characters.change_character(character_params)
       |> Map.put(:action, :insert)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    {:noreply, assign(socket, changeset: changeset, key: key, worksheet: worksheet)}
   end
 
   @impl true
-  def handle_event("save", %{"character" => character_params}, socket) do
-    character_params = Map.put(character_params, "user_id", socket.assigns.user_id)
+  def handle_event("save", params, socket) do
+    %{"character" => character_params, "key" => key, "worksheet" => worksheet} = params
+
+    character_params =
+      character_params
+      |> Map.put("user_id", socket.assigns.user_id)
+      |> Map.put("source_params", %{key: key, worksheet: worksheet})
 
     case Characters.create_character(character_params) do
       {:ok, _} ->

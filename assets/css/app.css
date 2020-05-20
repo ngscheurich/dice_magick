@@ -4,9 +4,20 @@
 
 @import "../node_modules/nprogress/nprogress.css";
 
-a:hover {
-  transition: opacity 0.2s;
-  opacity: 0.8;
+.app {
+  ul {
+    list-style: disc;
+  }
+}
+
+.link {
+  @apply text-orange-600 border-b border-orange-900;
+}
+
+.link:hover {
+  @apply text-orange-500 border-orange-800;
+
+  transition: all 0.2s;
 }
 
 .bg-plant {
@@ -20,13 +31,29 @@ a:hover {
   padding-top: 200px;
 }
 
-.basic {
-  a {
-    color: salmon;
-    border-bottom: 1px solid pink;
-  }
+.section {
+  @apply max-w-4xl mx-auto p-10;
+}
 
-  ul {
-    list-style: disc;
-  }
+.input {
+  @apply text-gray-800 border border-gray-300 rounded-sm py-2 px-4 block w-full appearance-none leading-normal;
+}
+
+.select {
+  @apply text-gray-800 block appearance-none w-full border border-gray-300 px-4 py-2 pr-8 rounded-sm shadow leading-tight;
+}
+
+.input:focus,
+.select:focus {
+  @apply outline-none shadow-outline;
+}
+
+.btn {
+  @apply bg-orange-800 text-sm text-orange-100 py-2 px-6 rounded inline-flex items-center;
+}
+
+.btn:hover {
+  @apply bg-orange-700 cursor-pointer;
+
+  transition: background-color 0.2s;
 }
