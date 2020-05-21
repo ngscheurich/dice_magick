@@ -5,7 +5,7 @@ defmodule DiceMagick.Characters do
 
   alias DiceMagick.Characters.Character
   alias DiceMagick.Accounts.User
-  alias DiceMagick.Repo
+  alias DiceMagick.{Repo, Sources}
   alias Ecto.Changeset
 
   import Ecto.Query
@@ -119,4 +119,11 @@ defmodule DiceMagick.Characters do
   def change_character(%Character{} = character, attrs \\ %{}) do
     Character.changeset(character, attrs)
   end
+
+  @doc """
+  Given a `SourceTypeEnum`, returns the module for that type.
+  """
+  @spec source_for_type(atom()) :: atom()
+  def source_for_type(:test), do: Sources.Test
+  def source_for_type(:google_sheets), do: Sources.GoogleSheets
 end

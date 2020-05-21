@@ -37,7 +37,6 @@ defmodule DiceMagick.Sources.GoogleSheets do
   end
 
   @impl true
-  # [fixme] Dialyzer warning.
   def generate_rolls(%{"feed" => %{"entry" => rows}}) do
     rolls =
       Enum.map(rows, fn row ->
