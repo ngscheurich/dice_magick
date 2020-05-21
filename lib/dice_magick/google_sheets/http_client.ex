@@ -10,4 +10,7 @@ defmodule DiceMagick.GoogleSheets.HTTPClient do
          {:ok, body} <- Jason.decode(response.body),
          do: {:ok, body}
   end
+
+  def fetch_data(%{"key" => key, "worksheet" => worksheet}),
+    do: fetch_data(%{key: key, worksheet: worksheet})
 end

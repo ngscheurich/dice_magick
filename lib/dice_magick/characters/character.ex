@@ -26,7 +26,6 @@ defmodule DiceMagick.Characters.Character do
   alias DiceMagick.Accounts.User
   alias DiceMagick.Rolls.Roll
   alias DiceMagick.Taxonomy.Tag
-  alias DiceMagick.Sources
   alias Ecto.Changeset
 
   schema "characters" do
@@ -58,7 +57,7 @@ defmodule DiceMagick.Characters.Character do
     module =
       chset
       |> Changeset.get_field(:source_type)
-      |> source_for_format()
+      |> DiceMagick.Characters.source_for_type()
 
     case module.validate_params(params) do
       :ok -> chset
@@ -67,8 +66,4 @@ defmodule DiceMagick.Characters.Character do
   end
 
   defp validate_source_params(%Changeset{} = chset), do: chset
-
-  @spec source_for_format(atom()) :: atom()
-  defp source_for_format(:test), do: Sources.Test
-  defp source_for_format(:google_sheets), do: Sources.GoogleSheets
 end
