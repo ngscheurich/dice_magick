@@ -1,4 +1,9 @@
-alias DiceMagick.{Repo, Accounts, Characters, Rolls, Taxonomy, Sources}
+alias Repo
+alias Accounts
+alias Characters
+alias Rolls
+alias Taxonomy
+alias Source
 alias Accounts.{User}
 alias Characters.{Character}
 alias Rolls.{Roll, Encoder, CSVEncoder}

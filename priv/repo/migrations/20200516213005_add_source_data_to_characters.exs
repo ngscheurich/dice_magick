@@ -1,4 +1,4 @@
-defmodule DiceMagick.Repo.Migrations.AddSourceDataToCharacters do
+defmodule Repo.Migrations.AddSourceDataToCharacters do
   use Ecto.Migration
 
   def up do

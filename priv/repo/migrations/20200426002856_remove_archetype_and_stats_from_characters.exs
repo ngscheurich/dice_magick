@@ -1,4 +1,4 @@
-defmodule DiceMagick.Repo.Migrations.RemoveArchetypeAndStatsFromCharacters do
+defmodule Repo.Migrations.RemoveArchetypeAndStatsFromCharacters do
   use Ecto.Migration
 
   def up do
