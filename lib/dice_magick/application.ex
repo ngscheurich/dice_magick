@@ -9,27 +9,27 @@ defmodule DiceMagick.Application do
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
-      DiceMagick.Repo,
+      Repo,
       # Start the PubSub system
-      {Phoenix.PubSub, name: DiceMagick.PubSub},
+      {Phoenix.PubSub, name: PubSub},
       # Start the endpoint when the application starts
-      DiceMagickWeb.Endpoint,
+      Web.Endpoint,
       # Start the telemetry system
-      DiceMagickWeb.Telemetry
-      # Starts a worker by calling: DiceMagick.Worker.start_link(arg)
-      # {DiceMagick.Worker, arg},
+      Web.Telemetry
+      # Starts a worker by calling: Worker.start_link(arg)
+      # {Worker, arg},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: DiceMagick.Supervisor]
+    opts = [strategy: :one_for_one, name: Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    DiceMagickWeb.Endpoint.config_change(changed, removed)
+    Web.Endpoint.config_change(changed, removed)
     :ok
   end
 end

@@ -1,4 +1,4 @@
-defmodule DiceMagick.Repo.Migrations.CreateCharacters do
+defmodule Repo.Migrations.CreateCharacters do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule DiceMagick.Repo.Migrations.AddArchetypeToCharacters do
+defmodule Repo.Migrations.AddArchetypeToCharacters do
   use Ecto.Migration
 
   def up do

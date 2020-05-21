@@ -1,5 +1,5 @@
-defmodule DiceMagick.AuthHelpers do
-  alias DiceMagick.Accounts.User
+defmodule AuthHelpers do
+  alias Accounts.User
   alias Plug.Conn
 
   @spec authenticate(Conn.t(), User.t()) :: Conn.t()
@@ -7,7 +7,7 @@ defmodule DiceMagick.AuthHelpers do
 
   @spec authenticate(Conn.t()) :: Conn.t()
   def authenticate(%Conn{} = conn) do
-    user = DiceMagick.Factory.insert(:user)
+    user = Factory.insert(:user)
     authenticate(conn, user)
   end
 end

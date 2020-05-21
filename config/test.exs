@@ -1,9 +1,9 @@
 use Mix.Config
 
-config :dice_magick, google_sheets: DiceMagick.GoogleSheets.InMemory
+config :dice_magick, google_sheets: GoogleSheets.InMemory
 
 # Configure your database
-config :dice_magick, DiceMagick.Repo,
+config :dice_magick, Repo,
   username: "postgres",
   password: "postgres",
   database: "dice_magick_test",
@@ -12,7 +12,7 @@ config :dice_magick, DiceMagick.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :dice_magick, DiceMagickWeb.Endpoint,
+config :dice_magick, Web.Endpoint,
   http: [port: 4002],
   server: false
 

@@ -1,4 +1,4 @@
-defmodule DiceMagick.Repo.Migrations.AddAdditionalColumnsToRolls do
+defmodule Repo.Migrations.AddAdditionalColumnsToRolls do
   use Ecto.Migration
 
   def change do

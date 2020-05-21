@@ -1,4 +1,4 @@
-defmodule DiceMagick.Repo.Migrations.AddExpressionToRolls do
+defmodule Repo.Migrations.AddExpressionToRolls do
   use Ecto.Migration
 
   def up do
