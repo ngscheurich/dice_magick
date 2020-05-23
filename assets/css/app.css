@@ -11,13 +11,21 @@
 }
 
 .link {
-  @apply text-orange-600 border-b border-orange-900;
+  @apply text-red-600 border-b border-red-900;
 }
 
 .link:hover {
-  @apply text-orange-500 border-orange-800;
+  @apply text-red-500 border-red-800;
 
   transition: all 0.2s;
+}
+
+.link--secondary {
+  @apply text-gray-400 border-b border-gray-600;
+}
+
+.link--secondary:hover {
+  @apply text-gray-300 border-gray-500;
 }
 
 .bg-plant {
@@ -49,11 +57,37 @@
 }
 
 .btn {
-  @apply bg-orange-800 text-sm text-orange-100 py-2 px-6 rounded inline-flex items-center;
+  @apply bg-red-800 text-sm text-red-100 py-2 px-6 rounded-sm inline-flex items-center;
 }
 
 .btn:hover {
-  @apply bg-orange-700 cursor-pointer;
+  @apply bg-red-700 cursor-pointer;
 
+  transition: all 0.2s;
+}
+
+.btn--roll {
+  @apply border border-red-600 font-semibold;
+}
+
+.btn--roll:hover {
+  @apply border-red-500 shadow-lg;
+}
+
+.btn--secondary {
+  @apply bg-gray-800 text-xs;
+}
+
+.btn--secondary:hover {
+  @apply bg-gray-600;
+}
+
+.roll {
+  @apply bg-orange-800 text-orange-100 py-2 px-6 rounded-sm inline-flex items-center;
+}
+
+.outset {
+  position: absolute;
+  left: -2.5rem;
   transition: background-color 0.2s;
 }

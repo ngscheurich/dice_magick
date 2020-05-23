@@ -20,6 +20,9 @@
     <input type="text" name="key" value="<%= @key %>" placeholder="Spreadsheet key" class="input mb-5" required />
     <input type="text" name="worksheet" value="<%= @worksheet %>" placeholder="Worksheet" class="input mb-5" required />
 
-    <%= submit "Save", class: "btn" %>
+    <%= submit class: "btn" do %>
+      <span class="fas fa-check mr-3"></span>
+      Save
+    <% end %>
   </div>
 </form>
