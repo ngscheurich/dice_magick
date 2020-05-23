@@ -5,5 +5,10 @@
     <%= render "form.html", assigns %>
   </div>
 
-  <p>👈 <%= link "Never mind", to: Routes.character_path(@socket, :index), class: "text-gray-600" %></p>
+  <div class="flex items-center">
+    <span class="fas fa-chevron-left mr-3"></span>
+    <%= link to: Routes.character_path(@socket, :index), class: "link link--secondary text-sm" do %>
+      Never mind
+    <% end %>
+  <div>
 </section>

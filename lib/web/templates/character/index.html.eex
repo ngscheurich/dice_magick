@@ -5,10 +5,13 @@
   <% else %>
     <ul class="mb-8">
       <%= for character <- @characters do %>
-        <li class="mb-1"><%= link character.name, to: Routes.character_path(@conn, :show, character), class: "link" %></li>
+        <li class="mb-1"><%= link character.name, to: Routes.live_path(@conn, CharacterLive.Show, character), class: "link" %></li>
       <% end %>
     </ul>
   <% end %>
 
-  <%= link "Add someone new", to: Routes.live_path(@conn, CharacterLive.New), class: "btn" %>
+  <%= link to: Routes.live_path(@conn, CharacterLive.New), class: "btn btn--secondary" do %>
+    <i class="fas fa-plus mr-3"></i>
+    Add someone new
+  <% end %>
 </section>
