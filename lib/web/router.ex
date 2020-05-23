@@ -41,8 +41,9 @@ defmodule Web.Router do
     pipe_through [:browser, :authenticate_user]
 
     live "/characters/new", CharacterLive.New
+    live "/characters/:id", CharacterLive.Show
     live "/characters/:id/edit", CharacterLive.Edit
 
-    resources "/characters", CharacterController, only: [:index, :show]
+    resources "/characters", CharacterController, only: [:index]
   end
 end
