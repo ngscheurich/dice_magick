@@ -1,0 +1,43 @@
+<div class="bg-gray-700">
+  <section class="section">
+      <div class="flex justify-between items-start">
+        <div class="relative">
+          <div class="flex items-center">
+            <%= link to: Routes.live_path(@socket, CharacterLive.Edit, @character),
+                  class: "outset flex rounded-full text-xs p-2 text-gray-100 bg-gray-600 hover:bg-gray-500" do %>
+              <span class="fas fa-edit"></span>
+            <% end %>
+
+            <h1 class="text-3xl font-bold mr-3">
+              <%= @character.name %>
+            </h1>
+          </div>
+
+          <div class="text-sm">
+            <h2 class="font-bold inline">Source:</h2>
+            <%= link "Google Sheets",
+                  to: "https://docs.google.com/spreadsheets/d/#{@character.source_params["key"]}",
+                  class: "link link--secondary", target: "_blank" %>
+          </div>
+
+          <div class="text-sm">
+            <h2 class="font-bold inline">Updated:</h2>
+            3 days ago
+          </div>
+        </div>
+
+        <button phx-click="update" class="btn btn--secondary">
+          <span class="fas fa-sync mr-3"></span>
+          Sync Rolls
+        </button>
+      </div>
+  </section>
+</div>
+
+<div class="section grid grid-cols-4 gap-4">
+  <%= for roll <- @rolls do %>
+    <div class="btn btn--roll">
+      <%= roll.name %>
+    </div>
+  <% end %>
+</div>
