@@ -1,15 +1,14 @@
-defmodule Characters.Process do
+defmodule Characters.Worker do
   @moduledoc """
-  Handles fetching and updating roll data for a character.
+  Client/server for fetching and updating a `Characters.Character`'s `Rolls.Roll`s.
   """
 
   use GenServer
-
   require Logger
-
   alias Characters
+  alias Characters.Character
 
-  @update_time 60_000
+  # @update_time 60_000
 
   defmodule State do
     @moduledoc """
@@ -28,33 +27,36 @@ defmodule Characters.Process do
   end
 
   @doc """
-  Starts a new character process.
+  Starts a new worker for the given `Characters.Character`.
   """
-  def start_link(character_id) do
-    GenServer.start_link(__MODULE__, character_id, name: pid(character_id))
+  def start_link(%Character{id: id}) do
+    GenServer.start_link(__MODULE__, id, name: name(id))
   end
 
-  defp pid(id), do: {:global, {__MODULE__, id}}
+  @doc """
+  Returns the name of the registered process for the given `id`.
+  """
+  def name(id), do: {:global, {__MODULE__, id}}
 
-  defp schedule_update(time), do: Process.send_after(self(), :update, time)
+  # defp schedule_update(time), do: Process.send_after(self(), :update, time)
 
-  #
+  # ----------------------------------------------------------------------------
   # Client
-  #
+  # ----------------------------------------------------------------------------
 
   @doc """
   Returns the state of the process.
   """
-  def state(id), do: GenServer.call(pid(id), :state)
+  def state(%Character{id: id}), do: GenServer.call(name(id), :state)
 
   @doc """
-  Fetches new data from the character's `source`, and updates that character's roll's.
+  Fetches new data from the character's `source`, and updates that character's `Rolls.Roll`s.
   """
-  def update(id), do: GenServer.cast(pid(id), :update)
+  def update(%Character{id: id}), do: GenServer.cast(name(id), :update)
 
-  #
+  # ----------------------------------------------------------------------------
   # Callbacks
-  #
+  # ----------------------------------------------------------------------------
 
   @impl true
   def init(character_id) do
@@ -69,7 +71,7 @@ defmodule Characters.Process do
       source_data: %{}
     }
 
-        Process.send(self(), :update, [])
+    Process.send(self(), :update, [])
 
     Logger.log(:info, "Initialized process for #{character.name}")
 
@@ -98,12 +100,12 @@ defmodule Characters.Process do
         |> Map.put(:character_id, character.id)
       end)
 
-    Characters.update_character(character, %{rolls: rolls}) |> IO.inspect()
+    Characters.update_character(character, %{rolls: rolls})
     new_state = %{state | source_data: fresh_data, last_updated: DateTime.utc_now()}
 
     Logger.log(:info, "Updated rolls for #{character.name}")
 
-    schedule_update(@update_time)
+    # schedule_update(@update_time)
 
     {:noreply, new_state}
   end

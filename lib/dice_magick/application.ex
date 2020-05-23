@@ -15,9 +15,12 @@ defmodule DiceMagick.Application do
       # Start the endpoint when the application starts
       Web.Endpoint,
       # Start the telemetry system
-      Web.Telemetry
-      # Starts a worker by calling: Worker.start_link(arg)
-      # {Worker, arg},
+      Web.Telemetry,
+      # Start the character workers supervisor
+      %{
+        id: Characters.Supervisor,
+        start: {Characters.Supervisor, :start_link, [[]]}
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
