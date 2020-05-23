@@ -69,11 +69,17 @@ defmodule Sources.GoogleSheets do
   defp metadata(row) do
     row
     |> data("metadata")
-    |> Jason.decode()
     |> case do
-      {:ok, result} -> result
-      # {:error, struct} -> Map.from_struct(struct)
-      error -> error
+      "" ->
+        nil
+
+      val ->
+        val
+        |> Jason.decode()
+        |> case do
+          {:ok, result} -> result
+          error -> error
+        end
     end
   end
 
