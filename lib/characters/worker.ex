@@ -139,5 +139,4 @@ defmodule Characters.Worker do
       }
     )
   end
-
 end

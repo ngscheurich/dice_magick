@@ -46,6 +46,7 @@ defmodule DiceMagick.MixProject do
   defp deps do
     [
       {:assert_identity, "~> 0.1.0"},
+      {:cowlib, "~> 2.8.0", override: true},
       {:ecto_enum, "~> 1.4"},
       {:ecto_sql, "~> 3.1"},
       {:ex_dice_roller, "~> 1.0.0-rc.2"},
@@ -57,6 +58,7 @@ defmodule DiceMagick.MixProject do
       {:jason, "~> 1.0"},
       {:nimble_csv, "~> 0.6"},
       {:nimble_parsec, "~> 0.5"},
+      {:nostrum, "~> 0.4"},
       {:phoenix, "~> 1.5.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},
