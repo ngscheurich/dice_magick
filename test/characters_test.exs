@@ -32,6 +32,7 @@ defmodule CharactersTest do
 
       assert character.name == "Baldur"
       assert character.user_id == user_id
+      refute character.id |> Characters.Worker.name() |> GenServer.whereis() |> is_nil
     end
 
     test "create_character/1 with invalid data returns error changeset" do

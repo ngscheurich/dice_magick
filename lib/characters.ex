@@ -3,16 +3,17 @@ defmodule Characters do
   The Characters context.
   """
 
-  alias Characters.Character
   alias Accounts.User
+  alias Characters.{Character, Worker}
   alias Repo
   alias Sources
-  alias Ecto.Changeset
 
   import Ecto.Query
 
+  @type repo_result :: {:ok, Character.t()} | {:error, Ecto.Changeset.t()}
+
   @doc """
-  Returns the list of `Character`s for a `User`.
+  Returns the list of `Characters.Character`s for a `User`.
 
   ## Examples
 
@@ -30,7 +31,7 @@ defmodule Characters do
   @doc """
   Gets a single `Character`.
 
-  Raises `Ecto.NoResultsError` if the `Character` does not exist.
+  Raises `Ecto.NoResultsError` if the `Characters.Character` does not exist.
 
   ## Options
 
@@ -45,7 +46,7 @@ defmodule Characters do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_character!(Ecto.UUID.t(), preload: [atom()]) :: Character.t()
+  @spec get_character!(Ecto.UUID.t(), preload: [atom]) :: Character.t()
   def get_character!(id, opts \\ []) do
     preload = Keyword.get(opts, :preload, [])
 
@@ -55,7 +56,7 @@ defmodule Characters do
   end
 
   @doc """
-  Creates a `Character`.
+  Creates a `Characters.Character`. On success, starts a new `Characters.Worker` for the character.
 
   ## Examples
 
@@ -66,12 +67,21 @@ defmodule Characters do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_character(map()) :: {:ok, Character.t()} | {:error, Changeset.t()}
+  @spec create_character(map) :: repo_result
   def create_character(attrs \\ %{}) do
     %Character{}
     |> Character.changeset(attrs)
     |> Repo.insert()
+    |> maybe_start_character_worker()
   end
+
+  @spec maybe_start_character_worker(repo_result) :: repo_result
+  defp maybe_start_character_worker({:ok, character} = result) do
+    Worker.start_link(character.id)
+    result
+  end
+
+  defp maybe_start_character_worker(result), do: result
 
   @doc """
   Updates a `Character`.
@@ -85,12 +95,21 @@ defmodule Characters do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_character(Character.t(), map()) :: {:ok, Character.t()} | {:error, Changeset.t()}
+  @spec update_character(Character.t(), map) :: {:ok, Character.t()} | {:error, Changeset.t()}
   def update_character(%Character{} = character, attrs) do
     character
     |> Character.changeset(attrs)
     |> Repo.update()
+    |> maybe_update_rolls(attrs)
   end
+
+  @spec maybe_update_rolls(repo_result, map) :: repo_result
+  defp maybe_update_rolls({:ok, character} = result, %{source_params: _}) do
+    Characters.Worker.update(character.id)
+    result
+  end
+
+  defp maybe_update_rolls(result, _attrs), do: result
 
   @doc """
   Deletes a `Character`.
@@ -116,7 +135,7 @@ defmodule Characters do
       %Ecto.Changeset{data: %Character{}}
 
   """
-  @spec change_character(Character.t(), map()) :: Changeset.t()
+  @spec change_character(Character.t(), map) :: Changeset.t()
   def change_character(%Character{} = character, attrs \\ %{}) do
     Character.changeset(character, attrs)
   end
@@ -124,7 +143,7 @@ defmodule Characters do
   @doc """
   Given a `SourceTypeEnum`, returns the module for that type.
   """
-  @spec source_for_type(atom()) :: atom()
+  @spec source_for_type(atom) :: atom
   def source_for_type(:test), do: Sources.Test
   def source_for_type(:google_sheets), do: Sources.GoogleSheets
 end
