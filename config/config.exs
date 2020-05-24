@@ -10,7 +10,9 @@ use Mix.Config
 config :dice_magick,
   ecto_repos: [Repo],
   generators: [binary_id: true],
-  google_sheets: GoogleSheets.HTTPClient
+  google_sheets: GoogleSheets.HTTPClient,
+  # [todo] Need to be able to set Discord guild per character.
+  discord_channel_id: System.get_env("DISCORD_CHANNEL_ID")
 
 # Configures the endpoint
 config :dice_magick, Web.Endpoint,
@@ -36,6 +38,9 @@ config :ueberauth, Ueberauth.Strategy.Discord.OAuth,
 
 config :ex_dice_roller,
   cache_table: ExDiceRoller.Cache
+
+config :nostrum,
+  token: System.get_env("DISCORD_BOT_TOKEN")
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

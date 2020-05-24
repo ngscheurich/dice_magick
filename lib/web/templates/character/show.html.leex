@@ -36,8 +36,8 @@
 
 <div class="section grid grid-cols-4 gap-4">
   <%= for roll <- @rolls do %>
-    <div class="btn btn--roll">
+    <button class="btn btn--roll" phx-click="roll" phx-value-name="<%= roll.name %>">
       <%= roll.name %>
-    </div>
+    </button>
   <% end %>
 </div>
