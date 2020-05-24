@@ -26,8 +26,8 @@
           </div>
         </div>
 
-        <button phx-click="update" class="btn btn--secondary">
-          <span class="fas fa-sync mr-3"></span>
+        <button phx-click="update" phx-throttle="3000" class="btn btn--secondary<%= unless @can_update, do: " btn--working" %>">
+          <span class="fas fa-sync mr-3<%= unless @can_update, do: " fa-spin" %>"></span>
           Sync Rolls
         </button>
       </div>
