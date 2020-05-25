@@ -8,16 +8,18 @@
     <link href="<%= Routes.static_path(@conn, "/css/app.css") %>" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Grenze:ital,wght@0,100;0,200;0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7cd415e281.js" crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
     <%= csrf_meta_tag() %>
   </head>
 
   <%= if @current_user do %>
-    <body class="font-mono text-gray-300 bg-gray-900 antialiased app">
-      <header class="bg-gray-800">
+    <body class="font-serif text-gray-300 bg-dark-200 antialiased">
+      <header role="banner" class="banner">
         <div class="max-w-4xl mx-auto px-10 py-5">
           <a href="/">
-            <h1 class="text-gray-400 text-lg font-bold uppercase tracking-wider">
-              <span class="fas fa-dice-d20 text-red-700"></span>
+            <h1 class="text-neutral-300 text-lg font-bold uppercase tracking-wider">
+              <span class="fas fa-dice-d20 text-red-700 mr-1"></span>
               DiceMagick
             </h1>
           </a>
@@ -25,17 +27,18 @@
       </header>
 
       <%= @inner_content %>
+
       <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     </body>
   <% else %>
-    <body class="font-serif text-light antialiased font-thin flex w-screen h-screen items-center justify-center bg-dark bg-plant">
+    <body class="font-serif text-light antialiased font-thin flex w-screen h-screen items-center justify-center bg-dark-200 text-neutral-500 bg-plant">
       <main role="main">
         <h1 class="text-4xl text-center mb-20">Perish all who gaze upon the Dice Wizard.</h1>
-        <p class="bg-keys text-3xl text-center mb-10"><strong class="font-semibold">Will you log in with Discord?</strong></p>
+        <p class="bg-keys text-3xl text-center text-neutral-400 mb-10"><strong class="font-medium">Will you log in with Discord?</strong></p>
 
         <div class="flex justify-center">
-          <%= link "Yes", to: discord_oauth_url(), class: "text-2xl font-semibold uppercase tracking-wider bg-light-red px-12 py-2 rounded-sm mr-6" %>
-          <%= link "No", to: "#", class: "text-2xl font-semibold uppercase tracking-wider border border-brown px-12 py-2 rounded-sm" %>
+          <%= link "Yes", to: discord_oauth_url(), class: "btn text-2xl font-medium uppercase tracking-wider mr-6" %>
+          <%= link "No", to: "#", class: "btn btn--ghost text-2xl font-medium uppercase tracking-wider" %>
         </div>
       </main>
 

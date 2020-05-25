@@ -1,0 +1,29 @@
+<div class="bg-primary-500">
+  <section class="section relative">
+    <div class="flex justify-between items-start pb-5">
+      <div>
+        <h1 class="text-3xl font-semibold text-primary-900">
+          <%= link @character.name, to: Routes.live_path(@socket, CharacterLive.Edit, @character) %>
+        </h1>
+
+        <dl class="font-mono text-sm text-primary-900">
+          <dt class="inline font-semibold">Source:</dt>
+          <dd class="inline">
+          <%= link "Google Sheets", class: "text-primary-800 border-b border-primary-600", target: "_blank",
+                to: "https://docs.google.com/spreadsheets/d/#{@character.source_params["key"]}" %>
+          </dd>
+        </dl>
+
+        <dl class="font-mono text-sm text-primary-900">
+          <dt class="inline font-semibold">Updated:</dt>
+          <dd class="inline">3 days ago</dd>
+        </dl>
+      </div>
+
+      <%# <button phx-click="update" phx-throttle="3000" class="btn btn--secondary<%= unless @can_update, do: " btn--working" %1>"> %>
+        <%#   <span class="fas fa-sync mr-3<%= unless @can_update, do: " fa-spin" %1>"></span> %>
+        <%#   Sync Rolls %>
+        <%# </button> %>
+    </div>
+  </section>
+</div>
