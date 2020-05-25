@@ -50,7 +50,7 @@ defmodule Web.CharacterLive.Edit do
         {:noreply,
          socket
          |> put_flash(:info, "Character updated")
-         |> redirect(to: Routes.character_path(socket, :show, socket.assigns.character))}
+         |> redirect(to: Routes.live_path(socket, Web.CharacterLive.Show, socket.assigns.character))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

@@ -1,43 +1,16 @@
-<div class="bg-gray-700">
-  <section class="section">
-      <div class="flex justify-between items-start">
-        <div class="relative">
-          <div class="flex items-center">
-            <%= link to: Routes.live_path(@socket, CharacterLive.Edit, @character),
-                  class: "outset flex rounded-full text-xs p-2 text-gray-100 bg-gray-600 hover:bg-gray-500" do %>
-              <span class="fas fa-edit"></span>
-            <% end %>
+<div class="show-details bg-primary-500 relative">
+  <div class="circle-wrapper">
+    <div class="bg-circle"></div>
+  </div>
 
-            <h1 class="text-3xl font-bold mr-3">
-              <%= @character.name %>
-            </h1>
-          </div>
-
-          <div class="text-sm">
-            <h2 class="font-bold inline">Source:</h2>
-            <%= link "Google Sheets",
-                  to: "https://docs.google.com/spreadsheets/d/#{@character.source_params["key"]}",
-                  class: "link link--secondary", target: "_blank" %>
-          </div>
-
-          <div class="text-sm">
-            <h2 class="font-bold inline">Updated:</h2>
-            3 days ago
-          </div>
-        </div>
-
-        <button phx-click="update" phx-throttle="3000" class="btn btn--secondary<%= unless @can_update, do: " btn--working" %>">
-          <span class="fas fa-sync mr-3<%= unless @can_update, do: " fa-spin" %>"></span>
-          Sync Rolls
-        </button>
-      </div>
-  </section>
+  <%= render "header.html", assigns %>
+  <%= render "prominent_rolls.html", rolls: Enum.slice(@rolls, 0, 8) %>
 </div>
 
-<div class="section grid grid-cols-4 gap-4">
-  <%= for roll <- @rolls do %>
-    <button class="btn btn--roll" phx-click="roll" phx-value-name="<%= roll.name %>">
-      <%= roll.name %>
-    </button>
-  <% end %>
-</div>
+<%# <div class="section grid grid-cols-4 gap-4"> %>
+<%#   <%= for roll <- @rolls do %1> %>
+<%#     <button class="btn btn--roll" phx-click="roll" phx-value-name="<%= roll.name %1>"> %>
+<%#       <%= roll.name %1> %>
+<%#     </button> %>
+<%#   <% end %1> %>
+<%# </div> %>

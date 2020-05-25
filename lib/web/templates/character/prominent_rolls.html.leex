@@ -1,0 +1,18 @@
+<div class="bg-neutral-500">
+  <div class="max-w-4xl mx-auto px-10 py-5 relative">
+    <div class="grid grid-cols-4 gap-4 relative" style="margin-top: -44px;">
+      <%= for roll <- @rolls do %>
+        <button class="roll-btn flex items-center justify-between" phx-click="roll" phx-value-name="<%= roll.name %>">
+          <div>
+            <span class="text-highlight mr-3">★</span> <%= roll.name %>
+          </div>
+
+          <div>
+            <span class="text-xs font-mono bg-secondary-600">A</span>
+            <span class="text-xs font-mono">D</span>
+          </div>
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>
