@@ -2,17 +2,14 @@
   <div class="max-w-5xl mx-auto px-10 py-5 relative">
     <div class="grid grid-cols-4 gap-4 relative" style="margin-top: -44px;">
       <%= for roll <- @rolls do %>
-        <button class="roll-btn flex items-center justify-between" phx-click="roll" phx-value-name="<%= roll.name %>">
+        <button class="roll-btn roll-btn--active flex items-center justify-between" phx-click="roll" phx-value-name="<%= roll.name %>">
           <div>
-            <span class="text-highlight mr-3">★</span> <%= roll.name %>
-          </div>
-
-          <div>
-            <svg class="bg-secondary-600 rounded-full h-4 w-4"
-                 xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 20 20">
-              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-            </svg>
+            <%= if roll.favorite do %>
+              <span class="text-highlight mr-3">✭</span>
+            <% else %>
+              <span class="text-highlight mr-3">✩</span>
+            <% end %>
+            <%= roll.name %>
           </div>
         </button>
       <% end %>

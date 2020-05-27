@@ -9,8 +9,13 @@
 
 <div class="section grid grid-cols-4 gap-4">
   <%= for roll <- @rolls do %>
-    <button class="btn btn--roll" phx-click="roll" phx-value-name="<%= roll.name %>">
-      <%= roll.name %>
+    <button class="roll-btn" phx-click="roll" phx-value-name="<%= roll.name %>">
+            <%= if roll.favorite do %>
+              <span class="text-highlight mr-3">✭</span>
+            <% else %>
+              <span class="text-neutral-600 mr-3">✩</span>
+            <% end %>
+            <%= roll.name %>
     </button>
   <% end %>
 </div>
