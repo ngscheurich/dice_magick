@@ -80,9 +80,23 @@
 }
 
 .roll-btn {
-  @apply bg-secondary-500 text-neutral-200 px-3 py-2 rounded-sm inline-flex items-center border border-primary-800;
+  @apply text-neutral-200 px-3 py-2 rounded-sm inline-flex items-center border border-secondary-700;
 
+  background-color: #ffffff08;
   border-bottom-width: 3px;
+}
+
+.roll-btn:hover {
+  background-color: #ffffff12;
+  transition: background-color 0.2s;
+}
+
+.roll-btn--active {
+  @apply bg-secondary-500 border-primary-700;
+}
+
+.roll-btn--active:hover {
+  @apply bg-secondary-400;
 }
 
 .show-details {
