@@ -31,7 +31,7 @@ defmodule Sources.GoogleSheetsTest do
                   expression: "1d20 + 5",
                   metadata: %{"proficiency" => "proficient"},
                   favorite: true,
-                  tags: [%{name: "skill"}, %{name: "int"}]
+                  tags: ["skill", "int"]
                 }
               ]}
   end

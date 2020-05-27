@@ -4,13 +4,13 @@
   </div>
 
   <%= render "header.html", assigns %>
-  <%= render "prominent_rolls.html", rolls: Enum.slice(@rolls, 0, 8) %>
+  <%= render "active_rolls.html", rolls: @active_rolls %>
 </div>
 
-<%# <div class="section grid grid-cols-4 gap-4"> %>
-<%#   <%= for roll <- @rolls do %1> %>
-<%#     <button class="btn btn--roll" phx-click="roll" phx-value-name="<%= roll.name %1>"> %>
-<%#       <%= roll.name %1> %>
-<%#     </button> %>
-<%#   <% end %1> %>
-<%# </div> %>
+<div class="section grid grid-cols-4 gap-4">
+  <%= for roll <- @rolls do %>
+    <button class="btn btn--roll" phx-click="roll" phx-value-name="<%= roll.name %>">
+      <%= roll.name %>
+    </button>
+  <% end %>
+</div>

@@ -14,36 +14,9 @@
   </head>
 
   <%= if @current_user do %>
-    <body class="font-serif text-gray-300 bg-dark-200 antialiased">
-      <header role="banner" class="banner">
-        <div class="max-w-4xl mx-auto px-10 py-5">
-          <a href="/">
-            <h1 class="text-neutral-300 text-lg font-bold uppercase tracking-wider">
-              <span class="fas fa-dice-d20 text-red-700 mr-1"></span>
-              DiceMagick
-            </h1>
-          </a>
-        </div>
-      </header>
-
-      <%= @inner_content %>
-
-      <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
-    </body>
+    <%= render "logged_in.html", assigns %>
   <% else %>
-    <body class="font-serif text-light antialiased font-thin flex w-screen h-screen items-center justify-center bg-dark-200 text-neutral-500 bg-plant">
-      <main role="main">
-        <h1 class="text-4xl text-center mb-20">Perish all who gaze upon the Dice Wizard.</h1>
-        <p class="bg-keys text-3xl text-center text-neutral-400 mb-10"><strong class="font-medium">Will you log in with Discord?</strong></p>
-
-        <div class="flex justify-center">
-          <%= link "Yes", to: discord_oauth_url(), class: "btn text-2xl font-medium uppercase tracking-wider mr-6" %>
-          <%= link "No", to: "#", class: "btn btn--ghost text-2xl font-medium uppercase tracking-wider" %>
-        </div>
-      </main>
-
-      <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
-    </body>
+    <%= render "logged_out.html" %>
   <% end %>
 </html>
 
