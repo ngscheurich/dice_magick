@@ -6,6 +6,7 @@ defmodule Characters.Worker do
   use GenServer
   require Logger
   alias Characters
+  alias Characters.Character
 
   # @update_time 60_000
 
@@ -15,7 +16,12 @@ defmodule Characters.Worker do
     """
 
     @type t :: %__MODULE__{}
-    defstruct [:character_id, :last_updated, rolls: []]
+    defstruct [
+      :character_id,
+      :last_updated,
+      rolls: [],
+      tags: []
+    ]
   end
 
   @doc """
@@ -109,25 +115,32 @@ defmodule Characters.Worker do
     module = Characters.source_for_type(character.source_type)
 
     {:ok, data} = module.fetch_data(character.source_params)
-    {:ok, new_rolls} = module.generate_rolls(data)
+    {:ok, generated} = module.generate_rolls(data)
 
-    new_rolls =
-      Enum.map(new_rolls, fn roll ->
-        roll
-        |> Map.delete(:tags)
-        |> Map.put(:character_id, character.id)
-      end)
+    # [todo] Compare each roll, only insert when needed
+    rolls = Enum.map(generated, &Map.put(&1, :character_id, character.id))
+    tags = tags_from_rolls(rolls)
 
-    if new_rolls == rolls_for_match(character) do
-      %{state | rolls: character.rolls}
-    else
-      {:ok, character} = Characters.update_character(character, %{rolls: new_rolls})
-      %{state | rolls: character.rolls, last_updated: DateTime.utc_now()}
-    end
+    character =
+      if rolls == rolls_for_match(character) do
+        character
+      else
+        {:ok, character} = Characters.update_character(character, %{rolls: rolls})
+        character
+      end
+
+    %{state | rolls: character.rolls, tags: tags, last_updated: DateTime.utc_now()}
   end
 
-  @spec rolls_for_match(Characters.Character.t()) :: [map]
-  defp rolls_for_match(%Characters.Character{id: character_id, rolls: rolls}) do
+  @spec tags_from_rolls([map]) :: [String.t()]
+  defp tags_from_rolls(rolls) do
+    rolls
+    |> Enum.flat_map(& &1.tags)
+    |> Enum.uniq()
+  end
+
+  @spec rolls_for_match(Character.t()) :: [map]
+  defp rolls_for_match(%Character{id: character_id, rolls: rolls}) do
     Enum.map(
       rolls,
       &%{
@@ -135,7 +148,8 @@ defmodule Characters.Worker do
         expression: &1.expression,
         favorite: &1.favorite,
         metadata: &1.metadata,
-        name: &1.name
+        name: &1.name,
+        tags: &1.tags
       }
     )
   end

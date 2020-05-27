@@ -1,6 +1,5 @@
 defmodule Web.CharacterLive.Show do
   use Phoenix.LiveView
-
   alias Characters
 
   @throttle_time 1000
@@ -11,9 +10,19 @@ defmodule Web.CharacterLive.Show do
     character = Characters.get_character!(character_id, preload: [:rolls])
 
     Characters.Supervisor.add_worker(character_id)
+    worker = Characters.Worker.state(character_id)
+    {favorites, rolls} = favorites(worker.rolls)
 
-    state = Characters.Worker.state(character_id)
-    {:ok, assign(socket, character: character, rolls: state.rolls, can_update: true)}
+    state = %{
+      character: character,
+      rolls: rolls,
+      active_rolls: favorites,
+      tags: worker.tags,
+      active_tags: [],
+      can_update: true
+    }
+
+    {:ok, assign(socket, state)}
   end
 
   @impl true
@@ -29,14 +38,12 @@ defmodule Web.CharacterLive.Show do
   end
 
   @impl true
-  def handle_event(
-        "roll",
-        %{"name" => name},
-        %{assigns: %{character: character, rolls: rolls}} = socket
-      ) do
+  def handle_event("roll", %{"name" => name}, socket) do
+    %{assigns: %{character: character, rolls: rolls}} = socket
     [roll] = Enum.filter(rolls, &(&1.name == name))
     result = ExDiceRoller.roll(roll.expression)
 
+    # [todo] Extract into shared function
     message = """
     **#{character.name}** rolls _#{roll.name}_ (`#{roll.expression}`)…
     :game_die: Result: **#{result}**
@@ -49,5 +56,47 @@ defmodule Web.CharacterLive.Show do
   end
 
   @impl true
+  def handle_event("apply-tag", %{"tag" => tag}, socket) do
+    %{assigns: %{rolls: rolls, active_rolls: active_rolls, active_tags: active_tags}} = socket
+
+    active_tags =
+      case Enum.member?(active_tags, tag) do
+        true -> Enum.filter(active_tags, &(&1 != tag))
+        false -> active_tags ++ [tag]
+      end
+
+    all_rolls = active_rolls ++ rolls
+
+    active_rolls =
+      case Enum.count(active_tags) do
+        0 ->
+          {favorites, _} = favorites(all_rolls)
+          favorites
+
+        _ ->
+          Enum.filter(all_rolls, fn roll ->
+            Enum.any?(roll.tags, &Enum.member?(active_tags, &1))
+          end)
+      end
+
+    rolls = Enum.filter(all_rolls, fn roll -> !Enum.member?(active_rolls, roll) end)
+
+    {:noreply,
+     assign(socket, %{active_tags: active_tags, rolls: rolls, active_rolls: active_rolls})}
+  end
+
+  @impl true
   def handle_info(:unblock, socket), do: {:noreply, assign(socket, can_update: true)}
+
+  # Helpers
+
+  @spec favorites([map]) :: {[map], [map]}
+  defp favorites(rolls) do
+    Enum.reduce(rolls, {[], []}, fn cur, {favorites, rest} ->
+      case cur.favorite do
+        true -> {favorites ++ [cur], rest}
+        false -> {favorites, rest ++ [cur]}
+      end
+    end)
+  end
 end

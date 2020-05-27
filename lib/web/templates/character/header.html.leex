@@ -1,8 +1,8 @@
-<div class="bg-primary-500">
+<div class="bg-primary-500 mb-5">
   <section class="section relative">
-    <div class="flex justify-between items-start pb-5">
+    <div class="character-header">
       <div>
-        <h1 class="text-3xl font-semibold text-primary-900">
+        <h1 class="text-3xl leading-tight font-semibold text-primary-900">
           <%= link @character.name, to: Routes.live_path(@socket, CharacterLive.Edit, @character) %>
         </h1>
 
@@ -20,10 +20,25 @@
         </dl>
       </div>
 
+      <div>
+        <div>
+          <%= for tag <- @tags do %>
+            <button
+              class="tag inline-block<%= if Enum.member?(@active_tags, tag), do: " tag--active" %>"
+              phx-value-tag="<%= tag %>"
+              phx-click="apply-tag">
+              <%= tag %>
+            </button>
+          <% end %>
+        </div>
+      </div>
+
+      <div></div>
+
       <%# <button phx-click="update" phx-throttle="3000" class="btn btn--secondary<%= unless @can_update, do: " btn--working" %1>"> %>
         <%#   <span class="fas fa-sync mr-3<%= unless @can_update, do: " fa-spin" %1>"></span> %>
         <%#   Sync Rolls %>
-        <%# </button> %>
+      <%# </button> %>
     </div>
   </section>
 </div>

@@ -88,6 +88,5 @@ defmodule Sources.GoogleSheets do
     |> data("tags")
     |> String.replace(" ", "")
     |> String.split(",")
-    |> Enum.map(&%{name: &1})
   end
 end

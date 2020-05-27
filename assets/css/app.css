@@ -43,7 +43,7 @@
 }
 
 .section {
-  @apply max-w-4xl mx-auto p-10;
+  @apply max-w-5xl mx-auto p-10;
 }
 
 .input {
@@ -87,4 +87,24 @@
 
 .show-details {
   border-top: 4px solid hsla(360, 14%, 5%, 0.4);
+}
+
+.character-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  column-gap: 1rem;
+}
+
+.tag {
+  @apply mr-1 mb-2 px-4 py-1 rounded-full leading-tight text-xs font-mono bg-primary-600 text-primary-300;
+}
+
+.tag:hover {
+  @apply bg-primary-700;
+
+  transition: background-color 0.2s;
+}
+
+.tag--active {
+  @apply bg-primary-800;
 }

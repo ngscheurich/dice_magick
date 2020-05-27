@@ -20,10 +20,14 @@ defmodule DiceMagick.Application do
       %{
         id: Characters.Supervisor,
         start: {Characters.Supervisor, :start_link, [[]]}
-      },
-      # Start the Discord consumer
-      Discord
+      }
     ]
+
+    children =
+      case Mix.env() do
+        :test -> children
+        _ -> children ++ [Discord]
+      end
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

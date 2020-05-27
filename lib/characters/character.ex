@@ -25,7 +25,6 @@ defmodule Characters.Character do
 
   alias Accounts.User
   alias Rolls.Roll
-  alias Taxonomy.Tag
   alias Ecto.Changeset
 
   schema "characters" do
@@ -34,9 +33,7 @@ defmodule Characters.Character do
     field :source_params, :map
 
     belongs_to :user, User
-
     has_many :rolls, Roll, on_replace: :delete
-    has_many :tags, Tag
 
     timestamps()
   end
@@ -46,7 +43,6 @@ defmodule Characters.Character do
     character
     |> cast(params, [:name, :source_type, :source_params, :user_id])
     |> cast_assoc(:rolls)
-    |> cast_assoc(:tags)
     |> validate_required([:name, :source_type, :source_params, :user_id])
     |> validate_source_params()
     |> assoc_constraint(:user)
