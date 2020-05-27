@@ -1,0 +1,16 @@
+<body class="font-serif text-gray-300 bg-dark-200 antialiased">
+  <header role="banner" class="banner">
+    <div class="max-w-5xl mx-auto px-10 py-5">
+      <a href="/">
+        <h1 class="text-neutral-300 text-lg font-bold uppercase tracking-wider">
+          <span class="fas fa-dice-d20 text-red-700 mr-1"></span>
+          DiceMagick
+        </h1>
+      </a>
+    </div>
+  </header>
+
+  <%= @inner_content %>
+
+  <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+</body>
