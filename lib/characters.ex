@@ -29,7 +29,7 @@ defmodule Characters do
   end
 
   @doc """
-  Gets a single `Character`.
+  Gets a single `Characters.Character`.
 
   Raises `Ecto.NoResultsError` if the `Characters.Character` does not exist.
 
@@ -46,7 +46,7 @@ defmodule Characters do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_character!(Ecto.UUID.t(), preload: [atom]) :: Character.t()
+  @spec get_character!(Ecto.UUID.t(), preload: [atom()]) :: Character.t()
   def get_character!(id, opts \\ []) do
     preload = Keyword.get(opts, :preload, [])
 
@@ -67,7 +67,7 @@ defmodule Characters do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_character(map) :: repo_result
+  @spec create_character(map()) :: repo_result
   def create_character(attrs \\ %{}) do
     %Character{}
     |> Character.changeset(attrs)
@@ -84,7 +84,7 @@ defmodule Characters do
   defp maybe_start_character_worker(result), do: result
 
   @doc """
-  Updates a `Character`.
+  Updates a `Characters.Character`.
 
   ## Examples
 
@@ -95,7 +95,7 @@ defmodule Characters do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_character(Character.t(), map) :: {:ok, Character.t()} | {:error, Changeset.t()}
+  @spec update_character(Character.t(), map()) :: {:ok, Character.t()} | {:error, Changeset.t()}
   def update_character(%Character{} = character, attrs) do
     character
     |> Character.changeset(attrs)
@@ -112,7 +112,7 @@ defmodule Characters do
   defp maybe_update_rolls(result, _attrs), do: result
 
   @doc """
-  Deletes a `Character`.
+  Deletes a `Characters.Character`.
 
   ## Examples
 
@@ -127,7 +127,7 @@ defmodule Characters do
   def delete_character(%Character{} = character), do: Repo.delete(character)
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking `Character` changes.
+  Returns an `%Ecto.Changeset{}` for tracking `Characters.Character` changes.
 
   ## Examples
 
@@ -143,7 +143,7 @@ defmodule Characters do
   @doc """
   Given a `SourceTypeEnum`, returns the module for that type.
   """
-  @spec source_for_type(atom) :: atom
+  @spec source_for_type(atom()) :: atom()
   def source_for_type(:test), do: Sources.Test
   def source_for_type(:google_sheets), do: Sources.GoogleSheets
 end

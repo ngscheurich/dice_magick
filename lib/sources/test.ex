@@ -12,8 +12,8 @@ defmodule Sources.Test do
   end
 
   @impl true
-  def fetch_data(_params), do: %{}
+  def fetch_data(_params), do: {:ok, %{}}
 
   @impl true
-  def generate_rolls(_data), do: []
+  def generate_rolls(_data), do: {:ok, []}
 end

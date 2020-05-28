@@ -9,6 +9,7 @@ defmodule Characters.Supervisor do
     DynamicSupervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
+  @spec add_worker(Ecto.UUID.t()) :: :ok | :noop
   def add_worker(id) do
     worker_name = Characters.Worker.name(id)
 

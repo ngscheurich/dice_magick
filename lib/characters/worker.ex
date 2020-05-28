@@ -6,7 +6,8 @@ defmodule Characters.Worker do
   use GenServer
   require Logger
   alias Characters
-  alias Characters.Character
+  alias Rolls.Roll
+  alias Ecto.UUID
 
   # @update_time 60_000
 
@@ -15,10 +16,10 @@ defmodule Characters.Worker do
     State for a character process.
     """
 
-    @type t :: %__MODULE__{}
+    @type t() :: %__MODULE__{}
     defstruct [
       :character_id,
-      :last_updated,
+      :synced_at,
       rolls: [],
       tags: []
     ]
@@ -27,9 +28,8 @@ defmodule Characters.Worker do
   @doc """
   Starts a new worker for the given `Characters.Character`.
   """
-  def start_link(id) do
-    GenServer.start_link(__MODULE__, id, name: name(id))
-  end
+  @spec start_link(UUID.t()) :: :ignore | {:error, term()} | {:ok, pid()}
+  def start_link(id), do: GenServer.start_link(__MODULE__, id, name: name(id))
 
   # ----------------------------------------------------------------------------
   # Client
@@ -38,7 +38,7 @@ defmodule Characters.Worker do
   @doc """
   Returns the state of the process.
   """
-  @spec state(String.t()) :: State
+  @spec state(String.t()) :: State.t()
   def state(id), do: GenServer.call(name(id), :state)
 
   @doc """
@@ -50,7 +50,7 @@ defmodule Characters.Worker do
   @doc """
   Similar to `update/1`, but performs the task synchronously.
   """
-  @spec update_sync(String.t()) :: State
+  @spec update_sync(String.t()) :: State.t()
   def update_sync(id), do: GenServer.call(name(id), :update)
 
   @doc """
@@ -105,52 +105,27 @@ defmodule Characters.Worker do
   @doc """
   Returns the name of the registered process for the given `id`.
   """
+  @spec name(UUID.t()) :: {:global, {atom(), UUID.t()}}
   def name(id), do: {:global, {__MODULE__, id}}
 
   # defp schedule_update(time), do: Process.send_after(self(), :update, time)
 
   @spec update_state(State.t()) :: State.t()
   def update_state(%{character_id: character_id} = state) do
-    character = Characters.get_character!(character_id, preload: [:rolls])
+    character = Characters.get_character!(character_id)
     module = Characters.source_for_type(character.source_type)
 
     {:ok, data} = module.fetch_data(character.source_params)
-    {:ok, generated} = module.generate_rolls(data)
-
-    # [todo] Compare each roll, only insert when needed
-    rolls = Enum.map(generated, &Map.put(&1, :character_id, character.id))
+    {:ok, rolls} = module.generate_rolls(data)
     tags = tags_from_rolls(rolls)
 
-    character =
-      if rolls == rolls_for_match(character) do
-        character
-      else
-        {:ok, character} = Characters.update_character(character, %{rolls: rolls})
-        character
-      end
-
-    %{state | rolls: character.rolls, tags: tags, last_updated: DateTime.utc_now()}
+    %{state | rolls: rolls, tags: tags, synced_at: DateTime.utc_now()}
   end
 
-  @spec tags_from_rolls([map]) :: [String.t()]
+  @spec tags_from_rolls([Roll.t()]) :: [String.t()]
   defp tags_from_rolls(rolls) do
     rolls
     |> Enum.flat_map(& &1.tags)
     |> Enum.uniq()
-  end
-
-  @spec rolls_for_match(Character.t()) :: [map]
-  defp rolls_for_match(%Character{id: character_id, rolls: rolls}) do
-    Enum.map(
-      rolls,
-      &%{
-        character_id: character_id,
-        expression: &1.expression,
-        favorite: &1.favorite,
-        metadata: &1.metadata,
-        name: &1.name,
-        tags: &1.tags
-      }
-    )
   end
 end
