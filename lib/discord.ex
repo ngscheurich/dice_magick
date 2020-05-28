@@ -74,4 +74,21 @@ defmodule Discord do
   end
 
   def handle_event(_event), do: :noop
+
+  @doc """
+  Sends the result of a `Rolls.Result` as a nicely formatted message to the given Discord
+  `channel_id`.
+  """
+  # [fixme] Dialyzer issue.
+  @spec send_result_message(String.t(), Rolls.Result.t()) :: term()
+  def send_result_message(channel_id, result) do
+    %{name: character_name} = Characters.get_character!(result.character_id)
+
+    message = """
+    **#{character_name}** rolls _#{result.name}_ (`#{result.expression}`)…
+    :game_die: Result: **#{result.outcome}**
+    """
+
+    Api.create_message(channel_id, message)
+  end
 end

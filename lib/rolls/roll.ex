@@ -8,6 +8,7 @@ defmodule Rolls.Roll do
   defstruct [
     :name,
     :expression,
+    :character_id,
     metadata: %{},
     favorite: false,
     tags: []

@@ -1,13 +1,14 @@
 defmodule Web.CharacterLive.Show do
   use Phoenix.LiveView
   alias Characters
+  require Logger
 
   @throttle_time 1000
   @discord_channel_id Application.get_env(:dice_magick, :discord_channel_id)
 
   @impl true
   def mount(%{"id" => character_id}, _session, socket) do
-    character = Characters.get_character!(character_id)
+    character = Characters.get_character!(character_id, preload: :roll_results)
 
     Characters.Supervisor.add_worker(character_id)
     worker = Characters.Worker.state(character_id)
@@ -19,7 +20,9 @@ defmodule Web.CharacterLive.Show do
       active_rolls: favorites,
       tags: worker.tags,
       active_tags: [],
-      can_update: true
+      can_update: true,
+      roll_results: character.roll_results,
+      last_result: %{}
     }
 
     {:ok, assign(socket, state)}
@@ -39,20 +42,34 @@ defmodule Web.CharacterLive.Show do
 
   @impl true
   def handle_event("roll", %{"name" => name}, socket) do
-    %{assigns: %{character: character, rolls: rolls}} = socket
-    [roll] = Enum.filter(rolls, &(&1.name == name))
-    result = ExDiceRoller.roll(roll.expression)
+    %{
+      assigns: %{
+        character: character,
+        active_rolls: active_rolls,
+        rolls: rolls,
+        roll_results: results
+      }
+    } = socket
 
-    # [todo] Extract into shared function
-    message = """
-    **#{character.name}** rolls _#{roll.name}_ (`#{roll.expression}`)…
-    :game_die: Result: **#{result}**
-    """
+    all_rolls = rolls ++ active_rolls
 
-    {discord_channel_id, _} = Integer.parse(@discord_channel_id)
-    Nostrum.Api.create_message(discord_channel_id, message)
+    [roll] = Enum.filter(all_rolls, &(&1.name == name))
+    roll = %{roll | character_id: character.id}
 
-    {:noreply, socket}
+    case Rolls.result_for_roll(roll) do
+      # [fixme] Dialyzer issue.
+      {:ok, result} ->
+        {channel_id, _} = Integer.parse(@discord_channel_id)
+        Discord.send_result_message(channel_id, result)
+
+        roll_results = [result] ++ results
+        last_result = result
+
+        {:noreply, assign(socket, roll_results: roll_results, last_result: last_result)}
+
+      {:error, _} ->
+        Logger.log(:error, "Couldn’t get roll result for #{character.id} (#{roll.name}).")
+    end
   end
 
   @impl true

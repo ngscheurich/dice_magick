@@ -80,9 +80,10 @@
 }
 
 .roll-btn {
-  @apply text-neutral-200 px-3 py-2 rounded-sm inline-flex items-center border border-secondary-700;
+  @apply text-neutral-200 px-3 py-2 rounded-sm inline-flex items-center border;
 
   background-color: #ffffff08;
+  border-color: #000;
   border-bottom-width: 3px;
 }
 

@@ -27,4 +27,13 @@ defmodule Factory do
       expression: "1d20 + 5"
     }
   end
+
+  def result_factory do
+    %Rolls.Result{
+      name: "Stealth Check",
+      expression: "1d20 + 9",
+      outcome: 23,
+      character: build(:character)
+    }
+  end
 end
