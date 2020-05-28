@@ -32,6 +32,8 @@ defmodule Characters.Character do
 
     belongs_to :user, User
 
+    has_many :roll_results, Rolls.Result
+
     timestamps()
   end
 

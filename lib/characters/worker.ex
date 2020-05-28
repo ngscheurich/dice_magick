@@ -117,6 +117,8 @@ defmodule Characters.Worker do
 
     {:ok, data} = module.fetch_data(character.source_params)
     {:ok, rolls} = module.generate_rolls(data)
+    rolls = Enum.map(rolls, &%Rolls.Roll{&1 | character_id: character_id}) |> IO.inspect()
+
     tags = tags_from_rolls(rolls)
 
     %{state | rolls: rolls, tags: tags, synced_at: DateTime.utc_now()}

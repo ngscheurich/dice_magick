@@ -19,3 +19,14 @@
     </button>
   <% end %>
 </div>
+
+<div class="section">
+  <h1 class="text-xl text-neutral-100 font-semibold">Roll Results</h1>
+
+  <ul>
+      <%= for result <- @roll_results do %>
+        <li class="text-neutral-100"><%= result.name %>: <%=  result.outcome %></li>
+      <% end %>
+    </ul>
+</div>
+
