@@ -15,6 +15,8 @@ defmodule Sources.GoogleSheets do
 
   @behaviour Sources.Source
 
+  alias Rolls.Roll
+
   @google_sheets Application.get_env(:dice_magick, :google_sheets)
   @source_params [:key, :worksheet]
 
@@ -40,7 +42,7 @@ defmodule Sources.GoogleSheets do
   def generate_rolls(%{"feed" => %{"entry" => rows}}) do
     rolls =
       Enum.map(rows, fn row ->
-        %{
+        %Roll{
           name: data(row, "name"),
           expression: data(row, "expression"),
           favorite: favorite(row),
@@ -54,8 +56,10 @@ defmodule Sources.GoogleSheets do
 
   def generate_rolls(_data), do: {:error, :invalid_data}
 
+  @spec data(map(), String.t()) :: term()
   defp data(row, label), do: row["gsx$#{label}"]["$t"]
 
+  @spec favorite(map()) :: boolean()
   defp favorite(row) do
     row
     |> data("favorite")
@@ -66,6 +70,7 @@ defmodule Sources.GoogleSheets do
     end
   end
 
+  @spec metadata(map()) :: map()
   defp metadata(row) do
     row
     |> data("metadata")
@@ -83,6 +88,7 @@ defmodule Sources.GoogleSheets do
     end
   end
 
+  @spec tags(map()) :: [String.t()]
   defp tags(row) do
     row
     |> data("tags")

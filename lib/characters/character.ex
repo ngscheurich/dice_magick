@@ -10,7 +10,6 @@ defmodule Characters.Character do
   ## Associations
 
   * `user` - `Accounts.User` that the character belongs to
-  * `rolls` - `Rolls.Roll`s associated with this character
 
   ## Validations
 
@@ -24,7 +23,6 @@ defmodule Characters.Character do
   import Ecto.Changeset
 
   alias Accounts.User
-  alias Rolls.Roll
   alias Ecto.Changeset
 
   schema "characters" do
@@ -33,7 +31,6 @@ defmodule Characters.Character do
     field :source_params, :map
 
     belongs_to :user, User
-    has_many :rolls, Roll, on_replace: :delete
 
     timestamps()
   end
@@ -42,7 +39,6 @@ defmodule Characters.Character do
   def changeset(%__MODULE__{} = character, params) do
     character
     |> cast(params, [:name, :source_type, :source_params, :user_id])
-    |> cast_assoc(:rolls)
     |> validate_required([:name, :source_type, :source_params, :user_id])
     |> validate_source_params()
     |> assoc_constraint(:user)

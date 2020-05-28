@@ -1,4 +1,8 @@
 defmodule Factory do
+  @moduledoc """
+  [todo] Add documentation.
+  """
+
   use ExMachina.Ecto, repo: Repo
 
   def user_factory do
@@ -20,8 +24,7 @@ defmodule Factory do
   def roll_factory do
     %Rolls.Roll{
       name: "Constitution Save",
-      expression: "1d20 + 5",
-      character: build(:character)
+      expression: "1d20 + 5"
     }
   end
 end

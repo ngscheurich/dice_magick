@@ -12,11 +12,22 @@ defmodule Discord do
   def start_link, do: Consumer.start_link(__MODULE__)
 
   def handle_event({:MESSAGE_CREATE, %{content: "!dm roll " <> input} = msg, _ws_state}) do
+    id = to_string(msg.author.id)
     result = ExDiceRoller.roll(input)
+
+    character =
+      User
+      # [todo] Move all this Repo code to Accounts context.
+      |> where(discord_uid: ^id)
+      |> limit(1)
+      |> Repo.one!()
+      |> Repo.preload(:characters)
+      |> Map.get(:characters)
+      |> List.first()
 
     # [todo] Extract this logic into a function.
     message = """
-    Rolling `#{input}`…
+    **#{character.name}** rolls `#{input}`…
     :game-die: Result: **#{result}**
     """
 
@@ -26,17 +37,19 @@ defmodule Discord do
   def handle_event({:MESSAGE_CREATE, %{content: "!dm " <> input} = msg, _ws_state}) do
     id = to_string(msg.author.id)
 
-    user =
+    character =
       User
       |> where(discord_uid: ^id)
       |> limit(1)
       |> Repo.one!()
-      |> Repo.preload(characters: :rolls)
-
-    character = List.first(user.characters)
+      |> Repo.preload(:characters)
+      |> Map.get(:characters)
+      |> List.first()
 
     rolls =
-      character.rolls
+      character.id
+      |> Characters.Worker.state()
+      |> Map.get(:rolls)
       |> Enum.filter(fn roll ->
         name = String.downcase(roll.name)
         input = String.downcase(input)
@@ -44,18 +57,17 @@ defmodule Discord do
       end)
 
     message =
-      case Enum.count(rolls) do
-        0 ->
-          "Sorry, I couldn’t find a roll matching “#{msg.content}”."
-
-        _ ->
-          roll = List.first(rolls)
+      case rolls do
+        [roll] ->
           result = ExDiceRoller.roll(roll.expression)
 
           """
-          Rolling _#{roll.name}_ (`#{roll.expression}`)…
+          **#{character.name}** rolls _#{roll.name}_ (`#{roll.expression}`)…
           :game-die: Result: **#{result}**
           """
+
+        _ ->
+          "Sorry, I couldn’t find a roll matching “#{msg.content}”."
       end
 
     Api.create_message(msg.channel_id, message)

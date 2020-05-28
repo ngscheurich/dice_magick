@@ -7,7 +7,7 @@ defmodule Web.CharacterLive.Show do
 
   @impl true
   def mount(%{"id" => character_id}, _session, socket) do
-    character = Characters.get_character!(character_id, preload: [:rolls])
+    character = Characters.get_character!(character_id)
 
     Characters.Supervisor.add_worker(character_id)
     worker = Characters.Worker.state(character_id)

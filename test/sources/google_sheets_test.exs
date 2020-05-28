@@ -26,7 +26,7 @@ defmodule Sources.GoogleSheetsTest do
     assert GoogleSheets.generate_rolls(data) ==
              {:ok,
               [
-                %{
+                %Rolls.Roll{
                   name: "History",
                   expression: "1d20 + 5",
                   metadata: %{"proficiency" => "proficient"},
