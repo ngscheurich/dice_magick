@@ -67,7 +67,7 @@ defmodule Discord do
           """
 
         _ ->
-          "Sorry, I couldn’t find a roll matching “#{msg.content}”."
+          "Sorry, I couldn’t find a roll matching “#{input}”."
       end
 
     Api.create_message(msg.channel_id, message)
