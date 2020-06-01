@@ -28,7 +28,7 @@ defmodule Characters.Character do
   def changeset(%__MODULE__{} = character, params) do
     character
     |> cast(params, [:name, :source_type, :source_params, :discord_channel_id, :user_id])
-    |> validate_required([:name, :source_type, :source_params, :discord_channel_id, :user_id])
+    |> validate_required([:name, :discord_channel_id, :user_id])
     |> validate_source_params()
     |> assoc_constraint(:user)
     |> unique_constraint(:discord_channel_id)

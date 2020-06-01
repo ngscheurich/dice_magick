@@ -6,8 +6,6 @@ defmodule CharactersTest do
   describe "characters" do
     alias Characters.Character
 
-    @invalid_attrs %{name: nil, source_type: nil, source_params: nil, user_id: nil}
-
     test "list_characters_for_user/1 returns all characters for user" do
       user = insert(:user)
       character = insert(:character, user: user)
@@ -40,7 +38,7 @@ defmodule CharactersTest do
     end
 
     test "create_character/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Characters.create_character(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Characters.create_character(%{})
     end
 
     test "update_character/2 with valid data updates the character" do
@@ -57,7 +55,7 @@ defmodule CharactersTest do
     test "update_character/2 with invalid data returns error changeset" do
       user = insert(:user)
       character = insert(:character, name: "Baldur", user: user)
-      assert {:error, %Ecto.Changeset{}} = Characters.update_character(character, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Characters.update_character(character, %{name: ""})
 
       character = Characters.get_character!(character.id)
       assert character.name == "Baldur"
@@ -73,6 +71,16 @@ defmodule CharactersTest do
     test "change_character/1 returns a character changeset" do
       character = insert(:character)
       assert %Ecto.Changeset{} = Characters.change_character(character)
+    end
+
+    test "get_character_for_channel/2 returns the character if one exists" do
+      user = insert(:user, discord_uid: "1")
+      character = insert(:character, user: user, discord_channel_id: "2")
+      assert Characters.get_character_for_channel("1", "2").id == character.id
+    end
+
+    test "get_character_for_channel/2 returns nil character does not exist" do
+      assert Characters.get_character_for_channel("1", "2") |> is_nil()
     end
   end
 end

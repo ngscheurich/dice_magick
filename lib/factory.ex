@@ -15,8 +15,6 @@ defmodule Factory do
   def character_factory do
     %Characters.Character{
       name: "Baldur",
-      source_type: :test,
-      source_params: %{"test" => true},
       discord_channel_id: sequence("discord_channel_id"),
       user: build(:user)
     }
