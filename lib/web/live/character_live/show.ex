@@ -108,7 +108,8 @@ defmodule Web.CharacterLive.Show do
 
     rolls = Enum.filter(all_rolls, fn roll -> !Enum.member?(active_rolls, roll) end)
 
-    {:noreply, assign(socket, %{ active_tags: active_tags, rolls: rolls, active_rolls: active_rolls })}
+    {:noreply,
+     assign(socket, %{active_tags: active_tags, rolls: rolls, active_rolls: active_rolls})}
   end
 
   @impl true
