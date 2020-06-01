@@ -8,7 +8,7 @@ defmodule Factory do
   def user_factory do
     %Accounts.User{
       nickname: "Bobson Dugnutt",
-      discord_uid: sequence("discord")
+      discord_uid: sequence("discord_uid")
     }
   end
 
@@ -17,6 +17,7 @@ defmodule Factory do
       name: "Baldur",
       source_type: :test,
       source_params: %{"test" => true},
+      discord_channel_id: sequence("discord_channel_id"),
       user: build(:user)
     }
   end

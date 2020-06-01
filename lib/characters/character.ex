@@ -2,21 +2,7 @@ defmodule Characters.Character do
   @moduledoc """
   A `Accounts.User`’s character.
 
-  ## Fields
-
-  * `name` - A human-readable label
-  * `user_id` - UUID identifying the owner
-
-  ## Associations
-
-  * `user` - `Accounts.User` that the character belongs to
-
-  ## Validations
-
-  * `name` - Required
-  * `user_id` - Required
-  * `user` - Must exist
-
+  [todo] Write better documentation.
   """
 
   use Schema
@@ -29,6 +15,7 @@ defmodule Characters.Character do
     field :name, :string
     field :source_type, SourceTypeEnum
     field :source_params, :map
+    field :discord_channel_id, :string
 
     belongs_to :user, User
 
@@ -40,10 +27,11 @@ defmodule Characters.Character do
   @doc false
   def changeset(%__MODULE__{} = character, params) do
     character
-    |> cast(params, [:name, :source_type, :source_params, :user_id])
-    |> validate_required([:name, :source_type, :source_params, :user_id])
+    |> cast(params, [:name, :source_type, :source_params, :discord_channel_id, :user_id])
+    |> validate_required([:name, :source_type, :source_params, :discord_channel_id, :user_id])
     |> validate_source_params()
     |> assoc_constraint(:user)
+    |> unique_constraint(:discord_channel_id)
   end
 
   @spec validate_source_params(Changeset.t()) :: Changeset.t()
