@@ -20,24 +20,27 @@ defmodule Web.CharacterLive.Show do
       active_rolls: favorites,
       tags: worker.tags,
       active_tags: [],
-      can_update: true,
-      roll_results: character.roll_results,
-      last_result: %{}
+      allow_sync: true,
+      roll_results: character.roll_results |> trim_results() || [],
+      last_result: %{},
+      last_highlighted: false
     }
 
     {:ok, assign(socket, state)}
   end
 
+  defp trim_results(results), do: results |> Enum.chunk_every(12) |> List.first()
+
   @impl true
   def render(assigns), do: Phoenix.View.render(Web.CharacterView, "show.html", assigns)
 
   @impl true
-  def handle_event("update", _params, %{assigns: %{character: character}} = socket) do
+  def handle_event("sync", _params, %{assigns: %{character: character}} = socket) do
     state = Characters.Worker.update_sync(character.id)
 
     Process.send_after(self(), :unblock, @throttle_time)
 
-    {:noreply, assign(socket, rolls: state.rolls, can_update: false)}
+    {:noreply, assign(socket, rolls: state.rolls, allow_sync: false)}
   end
 
   @impl true
@@ -62,10 +65,17 @@ defmodule Web.CharacterLive.Show do
         {channel_id, _} = Integer.parse(@discord_channel_id)
         Discord.send_result_message(channel_id, result)
 
-        roll_results = [result] ++ results
+        roll_results = ([result] ++ results) |> trim_results()
         last_result = result
 
-        {:noreply, assign(socket, roll_results: roll_results, last_result: last_result)}
+        Process.send_after(self(), :remove_highlight, 2000)
+
+        {:noreply,
+         assign(socket,
+           roll_results: roll_results,
+           last_result: last_result,
+           last_highlighted: true
+         )}
 
       {:error, _} ->
         Logger.log(:error, "Couldn’t get roll result for #{character.id} (#{roll.name}).")
@@ -98,12 +108,16 @@ defmodule Web.CharacterLive.Show do
 
     rolls = Enum.filter(all_rolls, fn roll -> !Enum.member?(active_rolls, roll) end)
 
-    {:noreply,
-     assign(socket, %{active_tags: active_tags, rolls: rolls, active_rolls: active_rolls})}
+    {:noreply, assign(socket, %{ active_tags: active_tags, rolls: rolls, active_rolls: active_rolls })}
   end
 
   @impl true
-  def handle_info(:unblock, socket), do: {:noreply, assign(socket, can_update: true)}
+  def handle_info(:unblock, socket), do: {:noreply, assign(socket, allow_sync: true)}
+
+  @impl true
+  def handle_info(:remove_highlight, socket) do
+    {:noreply, assign(socket, last_highlighted: false)}
+  end
 
   # Helpers
 
