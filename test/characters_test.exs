@@ -82,5 +82,21 @@ defmodule CharactersTest do
     test "get_character_for_channel/2 returns nil character does not exist" do
       assert Characters.get_character_for_channel("1", "2") |> is_nil()
     end
+
+    test "character discord_channel_ids must be unique per user" do
+      user = insert(:user)
+      insert(:character, discord_channel_id: "1", user: user)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Characters.create_character(%{params_for(:character) | discord_channel_id: "1"})
+    end
+
+    test "character names must be unique per user" do
+      user = insert(:user)
+      insert(:character, name: "Dust", user: user)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Characters.create_character(%{params_for(:character) | name: "Dust"})
+    end
   end
 end
