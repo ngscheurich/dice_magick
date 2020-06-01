@@ -10,9 +10,7 @@ use Mix.Config
 config :dice_magick,
   ecto_repos: [Repo],
   generators: [binary_id: true],
-  google_sheets: GoogleSheets.HTTPClient,
-  # [todo] Need to be able to set Discord guild per character.
-  discord_channel_id: System.get_env("DISCORD_CHANNEL_ID")
+  google_sheets: GoogleSheets.HTTPClient
 
 # Configures the endpoint
 config :dice_magick, Web.Endpoint,
