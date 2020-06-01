@@ -70,4 +70,21 @@ defmodule Accounts do
         {:ok, user}
     end
   end
+
+  @doc """
+  Gets the `Accounts.User` with the given `discord_uid`.
+
+  Raises `Ecto.NoResultsError` if the `User` does not exist.
+
+  ## Examples
+
+      iex> get_user_by_discord_uid!("123456")
+      %User{}
+
+      iex> get_user_by_discord_uid("654321")
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_user_by_discord_uid!(String.t()) :: User.t()
+  def get_user_by_discord_uid!(discord_uid), do: Repo.get_by!(User, discord_uid: discord_uid)
 end
