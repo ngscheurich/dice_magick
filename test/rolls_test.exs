@@ -4,7 +4,7 @@ defmodule RollsTest do
   alias Rolls
 
   describe "results" do
-    alias Rolls.{Result, Roll}
+    alias Rolls.Result
 
     test "create_result/1 with valid data creates a roll result" do
       character = insert(:character)

@@ -27,10 +27,14 @@ defmodule CharactersTest do
                  name: "Baldur",
                  source_type: :test,
                  source_params: %{"test" => true},
+                 discord_channel_id: "1234567890",
                  user_id: user_id
                })
 
       assert character.name == "Baldur"
+      assert character.source_type == :test
+      assert character.source_params == %{"test" => true}
+      assert character.discord_channel_id == "1234567890"
       assert character.user_id == user_id
       refute character.id |> Characters.Worker.name() |> GenServer.whereis() |> is_nil
     end
