@@ -4,33 +4,20 @@ defmodule Discord do
   """
 
   use Nostrum.Consumer
+
   import Ecto.Query
+
   alias Accounts.User
   alias Nostrum.Api
   alias Repo
+  alias Web.Router.Helpers, as: Routes
+  alias Discord.Commands
 
   def start_link, do: Consumer.start_link(__MODULE__)
 
-  def handle_event({:MESSAGE_CREATE, %{content: "!dm roll " <> input} = msg, _ws_state}) do
-    id = to_string(msg.author.id)
-    result = ExDiceRoller.roll(input)
-
-    character =
-      User
-      # [todo] Move all this Repo code to Accounts context.
-      |> where(discord_uid: ^id)
-      |> limit(1)
-      |> Repo.one!()
-      |> Repo.preload(:characters)
-      |> Map.get(:characters)
-      |> List.first()
-
-    # [todo] Extract this logic into a function.
-    message = """
-    **#{character.name}** rolls `#{input}`…
-    :game-die: Result: **#{result}**
-    """
-
+  @impl true
+  def handle_event({:MESSAGE_CREATE, %{content: "!dm create " <> name} = msg, _ws}) do
+    {_, message} = Commands.Create.process([name], msg)
     Api.create_message(msg.channel_id, message)
   end
 
@@ -74,21 +61,4 @@ defmodule Discord do
   end
 
   def handle_event(_event), do: :noop
-
-  @doc """
-  Sends the result of a `Rolls.Result` as a nicely formatted message to the given Discord
-  `channel_id`.
-  """
-  # [fixme] Dialyzer issue.
-  @spec send_result_message(String.t(), Rolls.Result.t()) :: term()
-  def send_result_message(channel_id, result) do
-    %{name: character_name} = Characters.get_character!(result.character_id)
-
-    message = """
-    **#{character_name}** rolls _#{result.name}_ (`#{result.expression}`)…
-    :game_die: Result: **#{result.outcome}**
-    """
-
-    Api.create_message(channel_id, message)
-  end
 end

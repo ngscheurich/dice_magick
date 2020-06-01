@@ -48,4 +48,48 @@ defmodule Rolls do
     |> Map.put(:outcome, outcome)
     |> create_result()
   end
+
+  @doc """
+  Gets the `Rolls.Roll` whose name starts with the given `roll_name`.
+
+  Capitalization and whitespace in the `roll_name` string is discarded, i.e. "wisch" would
+  match a `Roll` named "Wisdom Check".
+
+  Returns `nil` if no result is found.
+
+  ## Examples
+
+      iex> get_roll_starting_with(character, "sne")
+      %Roll{name: "Sneak Attack"}
+
+      iex> get_roll_starting_with(character, "foo")
+      nil
+
+  """
+  def get_roll_by_name(%Characters.Character{id: character_id}, roll_name) do
+    character_id
+    |> Characters.Worker.state()
+    |> Map.get(:rolls)
+    |> Enum.filter(fn roll ->
+      name = remove_unwanted_characters(roll.name)
+      input = remove_unwanted_characters(input)
+      String.starts_with?(name, input)
+    end)
+    |> List.first()
+  end
+
+  @spec remove_unwanted_characters(String.t())
+  defp remove_unwanted_characters(string) do
+    string
+    |> String.replace(" ", "")
+    |> String.downcase()
+  end
+
+  @doc """
+  # [todo] Write documentation.
+  # [todo] Should this be in its own module?
+  # Dice roller abstration layer.
+  """
+  @spec roll(String.t()) :: Integer.t() | {:error, any()}
+  def roll(expression), ExDiceRoller.roll(expression)
 end
