@@ -149,4 +149,29 @@ defmodule Characters do
   @spec source_for_type(atom()) :: atom()
   def source_for_type(:test), do: Sources.Test
   def source_for_type(:google_sheets), do: Sources.GoogleSheets
+
+  @doc """
+  Gets the `Characters.Character` for the given `discord_uid` and `discord_channel_id`.
+
+  Returns `nil` if no such `Character` is found.
+
+  ## Examples
+
+      iex> get_character_for_channel("123456", "7890101")
+      %Character{}
+
+      iex> get_character_for_channel("654321", "7890101")
+      nil
+
+  """
+  @spec get_character_for_channel(String.t(), String.t()) :: Character.t() | nil
+  def get_character_for_channel(discord_uid, discord_channel_id) do
+    query =
+      from c in Character,
+        join: u in User,
+        on: u.discord_uid == ^discord_uid,
+        where: c.discord_channel_id == ^discord_channel_id
+
+    Repo.one(query)
+  end
 end
