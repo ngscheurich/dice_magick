@@ -4,6 +4,27 @@
 
 @import "../node_modules/nprogress/nprogress.css";
 
+#nprogress .bar {
+  background: #77461a;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #77461a, 0 0 5px #77461a;
+}
+
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  border-top-color: #77461a;
+  border-left-color: #77461a;
+}
+
 .link {
   @apply text-secondary-600 border-b border-secondary-900;
 }
