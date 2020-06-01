@@ -7,26 +7,42 @@
   <%= render "active_rolls.html", rolls: @active_rolls %>
 </div>
 
-<div class="section grid grid-cols-4 gap-4">
-  <%= for roll <- @rolls do %>
-    <button class="roll-btn" phx-click="roll" phx-value-name="<%= roll.name %>">
-            <%= if roll.favorite do %>
-              <span class="text-highlight mr-3">✭</span>
-            <% else %>
-              <span class="text-neutral-600 mr-3">✩</span>
-            <% end %>
-            <%= roll.name %>
-    </button>
-  <% end %>
-</div>
+<div class="section flex items-start">
+  <div class="grid grid-cols-3 gap-4" style="flex: 3;">
+    <%= for roll <- @rolls do %>
+      <button class="roll-btn" phx-click="roll" phx-value-name="<%= roll.name %>">
+        <%= if roll.favorite do %>
+          <span class="text-highlight mr-3">✭</span>
+        <% else %>
+          <span class="text-neutral-600 mr-3">✩</span>
+        <% end %>
+        <%= roll.name %>
+      </button>
+    <% end %>
+  </div>
 
-<div class="section">
-  <h1 class="text-xl text-neutral-100 font-semibold">Roll Results</h1>
+  <section class="flex-1">
+    <div class="ml-4 border border-primary-500 rounded-sm">
+      <div class="bg-primary-500 px-4 py-1">
+        <h1 class="text-lg text-primary-900 uppercase">Recent Results</h1>
+      </div>
+      <ul class="p-4 pb-3">
+        <%= for result <- @roll_results do %>
+          <li class="font-mono text-sm mb-1">
+            <span class="text-neutral-200"><%= result.name %></span>
+            <% color =
+                cond do
+                  result.outcome > 15 -> "highlight"
+                  result.outcome >= 10 -> "secondary-300"
+                  true -> "primary-400"
+                end
+            %>
+            <span class="text-<%= color %>"><%=  result.outcome %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </section>
 
-  <ul>
-      <%= for result <- @roll_results do %>
-        <li class="text-neutral-100"><%= result.name %>: <%=  result.outcome %></li>
-      <% end %>
-    </ul>
 </div>
 
