@@ -76,7 +76,10 @@ defmodule Characters do
   end
 
   @spec maybe_start_character_worker(repo_result) :: repo_result
-  defp maybe_start_character_worker({:ok, character} = result) do
+  defp maybe_start_character_worker(
+         {:ok, %Character{source_type: t, source_params: p} = character} = result
+       )
+       when not is_nil(t) and not is_nil(p) do
     Worker.start_link(character.id)
     result
   end
