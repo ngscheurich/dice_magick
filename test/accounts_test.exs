@@ -11,6 +11,11 @@ defmodule AccountsTest do
       assert Accounts.get_user!(user.id) == user
     end
 
+    test "get_user_by_discord_uid!/1 returns the user with given discord_uid" do
+      user = insert(:user)
+      assert Accounts.get_user_by_discord_uid!(user.discord_uid) == user
+    end
+
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} =
                Accounts.create_user(%{
