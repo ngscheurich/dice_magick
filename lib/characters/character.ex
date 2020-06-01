@@ -32,6 +32,7 @@ defmodule Characters.Character do
     |> validate_source_params()
     |> assoc_constraint(:user)
     |> unique_constraint(:discord_channel_id)
+    |> unique_constraint([:name, :user_id])
   end
 
   @spec validate_source_params(Changeset.t()) :: Changeset.t()
