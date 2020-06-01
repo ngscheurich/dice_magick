@@ -25,9 +25,10 @@ defmodule Rolls do
     |> Repo.insert()
   end
 
+  # [todo] Make DB work asynchronous?
   @doc """
-  Gets the result of the given `Rolls.Roll`'s `expression`. Asynchonously records the
-  result as a `Rolls.Result`.
+  Gets the result of the given `Rolls.Roll`'s `expression`. Records the result as a
+  `Rolls.Result`.
 
   ## Examples
 
