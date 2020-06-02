@@ -9,6 +9,11 @@ defmodule Characters.Supervisor do
     DynamicSupervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
+  @impl true
+  def init(:ok) do
+    DynamicSupervisor.init(strategy: :one_for_one)
+  end
+
   @spec add_worker(Ecto.UUID.t()) :: :ok | :noop
   def add_worker(id) do
     worker_name = Characters.Worker.name(id)
@@ -21,10 +26,5 @@ defmodule Characters.Supervisor do
       _ ->
         :noop
     end
-  end
-
-  @impl true
-  def init(:ok) do
-    DynamicSupervisor.init(strategy: :one_for_one)
   end
 end
