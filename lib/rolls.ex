@@ -72,13 +72,13 @@ defmodule Rolls do
     |> Map.get(:rolls)
     |> Enum.filter(fn roll ->
       name = remove_unwanted_characters(roll.name)
-      input = remove_unwanted_characters(input)
+      input = remove_unwanted_characters(roll_name)
       String.starts_with?(name, input)
     end)
     |> List.first()
   end
 
-  @spec remove_unwanted_characters(String.t())
+  @spec remove_unwanted_characters(String.t()) :: String.t()
   defp remove_unwanted_characters(string) do
     string
     |> String.replace(" ", "")
@@ -91,5 +91,5 @@ defmodule Rolls do
   # Dice roller abstration layer.
   """
   @spec roll(String.t()) :: Integer.t() | {:error, any()}
-  def roll(expression), ExDiceRoller.roll(expression)
+  def roll(expression), do: ExDiceRoller.roll(expression)
 end

@@ -1,7 +1,5 @@
-defmodule Discord.Commands.Create do
+defmodule Discord.Commands.Roll do
   @behaviour Discord.Command
-
-  alias Characters.Character
 
   @doc """
   Handles the `!dm roll <EXPRESSION>` command.
@@ -31,39 +29,25 @@ defmodule Discord.Commands.Create do
 
   """
   @impl true
-  def process([input], _msg) do
+  def process([input], msg) do
     discord_uid = to_string(msg.author.id)
-    character = Characters.get_character_for_channel(discord_uid, msg.channel_id)
+    channel_id = to_string(msg.channel_id)
+    character = Characters.get_character_for_channel(discord_uid, channel_id)
 
     with roll when not is_nil(roll) <- Rolls.get_roll_by_name(character, input),
          {:ok, result} <- Rolls.result_for_roll(roll) do
-      success_message(character.name, roll.expression, result.outcome, roll_name: roll.name)
+      Discord.roll_message(character.name, roll.expression, result.outcome, roll_name: roll.name)
     else
       _ ->
         # [todo] The use of `try/rescue` here smells to me. Is there a better way to
         # handle direct user input?
         try do
           outcome = Rolls.roll(input)
-          success_message(character.name, input, outcome)
+          Discord.roll_message(character.name, input, outcome)
         rescue
-          failure_message(input)
+          _ -> failure_message(input)
         end
     end
-  end
-
-  @type opts() :: [{:roll_name, String.t()}]
-  @spec success_message(String.t(), String.t(), Integer.t(), opts()) :: String.t()
-  defp success_message(character_name, expression, outcome, opts \\ []) do
-    info =
-      case Keyword.get(opts, :roll_name) do
-        nil -> "**#{character_name}** rolls `#{expression}`…"
-        roll_name -> "**#{character_name}** rolls _#{roll_name}_ (`#{expression}`)…"
-      end
-
-    """
-    #{info}
-    :game-die: Result: **#{result}**
-    """
   end
 
   @spec failure_message(String.t()) :: String.t()

@@ -1,7 +1,12 @@
-<div class="show-details bg-primary-500 relative">
-  <div class="circle-wrapper">
-    <div class="bg-circle"></div>
+<%= if @warning_message do %>
+  <div class="section">
+    <p><%= @warning_message %></p>
   </div>
+<% else %>
+  <div class="show-details bg-primary-500 relative">
+    <div class="circle-wrapper">
+      <div class="bg-circle"></div>
+    </div>
 
   <%= render "header.html", assigns %>
   <%= render "active_rolls.html", rolls: @active_rolls %>
@@ -46,3 +51,10 @@
 
 </div>
 
+    <ul>
+        <%= for result <- @roll_results do %>
+          <li class="text-neutral-100"><%= result.name %>: <%=  result.outcome %></li>
+        <% end %>
+      </ul>
+  </div>
+<% end %>

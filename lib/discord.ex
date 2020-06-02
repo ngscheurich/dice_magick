@@ -1,16 +1,11 @@
 defmodule Discord do
   @moduledoc """
-  [todo] Write documentation
+  [todo] Write documentation.
   """
 
   use Nostrum.Consumer
 
-  import Ecto.Query
-
-  alias Accounts.User
   alias Nostrum.Api
-  alias Repo
-  alias Web.Router.Helpers, as: Routes
   alias Discord.Commands
 
   def start_link, do: Consumer.start_link(__MODULE__)
@@ -61,4 +56,28 @@ defmodule Discord do
   end
 
   def handle_event(_event), do: :noop
+
+  @type opts() :: [{:roll_name, String.t()}]
+  @spec roll_message(String.t(), String.t(), Integer.t(), opts()) :: String.t()
+  @doc """
+  [todo] Write documentation.
+  """
+  def roll_message(character_name, expression, outcome, opts \\ []) do
+    info =
+      case Keyword.get(opts, :roll_name) do
+        nil -> "**#{character_name}** rolls `#{expression}`…"
+        roll_name -> "**#{character_name}** rolls _#{roll_name}_ (`#{expression}`)…"
+      end
+
+    """
+    #{info}
+    :game-die: Result: **#{outcome}**
+    """
+  end
+
+  @doc """
+  [todo] Write documentation.
+  """
+  @spec send_message(Integer.t(), String.t()) :: {:ok, Nostrum.Struct.Message.t} | any()
+  def send_message(channel_id, message), do: Api.create_message(channel_id, message)
 end
