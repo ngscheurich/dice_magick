@@ -39,7 +39,7 @@ defmodule Rolls do
       {:error, {:token_parsing_failed, ['syntax error before: ', ['"d"']]}}
 
   """
-  @spec result_for_roll(Roll.t()) :: integer() | {:error, term()}
+  @spec result_for_roll(Roll.t()) :: {:ok, Result.t()} | {:error, Ecto.Changeset.t()}
   def result_for_roll(%Roll{expression: expression} = roll) do
     outcome = ExDiceRoller.roll(expression)
 

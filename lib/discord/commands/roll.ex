@@ -36,16 +36,16 @@ defmodule Discord.Commands.Roll do
 
     with roll when not is_nil(roll) <- Rolls.get_roll_by_name(character, input),
          {:ok, result} <- Rolls.result_for_roll(roll) do
-      Discord.roll_message(character.name, roll.expression, result.outcome, roll_name: roll.name)
+      {:ok, Discord.roll_message(character.name, roll.expression, result.outcome, roll_name: roll.name)}
     else
       _ ->
         # [todo] The use of `try/rescue` here smells to me. Is there a better way to
         # handle direct user input?
         try do
           outcome = Rolls.roll(input)
-          Discord.roll_message(character.name, input, outcome)
+          {:ok, Discord.roll_message(character.name, input, outcome)}
         rescue
-          _ -> failure_message(input)
+          _ -> {:error, failure_message(input)}
         end
     end
   end
