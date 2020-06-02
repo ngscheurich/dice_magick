@@ -113,15 +113,22 @@ defmodule Characters.Worker do
   @spec update_state(State.t()) :: State.t()
   def update_state(%{character_id: character_id} = state) do
     character = Characters.get_character!(character_id)
-    module = Characters.source_for_type(character.source_type)
 
-    {:ok, data} = module.fetch_data(character.source_params)
-    {:ok, rolls} = module.generate_rolls(data)
-    rolls = Enum.map(rolls, &%Rolls.Roll{&1 | character_id: character_id})
+    case character.source_type do
+      nil ->
+        state
 
-    tags = tags_from_rolls(rolls)
+      type ->
+        module = Characters.source_for_type(type)
 
-    %{state | rolls: rolls, tags: tags, synced_at: DateTime.utc_now()}
+        {:ok, data} = module.fetch_data(character.source_params)
+        {:ok, rolls} = module.generate_rolls(data)
+        rolls = Enum.map(rolls, &%Rolls.Roll{&1 | character_id: character_id})
+
+        tags = tags_from_rolls(rolls)
+
+        %{state | rolls: rolls, tags: tags, synced_at: DateTime.utc_now()}
+    end
   end
 
   @spec tags_from_rolls([Roll.t()]) :: [String.t()]
