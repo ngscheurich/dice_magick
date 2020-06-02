@@ -34,23 +34,24 @@ defmodule Discord.Commands.Create do
 
     case Characters.create_character(attrs) do
       {:ok, character} -> {:ok, success_message(character)}
-      {:error, changeset} -> {:error, failure_message(changeset)}
+      {:error, changeset} -> {:error, failure_message(changeset, name)}
     end
   end
 
   @spec success_message(Character.t()) :: String.t()
   def success_message(%Character{} = character) do
-    ":sparkles: Done! Finish setting up #{name} at: " <>
+    ":sparkles: Done! Finish setting up #{character.name} at: " <>
       Web.Endpoint.url() <>
-      Routes.live_path(Web.Endpoint, Web.CharacterLive.Edit, character)
+      Web.Router.Helpers.live_path(Web.Endpoint, Web.CharacterLive.Edit, character)
   end
 
-  @spec error_message(Ecto.Changeset.t()) :: String.t()
-  def failure_message(%Ecto.Changeset{errors: errors} = changeset) do
-    cond do
-      Keyword.has_key?(errors, :name) -> "You’ve already got a character named #{name}."
-      true -> "Something has gone terribly awry."
-    end
+  @spec failure_message(Ecto.Changeset.t(), String.t()) :: String.t()
+  def failure_message(%Ecto.Changeset{errors: errors}, name) do
+    error =
+      cond do
+        Keyword.has_key?(errors, :name) -> "You’ve already got a character named #{name}."
+        true -> "Something has gone terribly awry."
+      end
 
     ":skull: " <> error
   end

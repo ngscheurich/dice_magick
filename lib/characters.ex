@@ -170,7 +170,8 @@ defmodule Characters do
       from c in Character,
         join: u in User,
         on: u.discord_uid == ^discord_uid,
-        where: c.discord_channel_id == ^discord_channel_id
+      where: c.discord_channel_id == ^discord_channel_id,
+      limit: 1
 
     Repo.one(query)
   end

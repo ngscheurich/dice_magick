@@ -4,10 +4,9 @@ defmodule Web.CharacterLive.Show do
   require Logger
 
   @throttle_time 1000
-  @discord_channel_id Application.get_env(:dice_magick, :discord_channel_id)
 
   @impl true
-  def mount(%{"id" => character_id}, _session, socket) do
+  def mount(%{"id" => character_id} = character, _session, socket) do
     character = Characters.get_character!(character_id, preload: :roll_results)
 
     Characters.Supervisor.add_worker(character_id)
@@ -62,8 +61,8 @@ defmodule Web.CharacterLive.Show do
     case Rolls.result_for_roll(roll) do
       # [fixme] Dialyzer issue.
       {:ok, result} ->
-        {channel_id, _} = Integer.parse(@discord_channel_id)
-        Discord.send_result_message(channel_id, result)
+        message = Discord.roll_message(character.name, result.expression, result.outcome)
+        Discord.send_message(character.discord_channel_id, message)
 
         roll_results = ([result] ++ results) |> trim_results()
         last_result = result
