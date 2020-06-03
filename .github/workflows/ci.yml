@@ -1,10 +1,10 @@
-name: build
+name: CI
 
 on: [pull_request]
 
 jobs:
   test:
-    name: Erlang/OTP ${{matrix.otp}} + Elixir ${{matrix.elixir}}
+    name: Elixir ${{matrix.elixir}} OTP ${{matrix.otp}}
 
     runs-on: ubuntu-latest
 
@@ -58,5 +58,5 @@ jobs:
       - name: Analyze code
         run: mix format --check-formatted
 
-      - name: Run Tests
+      - name: Run tests
         run: mix test
