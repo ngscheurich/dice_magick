@@ -47,7 +47,6 @@ defmodule Discord.Commands.Create do
 
   @spec failure_message(Ecto.Changeset.t(), String.t()) :: String.t()
   defp failure_message(%Ecto.Changeset{errors: errors}, name) do
-
     error =
       cond do
         # [todo] Add character name and message re: !dm retire
