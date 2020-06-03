@@ -6,7 +6,6 @@ defmodule Discord.Commands.RollTest do
     character = insert(:character, name: "Dust", discord_channel_id: "123456", user: user)
     msg = %Nostrum.Struct.Message{author: %{id: 1}, channel_id: "123456"}
 
-
     %{msg: msg, character: character}
   end
 

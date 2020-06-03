@@ -44,6 +44,6 @@ defmodule Discord do
   @doc """
   [todo] Write documentation.
   """
-  @spec send_message(Integer.t(), String.t()) :: {:ok, Nostrum.Struct.Message.t} | any()
+  @spec send_message(Integer.t(), String.t()) :: {:ok, Nostrum.Struct.Message.t()} | any()
   def send_message(channel_id, message), do: Api.create_message(channel_id, message)
 end
