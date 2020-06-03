@@ -53,6 +53,6 @@ defmodule Discord.Commands.Roll do
 
   @spec failure_message(String.t()) :: String.t()
   defp failure_message(expression) do
-    ":skull: #{expression} is not a valid roll expression."
+    ":skull: No matching rolls were found, and `#{expression}` is not a valid dice expression."
   end
 end
