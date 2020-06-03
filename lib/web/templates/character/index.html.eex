@@ -12,6 +12,7 @@
     <% end %>
 
     <%= link to: Routes.live_path(@conn, CharacterLive.New), class: "btn btn--secondary" do %>
+      <!-- [todo] Users should only be allowed to add characters via Discord -->
       <i class="fas fa-plus mr-3"></i>
       Add someone new
     <% end %>
