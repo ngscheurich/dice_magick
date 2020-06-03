@@ -34,7 +34,6 @@ defmodule CharactersTest do
       assert character.source_params == %{"test" => true}
       assert character.discord_channel_id == "1234567890"
       assert character.user_id == user_id
-      refute character.id |> Characters.Worker.name() |> GenServer.whereis() |> is_nil
     end
 
     test "create_character/1 with invalid data returns error changeset" do
@@ -50,6 +49,8 @@ defmodule CharactersTest do
 
       assert character.name == "Ophelia"
       assert character.user_id == user_id
+
+      # [todo] Test worker side effect?
     end
 
     test "update_character/2 with invalid data returns error changeset" do
