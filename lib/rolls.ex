@@ -67,6 +67,8 @@ defmodule Rolls do
 
   """
   def get_roll_by_name(%Characters.Character{id: character_id}, roll_name) do
+    Characters.Supervisor.ensure_started(character_id)
+
     character_id
     |> Characters.Worker.state()
     |> Map.get(:rolls)

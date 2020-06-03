@@ -27,4 +27,6 @@ defmodule Characters.Supervisor do
         :noop
     end
   end
+
+  def ensure_started(id), do: add_worker(id)
 end
