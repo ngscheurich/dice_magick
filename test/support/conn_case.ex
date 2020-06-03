@@ -1,4 +1,4 @@
-defmodule Web.ConnCase do
+defmodule DiceMagickWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule Web.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use Web.ConnCase, async: true`, although
+  by setting `use DiceMagickWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -20,23 +20,23 @@ defmodule Web.ConnCase do
   using do
     quote do
       # Import conveniences for testing with connections
-      alias Web.Router.Helpers, as: Routes
+      alias DiceMagickWeb.Router.Helpers, as: Routes
       import Plug.Conn
       import Phoenix.ConnTest
       import AssertIdentity
       import Factory
-      import AuthHelpers
+      import DiceMagick.AuthHelpers
 
       # The default endpoint for testing
-      @endpoint Web.Endpoint
+      @endpoint DiceMagickWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(DiceMagick.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(DiceMagick.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}
