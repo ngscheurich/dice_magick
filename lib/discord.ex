@@ -16,7 +16,7 @@ defmodule Discord do
     Api.create_message(msg.channel_id, message)
   end
 
-  def handle_event({:MESSAGE_CREATE, %{content: "!dm " <> input} = msg, _ws_state}) do
+  def handle_event({:MESSAGE_CREATE, %{content: "!dm roll " <> input} = msg, _ws_state}) do
     {_, message} = Commands.Roll.process([input], msg)
     Api.create_message(msg.channel_id, message)
   end
@@ -37,7 +37,7 @@ defmodule Discord do
 
     """
     #{info}
-    :game-die: Result: **#{outcome}**
+    :game_die: Result: **#{outcome}**
     """
   end
 
