@@ -37,7 +37,7 @@ defmodule DiceMagick.Application do
         start: {Characters.Supervisor, :start_link, [[]]}
       },
       # Start the Discord consumer
-      Discord,
+      Discord
     ]
 
     children =
