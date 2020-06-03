@@ -19,7 +19,7 @@ defmodule Web.LayoutView do
         prompt: nil,
         redirect_uri: redirect_uri,
         response_type: "code",
-        scope: "identify"
+        scope: "identify guilds"
       })
 
     "https://discordapp.com/api/oauth2/authorize?#{query}"
