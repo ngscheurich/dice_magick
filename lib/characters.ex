@@ -4,7 +4,7 @@ defmodule Characters do
   """
 
   alias Accounts.User
-  alias Characters.{Character, Worker}
+  alias Characters.Character
   alias Repo
   alias Sources
 
@@ -39,14 +39,14 @@ defmodule Characters do
 
   ## Examples
 
-      iex> get_character!("123")
+      iex> get_character!("123", preload: [:roll_results])
       %Character{}
 
       iex> get_character!("456")
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_character!(Ecto.UUID.t(), preload: [atom()]) :: Character.t()
+  @spec get_character!(Ecto.UUID.t(), [{:preload, atom() | Keyword.t()}]) :: Character.t()
   def get_character!(id, opts \\ []) do
     preload = Keyword.get(opts, :preload, [])
 
@@ -72,19 +72,7 @@ defmodule Characters do
     %Character{}
     |> Character.changeset(attrs)
     |> Repo.insert()
-    |> maybe_start_character_worker()
   end
-
-  @spec maybe_start_character_worker(repo_result) :: repo_result
-  defp maybe_start_character_worker(
-         {:ok, %Character{source_type: t, source_params: p} = character} = result
-       )
-       when not is_nil(t) and not is_nil(p) do
-    Worker.start_link(character.id)
-    result
-  end
-
-  defp maybe_start_character_worker(result), do: result
 
   @doc """
   Updates a `Characters.Character`.
@@ -103,16 +91,16 @@ defmodule Characters do
     character
     |> Character.changeset(attrs)
     |> Repo.update()
-    |> maybe_update_rolls(attrs)
+    |> maybe_notify_worker(attrs)
   end
 
-  @spec maybe_update_rolls(repo_result, map) :: repo_result
-  defp maybe_update_rolls({:ok, character} = result, %{source_params: _}) do
+  @spec maybe_notify_worker(repo_result, map) :: repo_result
+  defp maybe_notify_worker({:ok, character} = result, %{source_params: _}) do
     Characters.Worker.update(character.id)
     result
   end
 
-  defp maybe_update_rolls(result, _attrs), do: result
+  defp maybe_notify_worker(result, _attrs), do: result
 
   @doc """
   Deletes a `Characters.Character`.
@@ -170,8 +158,8 @@ defmodule Characters do
       from c in Character,
         join: u in User,
         on: u.discord_uid == ^discord_uid,
-      where: c.discord_channel_id == ^discord_channel_id,
-      limit: 1
+        where: c.discord_channel_id == ^discord_channel_id,
+        limit: 1
 
     Repo.one(query)
   end
