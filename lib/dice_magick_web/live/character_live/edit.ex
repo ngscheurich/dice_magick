@@ -51,7 +51,8 @@ defmodule DiceMagickWeb.CharacterLive.Edit do
          socket
          |> put_flash(:info, "Character updated")
          |> redirect(
-           to: Routes.live_path(socket, DiceMagickWeb.CharacterLive.Show, socket.assigns.character)
+           to:
+             Routes.live_path(socket, DiceMagickWeb.CharacterLive.Show, socket.assigns.character)
          )}
 
       {:error, %Ecto.Changeset{} = changeset} ->
