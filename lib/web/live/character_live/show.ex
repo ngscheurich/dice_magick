@@ -6,7 +6,7 @@ defmodule Web.CharacterLive.Show do
   @throttle_time 1000
 
   @impl true
-  def mount(%{"id" => character_id} = character, _session, socket) do
+  def mount(%{"id" => character_id}, _session, socket) do
     character = Characters.get_character!(character_id, preload: :roll_results)
 
     Characters.Supervisor.add_worker(character_id)
