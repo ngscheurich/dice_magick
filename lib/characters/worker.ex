@@ -28,8 +28,19 @@ defmodule Characters.Worker do
   @doc """
   Starts a new worker for the given `Characters.Character`.
   """
-  @spec start_link(UUID.t()) :: :ignore | {:error, term()} | {:ok, pid()}
-  def start_link(id), do: GenServer.start_link(__MODULE__, id, name: name(id))
+  @spec start_link(Keyword.t()) :: :ignore | {:error, term()} | {:ok, pid()}
+  def start_link(opts) do
+    character_id = Keyword.fetch!(opts, :character_id)
+
+    state_fields =
+      opts
+      |> Keyword.get(:state, %{})
+      |> Map.put(:character_id, character_id)
+
+    state = struct!(Characters.Worker.State, state_fields)
+
+    GenServer.start_link(__MODULE__, state, name: name(character_id))
+  end
 
   # ----------------------------------------------------------------------------
   # Client
@@ -64,11 +75,8 @@ defmodule Characters.Worker do
   # ----------------------------------------------------------------------------
 
   @impl true
-  def init(character_id) do
-    state = %State{character_id: character_id}
-
+  def init(%{character_id: character_id} = state) do
     Logger.log(:info, "Initialized process for Character #{character_id}")
-
     Process.send(self(), :update, [])
     {:ok, state}
   end

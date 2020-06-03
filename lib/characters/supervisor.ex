@@ -20,7 +20,7 @@ defmodule Characters.Supervisor do
 
     case GenServer.whereis(worker_name) do
       nil ->
-        child_spec = {Characters.Worker, id}
+        child_spec = {Characters.Worker, character_id: id}
         DynamicSupervisor.start_child(__MODULE__, child_spec)
 
       _ ->
