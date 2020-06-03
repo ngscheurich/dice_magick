@@ -1,4 +1,4 @@
-defmodule DataCase do
+defmodule DiceMagick.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -18,22 +18,22 @@ defmodule DataCase do
 
   using do
     quote do
-      alias Repo
+      alias DiceMagick.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
       import AssertIdentity
       import Factory
-      import AuthHelpers
+      import DiceMagick.AuthHelpers
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(DiceMagick.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(DiceMagick.Repo, {:shared, self()})
     end
 
     :ok

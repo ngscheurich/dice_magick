@@ -8,15 +8,15 @@
 use Mix.Config
 
 config :dice_magick,
-  ecto_repos: [Repo],
+  ecto_repos: [DiceMagick.Repo],
   generators: [binary_id: true],
-  google_sheets: GoogleSheets.HTTPClient
+  google_sheets: DiceMagick.GoogleSheets.HTTPClient
 
 # Configures the endpoint
-config :dice_magick, Web.Endpoint,
+config :dice_magick, DiceMagickWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "qFN2SYdwyU3kFUFKBwes2Z2jgUMiblp5XqW/YEjwWK0AfyTwEe9sKp69LfAEdaju",
-  render_errors: [view: Web.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: DiceMagickWeb.ErrorView, accepts: ~w(html json)],
   pubsub_server: PubSub,
   live_view: [signing_salt: "J3lKKxgK"]
 

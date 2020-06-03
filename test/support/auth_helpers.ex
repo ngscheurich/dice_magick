@@ -1,5 +1,5 @@
-defmodule AuthHelpers do
-  alias Accounts.User
+defmodule DiceMagick.AuthHelpers do
+  alias DiceMagick.Accounts.User
   alias Plug.Conn
 
   @spec authenticate(Conn.t(), User.t()) :: Conn.t()
