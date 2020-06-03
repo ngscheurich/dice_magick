@@ -10,9 +10,9 @@ defmodule Discord.Commands.Roll do
     2. A string matching one of the character's named rolls, e.g. "Acrobatics".
 
   When using option 2, a partial string may be provided, which DiceMagick use
-  to select the first matching roll. Furthermore, the capitalization and
-  whitespace in the input string is discarded. For example, "wisch" would match
-  a roll named "Wisdom Check".
+  to select the first matching roll. Furthermore, the capitalization in the
+  input string is discarded. For example, "wis" would match a roll named
+  "Wisdom Check".
 
   ## Examples
 
@@ -36,7 +36,8 @@ defmodule Discord.Commands.Roll do
 
     with roll when not is_nil(roll) <- Rolls.get_roll_by_name(character, input),
          {:ok, result} <- Rolls.result_for_roll(roll) do
-      {:ok, Discord.roll_message(character.name, roll.expression, result.outcome, roll_name: roll.name)}
+      {:ok,
+       Discord.roll_message(character.name, roll.expression, result.outcome, roll_name: roll.name)}
     else
       _ ->
         # [todo] The use of `try/rescue` here smells to me. Is there a better way to
