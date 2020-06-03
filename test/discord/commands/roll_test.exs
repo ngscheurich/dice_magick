@@ -16,19 +16,21 @@ defmodule Discord.Commands.RollTest do
     assert {:ok, message} = Discord.Commands.Roll.process(["ste"], msg)
 
     regex =
-      ~r/^\*\*Dust\*\* rolls _Stealth Check_ \(`1d20 \+ 2`\)…\n:game-die: Result: \*\*\d+\*\*$/
+      ~r/^\*\*Dust\*\* rolls _Stealth Check_ \(`1d20 \+ 2`\)…\n:game_die: Result: \*\*\d+\*\*$/
 
     assert Regex.match?(regex, message)
   end
 
   test "process/1 returns ad-hoc roll outcome", %{msg: msg} do
     assert {:ok, message} = Discord.Commands.Roll.process(["3d4"], msg)
-    regex = ~r/^\*\*Dust\*\* rolls `3d4`…\n:game-die: Result: \*\*\d+\*\*$/
+    regex = ~r/^\*\*Dust\*\* rolls `3d4`…\n:game_die: Result: \*\*\d+\*\*$/
     assert Regex.match?(regex, message)
   end
 
   test "process/1 returns error message with invalid roll expression", %{msg: msg} do
     assert {:error, message} = Discord.Commands.Roll.process(["x"], msg)
-    assert message == ":skull: x is not a valid roll expression."
+
+    assert message ==
+             ":skull: No matching rolls were found, and `x` is not a valid dice expression."
   end
 end
