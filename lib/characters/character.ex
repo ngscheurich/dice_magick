@@ -31,7 +31,7 @@ defmodule Characters.Character do
     |> validate_required([:name, :discord_channel_id, :user_id])
     |> validate_source_params()
     |> assoc_constraint(:user)
-    |> unique_constraint(:discord_channel_id)
+    |> unique_constraint([:discord_channel_id, :user_id])
     |> unique_constraint([:name, :user_id])
   end
 

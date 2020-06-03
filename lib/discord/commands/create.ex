@@ -47,10 +47,18 @@ defmodule Discord.Commands.Create do
 
   @spec failure_message(Ecto.Changeset.t(), String.t()) :: String.t()
   defp failure_message(%Ecto.Changeset{errors: errors}, name) do
+
     error =
       cond do
-        Keyword.has_key?(errors, :name) -> "You’ve already got a character named #{name}."
-        true -> "Something has gone terribly awry."
+        # [todo] Add character name and message re: !dm retire
+        Keyword.has_key?(errors, :discord_channel_id) ->
+          "You’ve already got a character in this channel."
+
+        Keyword.has_key?(errors, :name) ->
+          "You’ve already got a character named #{name}."
+
+        true ->
+          "Something has gone terribly awry."
       end
 
     ":skull: " <> error
