@@ -1,4 +1,6 @@
 defmodule DiceMagickWeb.ErrorView do
+  @moduledoc false
+
   use DiceMagickWeb, :view
 
   # If you want to customize a particular status code

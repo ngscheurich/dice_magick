@@ -1,4 +1,6 @@
 defmodule DiceMagickWeb.Router do
+  @moduledoc false
+
   use DiceMagickWeb, :router
   import Plug.BasicAuth
   import Phoenix.LiveDashboard.Router

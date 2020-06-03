@@ -14,16 +14,16 @@ defmodule DiceMagick.Discord.Roll do
 
   ## Examples
 
-      !dm roll 1d20 + 1
-      **Dust** rolls `1d20 + 1`…
-      :game-die: Result: **14**
+  `!dm roll 1d20 + 1`
+  > **Dust** rolls `1d20 + 1`…<br>
+  > 🎲 Result: **14**
 
-      !dm roll sne
-      **Saidri** rolls _Sneak Attack_ (`1d8 + 4 + 2d6`)…
-      :game-die: Result: **21**
+  `!dm roll sne`
+  > **Saidri** rolls _Sneak Attack_ (`1d8 + 4 + 2d6`)…<br>
+  > 🎲 Result: **21**
 
-      !dm roll foo
-      :skull: I couldn’t find a roll matching “foo”.
+  `!dm roll foo`
+  > 💀 I couldn’t find a roll matching “foo”.
 
   """
 

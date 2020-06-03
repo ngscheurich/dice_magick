@@ -1,34 +1,27 @@
 defmodule DiceMagick.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+
   def project do
     [
       app: :dice_magick,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.5",
+      deps: deps(),
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps(),
+      source_url: "https://github.com/ngscheurich/dice_magick",
+      homepage_url: "https://www.dice_magick.app",
 
       # Docs
       name: "DiceMagick",
-      source_url: "https://github.com/ngscheurich/dice_magick",
-      homepage_url: "https://github.com/ngscheurich/dice_magick",
-      docs: [
-        main: "DiceMagick",
-        authors: ["N. G. Scheurich <nick@scheurich.me>"],
-        # [todo] Add logo
-        # logo: "path/to/logo.png",
-        extras: ["README.md"]
-      ]
+      docs: docs()
     ]
   end
 
-  # Configuration for the OTP application.
-  #
-  # Type `mix help compile.app` for more information.
   def application do
     [
       mod: {DiceMagick.Application, []},
@@ -36,13 +29,9 @@ defmodule DiceMagick.MixProject do
     ]
   end
 
-  # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
-  # Specifies your project dependencies.
-  #
-  # Type `mix help deps` for examples and options.
   defp deps do
     [
       {:assert_identity, "~> 0.1.0"},
@@ -74,12 +63,57 @@ defmodule DiceMagick.MixProject do
     ]
   end
 
-  # Aliases are shortcuts or tasks specific to the current project.
-  # For example, to create, migrate and run the seeds file at once:
-  #
-  #     $ mix ecto.setup
-  #
-  # See the documentation for `Mix` for more info on aliases.
+  defp docs do
+    [
+      main: "DiceMagick",
+      authors: ["N. G. Scheurich <nick@scheurich.me>"],
+      logo: "logo.png",
+      groups_for_modules: [
+        DiceMagick: [
+          DiceMagick.Accounts,
+          DiceMagick.Accounts.User,
+          DiceMagick.Characters,
+          DiceMagick.Characters.Character,
+          DiceMagick.Characters.Supervisor,
+          DiceMagick.Characters.Worker,
+          DiceMagick.Characters.Worker.State,
+          DiceMagick.Rolls,
+          DiceMagick.Rolls.Roll,
+          DiceMagick.Rolls.Result
+        ],
+        "Discord Bot": [
+          DiceMagick.Discord.Command,
+          DiceMagick.Discord.Create,
+          DiceMagick.Discord.Roll
+        ],
+        "Data Sources": [
+          DiceMagick.Sources.Source,
+          DiceMagick.Sources.GoogleSheets,
+          DiceMagick.Sources.Test,
+          DiceMagick.GoogleSheets.HTTPClient
+        ],
+        "Web Interface": [
+          DiceMagickWeb.Auth,
+          DiceMagickWeb.CharacterController,
+          DiceMagickWeb.SessionController,
+          DiceMagickWeb.ErrorHelpers,
+          DiceMagickWeb.Router.Helpers
+        ],
+        Enums: [
+          DataFormatEnum,
+          SourceTypeEnum
+        ]
+      ],
+      nest_modules_by_prefix: [
+        DiceMagick.Characters,
+        DiceMagick.GoogleSheets,
+        DiceMagick.Sources,
+        DiceMagickWeb
+      ],
+      extras: ["README.md"]
+    ]
+  end
+
   defp aliases do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],

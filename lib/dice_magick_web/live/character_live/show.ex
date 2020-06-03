@@ -1,4 +1,6 @@
 defmodule DiceMagickWeb.CharacterLive.Show do
+  @moduledoc false
+
   use Phoenix.LiveView
   require Logger
   alias DiceMagick.{Characters, Discord, Rolls}

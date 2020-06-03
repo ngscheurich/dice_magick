@@ -1,7 +1,5 @@
 defmodule Factory do
-  @moduledoc """
-  [todo] Add documentation.
-  """
+  @moduledoc false
 
   use ExMachina.Ecto, repo: DiceMagick.Repo
 

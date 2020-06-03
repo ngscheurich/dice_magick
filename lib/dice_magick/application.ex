@@ -5,6 +5,8 @@ defmodule DiceMagick.Application do
   alias DiceMagick.Characters
 
   defmodule CharacterWorkers do
+    @moduledoc false
+
     use GenServer
 
     def start_link(_), do: GenServer.start_link(__MODULE__, :ok)
