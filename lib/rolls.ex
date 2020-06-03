@@ -73,18 +73,11 @@ defmodule Rolls do
     |> Characters.Worker.state()
     |> Map.get(:rolls)
     |> Enum.filter(fn roll ->
-      name = remove_unwanted_characters(roll.name)
-      input = remove_unwanted_characters(roll_name)
+      name = String.downcase(roll.name)
+      input = String.downcase(roll_name)
       String.starts_with?(name, input)
     end)
     |> List.first()
-  end
-
-  @spec remove_unwanted_characters(String.t()) :: String.t()
-  defp remove_unwanted_characters(string) do
-    string
-    |> String.replace(" ", "")
-    |> String.downcase()
   end
 
   @doc """
