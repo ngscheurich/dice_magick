@@ -1,12 +1,7 @@
-<%= if @warning_message do %>
-  <div class="section">
-    <p><%= @warning_message %></p>
+<div class="show-details bg-primary-500 relative">
+  <div class="circle-wrapper">
+    <div class="bg-circle"></div>
   </div>
-<% else %>
-  <div class="show-details bg-primary-500 relative">
-    <div class="circle-wrapper">
-      <div class="bg-circle"></div>
-    </div>
 
   <%= render "header.html", assigns %>
   <%= render "active_rolls.html", rolls: @active_rolls %>
@@ -36,11 +31,11 @@
           <li class="font-mono text-sm mb-1">
             <span class="text-neutral-200"><%= result.name %></span>
             <% color =
-                cond do
-                  result.outcome > 15 -> "highlight"
-                  result.outcome >= 10 -> "secondary-300"
-                  true -> "primary-400"
-                end
+                 cond do
+                   result.outcome > 15 -> "highlight"
+                   result.outcome >= 10 -> "secondary-300"
+                   true -> "primary-400"
+                 end
             %>
             <span class="text-<%= color %>"><%=  result.outcome %></span>
           </li>
@@ -48,13 +43,4 @@
       </ul>
     </div>
   </section>
-
 </div>
-
-    <ul>
-        <%= for result <- @roll_results do %>
-          <li class="text-neutral-100"><%= result.name %>: <%=  result.outcome %></li>
-        <% end %>
-      </ul>
-  </div>
-<% end %>
