@@ -1,4 +1,5 @@
 defmodule DiceMagick.Sources.Test do
+  @moduledoc false
   @behaviour DiceMagick.Sources.Source
 
   @impl true

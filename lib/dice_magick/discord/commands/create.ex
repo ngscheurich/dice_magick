@@ -10,11 +10,11 @@ defmodule DiceMagick.Discord.Create do
 
   ## Examples
 
-      !dm create Saidri
-      :sparkles: Done! Finish setting up Saidri at https://www.dicemagick.app/...
+  `!dm create Saidri`
+  > ✨ Done! Finish setting up Saidri at https://www.dicemagick.app/...
 
-      !dm create Nornys
-      :skull: You’ve already got a character named Nornys.
+  `!dm create Nornys`
+  > 💀 You’ve already got a character named Nornys.
 
   """
 

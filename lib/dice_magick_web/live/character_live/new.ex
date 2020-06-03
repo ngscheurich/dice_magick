@@ -1,4 +1,6 @@
 defmodule DiceMagickWeb.CharacterLive.New do
+  @moduledoc false
+
   use Phoenix.LiveView
 
   alias DiceMagickWeb.Router.Helpers, as: Routes

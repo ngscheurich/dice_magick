@@ -1,4 +1,6 @@
 defmodule DiceMagickWeb.LayoutView do
+  @moduledoc false
+
   use DiceMagickWeb, :view
 
   @doc """
