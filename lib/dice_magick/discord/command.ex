@@ -3,6 +3,7 @@ defmodule DiceMagick.Discord.Command do
   [todo] Write documentation.
   """
 
-  @callback process([any], Nostrum.Struct.Message.t()) ::
-              {:ok, String.t()} | {:error, String.t()}
+  @type command_result :: {:ok, String.t()} | {:error, String.t()}
+
+  @callback process([any], Nostrum.Struct.Message.t()) :: command_result
 end
