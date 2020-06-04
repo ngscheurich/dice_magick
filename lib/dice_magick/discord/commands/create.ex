@@ -1,6 +1,6 @@
 defmodule DiceMagick.Discord.Create do
   @moduledoc """
-  Handles the `!dm create <NAME>` command.
+  Handles the `!create <NAME>` command.
 
   Creates a `DiceMagick.Characters.Character` with the specified `name` belonging to the
   `Accounts.User` who sent the message.
@@ -10,10 +10,10 @@ defmodule DiceMagick.Discord.Create do
 
   ## Examples
 
-  `!dm create Saidri`
+  `!create Saidri`
   > ✨ Done! Finish setting up Saidri at https://www.dicemagick.app/...
 
-  `!dm create Nornys`
+  `!create Nornys`
   > 💀 You’ve already got a character named Nornys.
 
   """
@@ -51,7 +51,7 @@ defmodule DiceMagick.Discord.Create do
   defp failure_message(%Ecto.Changeset{errors: errors}, name) do
     error =
       cond do
-        # [todo] Add character name and message re: !dm retire
+        # [todo] Add character name and message re: !retire
         Keyword.has_key?(errors, :discord_channel_id) ->
           "You’ve already got a character in this channel."
 

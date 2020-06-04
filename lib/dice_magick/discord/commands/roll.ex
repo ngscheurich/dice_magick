@@ -1,6 +1,6 @@
 defmodule DiceMagick.Discord.Roll do
   @moduledoc """
-  Handles the `!dm roll <EXPRESSION>` command.
+  Handles the `!roll <EXPRESSION>` command.
 
   The input for this command can take two forms:
 
@@ -14,15 +14,15 @@ defmodule DiceMagick.Discord.Roll do
 
   ## Examples
 
-  `!dm roll 1d20 + 1`
+  `!roll 1d20 + 1`
   > **Dust** rolls `1d20 + 1`…<br>
   > 🎲 Result: **14**
 
-  `!dm roll sne`
+  `!roll sne`
   > **Saidri** rolls _Sneak Attack_ (`1d8 + 4 + 2d6`)…<br>
   > 🎲 Result: **21**
 
-  `!dm roll foo`
+  `!roll foo`
   > 💀 I couldn’t find a roll matching “foo”.
 
   """
@@ -64,7 +64,7 @@ defmodule DiceMagick.Discord.Roll do
     {:error,
      """
      :crystal_ball: You don’t have any characters in this channel.
-     You can use `!dm create` to create one here, or `!dm transfer` to transfer one from another channel.
+     You can use `!create` to create one here, or `!transfer` to transfer one from another channel.
      """}
   end
 
