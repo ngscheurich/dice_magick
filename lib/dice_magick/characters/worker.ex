@@ -58,20 +58,29 @@ defmodule DiceMagick.Characters.Worker do
   Returns the state of the worker process.
   """
   @spec state(String.t()) :: State.t()
-  def state(id), do: GenServer.call(name(id), :state)
+  def state(id) do
+    Characters.Supervisor.ensure_started(id)
+    GenServer.call(name(id), :state)
+  end
 
   @doc """
   Fetches new data from the `DiceMagick.Characters.Character`'s `source`, and
   updates that character's `DiceMagick.Rolls.Roll`s.
   """
   @spec update(String.t()) :: :ok
-  def update(id), do: GenServer.cast(name(id), :update)
+  def update(id) do
+    Characters.Supervisor.ensure_started(id)
+    GenServer.cast(name(id), :update)
+  end
 
   @doc """
   Similar to `update/1`, but performs the task synchronously.
   """
   @spec update_sync(String.t()) :: State.t()
-  def update_sync(id), do: GenServer.call(name(id), :update)
+  def update_sync(id) do
+    Characters.Supervisor.ensure_started(id)
+    GenServer.call(name(id), :update)
+  end
 
   @doc """
   Stops a worker process.
