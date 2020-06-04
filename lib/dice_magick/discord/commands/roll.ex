@@ -27,7 +27,8 @@ defmodule DiceMagick.Discord.Roll do
 
   """
 
-  alias DiceMagick.{Rolls, Discord}
+  alias DiceMagick.{Rolls, Discord, Characters}
+  alias Characters.Character
 
   @behaviour Discord.Command
 
@@ -35,8 +36,13 @@ defmodule DiceMagick.Discord.Roll do
   def process([input], msg) do
     discord_uid = to_string(msg.author.id)
     channel_id = to_string(msg.channel_id)
-    character = DiceMagick.Characters.get_character_for_channel(discord_uid, channel_id)
+    character = Characters.get_character_for_channel(discord_uid, channel_id)
 
+    roll_for_character(character, input)
+  end
+
+  @spec roll_for_character(Character.t(), String.t()) :: Discord.Command.command_result()
+  def roll_for_character(%Character{} = character, input) do
     with roll when not is_nil(roll) <- Rolls.get_roll_by_name(character, input),
          {:ok, result} <- Rolls.result_for_roll(roll) do
       {:ok,
@@ -52,6 +58,14 @@ defmodule DiceMagick.Discord.Roll do
           _ -> {:error, failure_message(input)}
         end
     end
+  end
+
+  def roll_for_character(_character, _input) do
+    {:error,
+     """
+     :crystal_ball: You don’t have any characters in this channel.
+     You can use `!dm create` to create one here, or `!dm transfer` to transfer one from another channel.
+     """}
   end
 
   @spec failure_message(String.t()) :: String.t()
