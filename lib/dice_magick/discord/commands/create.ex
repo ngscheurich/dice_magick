@@ -37,7 +37,7 @@ defmodule DiceMagick.Discord.Create do
 
     case Characters.create_character(attrs) do
       {:ok, character} -> {:ok, success_message(character)}
-      {:error, changeset} -> {:error, failure_message(changeset, name)}
+      {:error, changeset} -> {:error, failure_message(changeset, name, msg)}
     end
   end
 
@@ -47,14 +47,18 @@ defmodule DiceMagick.Discord.Create do
     ":sparkles: Done! Finish setting up #{character.name} at: #{url}"
   end
 
-  @spec failure_message(Ecto.Changeset.t(), String.t()) :: String.t()
-  defp failure_message(%Ecto.Changeset{errors: errors}, name) do
+  @spec failure_message(Ecto.Changeset.t(), String.t(), Nostrum.Struct.Message.t()) :: String.t()
+  defp failure_message(%{errors: errors}, name, msg) do
     error =
       cond do
-        # [todo] Add character name and message re: !retire
+        # [todo] Add character name and message re: !retire?
         Keyword.has_key?(errors, :discord_channel_id) ->
-          "You’ve already got a character in this channel."
+          discord_uid = to_string(msg.author.id)
+          discord_channel_id = to_string(msg.channel_id)
+          %{name: name} = Characters.get_character_for_channel(discord_uid, discord_channel_id)
+          "You’ve already got a character, #{name}, in this channel."
 
+        # [todo] Add character name and message re: !retire?
         Keyword.has_key?(errors, :name) ->
           "You’ve already got a character named #{name}."
 
