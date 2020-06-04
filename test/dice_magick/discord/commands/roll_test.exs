@@ -42,7 +42,7 @@ defmodule DiceMagick.Discord.RollTest do
 
     assert message = """
            :crystal_ball: You don’t have any characters in this channel.
-           You can use `!dm create` to create one here, or `!dm transfer` to transfer one from another channel.
+           You can `!create` one here, or `!transfer` one from another channel.
            """
   end
 end

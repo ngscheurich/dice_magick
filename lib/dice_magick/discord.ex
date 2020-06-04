@@ -8,15 +8,17 @@ defmodule DiceMagick.Discord do
   alias __MODULE__
   alias Nostrum.Api, as: DiscordAPI
 
+  @prefix "!"
+
   def start_link, do: Consumer.start_link(__MODULE__)
 
   @impl true
-  def handle_event({:MESSAGE_CREATE, %{content: "!dm create " <> name} = msg, _ws}) do
+  def handle_event({:MESSAGE_CREATE, %{content: @prefix <> "create " <> name} = msg, _ws}) do
     {_, message} = Discord.Create.process([name], msg)
     DiscordAPI.create_message(msg.channel_id, message)
   end
 
-  def handle_event({:MESSAGE_CREATE, %{content: "!dm roll " <> input} = msg, _ws_state}) do
+  def handle_event({:MESSAGE_CREATE, %{content: @prefix <> "roll " <> input} = msg, _ws_state}) do
     {_, message} = Discord.Roll.process([input], msg)
     DiscordAPI.create_message(msg.channel_id, message)
   end
