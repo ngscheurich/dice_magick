@@ -2,6 +2,9 @@ defmodule DiceMagickWeb.Router do
   @moduledoc false
 
   use DiceMagickWeb, :router
+  use Plug.ErrorHandler
+  use Sentry.Plug
+
   import Plug.BasicAuth
   import Phoenix.LiveDashboard.Router
 
