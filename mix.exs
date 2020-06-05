@@ -44,7 +44,7 @@ defmodule DiceMagick.MixProject do
       {:floki, ">= 0.0.0", only: :test},
       {:gettext, "~> 0.11"},
       {:httpoison, "~> 1.6"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
       {:nimble_csv, "~> 0.6"},
       {:nimble_parsec, "~> 0.5"},
       {:nostrum, "~> 0.4"},
@@ -57,6 +57,7 @@ defmodule DiceMagick.MixProject do
       {:phoenix_pubsub, "~> 2.0"},
       {:plug_cowboy, "~> 2.2"},
       {:postgrex, ">= 0.0.0"},
+      {:sentry, "~> 7.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:ueberauth_discord, "~> 0.5"}

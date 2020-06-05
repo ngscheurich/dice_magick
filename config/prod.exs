@@ -15,6 +15,16 @@ config :dice_magick, DiceMagickWeb.Endpoint,
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :sentry,
+  dsn: "https://d75293378eaf41278ccf6e4610d3164b@o403113.ingest.sentry.io/5265273",
+  environment_name: :prod,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!(),
+  tags: %{
+    env: "production"
+  },
+  included_environments: [:prod]
+
 # Do not print debug messages in production
 # config :logger, level: :info
 
