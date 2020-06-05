@@ -1,13 +1,7 @@
-alias Repo
-alias Accounts
-alias Characters
-alias Rolls
-alias Taxonomy
-alias Source
+alias DiceMagick.{Repo, Accounts, Characters, Rolls, Sources, Discord, GoogleSheets}
 alias Accounts.{User}
-alias Characters.{Character}
-alias Rolls.{Roll, Encoder, CSVEncoder}
-alias Taxonomy.{Tag, RollTag}
+alias Characters.{Character, Worker}
+alias Rolls.{Roll, Result}
 alias Sources.{GoogleSheets, Test, Source}
 
 Logger.configure(level: :info)
