@@ -1,4 +1,4 @@
-defmodule CharactersTest do
+defmodule DiceMagick.CharactersTest do
   use DiceMagick.DataCase
   alias DiceMagick.Characters
 
