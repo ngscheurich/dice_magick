@@ -12,8 +12,6 @@ defmodule DiceMagick.Characters.Worker do
   alias DiceMagick.Rolls.Roll
   alias Ecto.UUID
 
-  # @update_time 60_000
-
   defmodule State do
     @moduledoc """
     State for a worker process.
@@ -33,9 +31,8 @@ defmodule DiceMagick.Characters.Worker do
 
   ## Options
 
-      * `character_id` - The UUID of the `DiceMagick.Characters.Character` the
-        worker is for (required)
-      * `state` - The initial state for the worker
+    * `character_id` - The UUID of the `DiceMagick.Characters.Character` (required)
+    * `state` - The initial state for the worker
 
   """
   @spec start_link(Keyword.t()) :: :ignore | {:error, term} | {:ok, pid}
@@ -47,12 +44,18 @@ defmodule DiceMagick.Characters.Worker do
       |> Keyword.get(:state, %{})
       |> Map.put(:character_id, character_id)
 
-    state = struct!(Characters.Worker.State, state_fields)
+    state = struct!(State, state_fields)
 
     GenServer.start_link(__MODULE__, state, name: name(character_id))
   end
 
   ## Client
+
+  @doc """
+  Returns the name of the registered process for the given `id`.
+  """
+  @spec name(UUID.t()) :: {:global, {atom(), UUID.t()}}
+  def name(id), do: {:global, {__MODULE__, id}}
 
   @doc """
   Returns the state of the worker process.
@@ -88,7 +91,7 @@ defmodule DiceMagick.Characters.Worker do
   @spec stop(String.t()) :: :ok
   def stop(id), do: GenServer.cast(name(id), :stop)
 
-  ## Callbacks
+  ## Server callbacks
 
   @impl true
   def init(%{character_id: character_id} = state) do
@@ -122,20 +125,10 @@ defmodule DiceMagick.Characters.Worker do
     {:noreply, new_state}
   end
 
-  # ----------------------------------------------------------------------------
-  # Helpers
-  # ----------------------------------------------------------------------------
-
-  @doc """
-  Returns the name of the registered process for the given `id`.
-  """
-  @spec name(UUID.t()) :: {:global, {atom(), UUID.t()}}
-  def name(id), do: {:global, {__MODULE__, id}}
-
-  # defp schedule_update(time), do: Process.send_after(self(), :update, time)
+  ## Helpers
 
   @spec update_state(State.t()) :: State.t()
-  def update_state(%{character_id: character_id} = state) do
+  defp update_state(%{character_id: character_id} = state) do
     character = Characters.get_character!(character_id)
 
     case character.source_type do
