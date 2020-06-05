@@ -4,23 +4,6 @@ defmodule DiceMagick.Application do
   use Application
   alias DiceMagick.Characters
 
-  defmodule CharacterWorkers do
-    @moduledoc false
-
-    use GenServer
-
-    def start_link(_), do: GenServer.start_link(__MODULE__, :ok)
-
-    @impl true
-    def init(:ok) do
-      Characters.Character
-      |> DiceMagick.Repo.all()
-      |> Enum.each(&Characters.Supervisor.add_worker(&1.id))
-
-      :ignore
-    end
-  end
-
   def start(_type, _args) do
     children = [
       # Start the Ecto repository
@@ -39,12 +22,6 @@ defmodule DiceMagick.Application do
       # Start the Discord consumer
       DiceMagick.Discord
     ]
-
-    children =
-      case Mix.env() do
-        :test -> children
-        _ -> children ++ [CharacterWorkers]
-      end
 
     opts = [strategy: :one_for_one, name: Supervisor]
     Supervisor.start_link(children, opts)
