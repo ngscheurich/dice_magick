@@ -65,6 +65,7 @@ defmodule DiceMagick.Discord do
   """
   @spec send_message(Integer.t(), String.t()) :: {:ok, Nostrum.Struct.Message.t()} | any()
   def send_message(channel_id, message) do
+    {channel_id, _} = Integer.parse(channel_id)
     DiscordAPI.create_message(channel_id, message)
   end
 
