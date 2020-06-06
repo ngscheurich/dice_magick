@@ -10,16 +10,14 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   @impl true
   def mount(%{"id" => character_id}, _session, socket) do
     character = Characters.get_character!(character_id, preload: :roll_results)
-
-    Characters.Supervisor.add_worker(character_id)
-    worker = Characters.Worker.state(character_id)
-    {favorites, rolls} = favorites(worker.rolls)
+    %{rolls: rolls, tags: tags} = Characters.Worker.state(character_id)
+    {favorites, rolls} = favorites(rolls)
 
     state = %{
       character: character,
       rolls: rolls,
       active_rolls: favorites,
-      tags: worker.tags,
+      tags: tags,
       active_tags: [],
       allow_sync: true,
       roll_results: character.roll_results |> trim_results() || [],
@@ -60,27 +58,21 @@ defmodule DiceMagickWeb.CharacterLive.Show do
     [roll] = Enum.filter(all_rolls, &(&1.name == name))
     roll = %{roll | character_id: character.id}
 
-    case Rolls.result_for_roll(roll) do
-      # [fixme] Dialyzer issue.
-      {:ok, result} ->
-        message = Discord.roll_message(character.name, result.expression, result.outcome)
-        Discord.send_message(character.discord_channel_id, message)
+    result = Rolls.get_result(roll) |> Map.put(:name, name)
+    message = Discord.roll_message(character.name, result, roll_name: name)
+    Discord.send_message(character.discord_channel_id, message)
 
-        roll_results = ([result] ++ results) |> trim_results()
-        last_result = result
+    roll_results = ([result] ++ results) |> trim_results()
+    last_result = result
 
-        Process.send_after(self(), :remove_highlight, 2000)
+    Process.send_after(self(), :remove_highlight, 2000)
 
-        {:noreply,
-         assign(socket,
-           roll_results: roll_results,
-           last_result: last_result,
-           last_highlighted: true
-         )}
-
-      {:error, _} ->
-        Logger.log(:error, "Couldn’t get roll result for #{character.id} (#{roll.name}).")
-    end
+    {:noreply,
+     assign(socket,
+       roll_results: roll_results,
+       last_result: last_result,
+       last_highlighted: true
+     )}
   end
 
   @impl true

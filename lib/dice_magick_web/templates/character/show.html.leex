@@ -32,12 +32,12 @@
             <span class="text-neutral-200"><%= result.name %></span>
             <% color =
                  cond do
-                   result.outcome > 15 -> "highlight"
-                   result.outcome >= 10 -> "secondary-300"
+                   result.total > 15 -> "highlight"
+                   result.total >= 10 -> "secondary-300"
                    true -> "primary-400"
                  end
             %>
-            <span class="text-<%= color %>"><%=  result.outcome %></span>
+            <span class="text-<%= color %>"><%=  result.total %></span>
           </li>
         <% end %>
       </ul>
