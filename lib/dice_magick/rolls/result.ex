@@ -12,10 +12,10 @@ defmodule DiceMagick.Rolls.Result do
   schema "roll_results" do
     field(:name, :string)
     field(:expression, :string)
-    field(:metadata, :map)
+    field(:total, :integer)
     field(:favorite, :boolean, default: false)
     field(:tags, {:array, :string}, default: [])
-    field(:outcome, :integer)
+    field(:metadata, :map)
 
     belongs_to(:character, DiceMagick.Characters.Character)
 
@@ -28,13 +28,13 @@ defmodule DiceMagick.Rolls.Result do
     |> cast(params, [
       :name,
       :expression,
-      :metadata,
+      :total,
       :favorite,
       :tags,
-      :outcome,
+      :metadata,
       :character_id
     ])
-    |> validate_required([:name, :expression, :outcome, :character_id])
+    |> validate_required([:name, :expression, :total, :character_id])
     |> validate_expression()
     |> assoc_constraint(:character)
   end
