@@ -35,7 +35,7 @@ defmodule Factory do
 
   def named_result_factory do
     struct!(result_factory(), %{
-      name: "Stealth Check"}
-    )
+      name: "Stealth Check"
+    })
   end
 end
