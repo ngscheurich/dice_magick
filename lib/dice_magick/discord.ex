@@ -38,7 +38,7 @@ defmodule DiceMagick.Discord do
   Returns a formatted roll result message.
   """
   @type roll_message_opts :: [{:roll_name, String.t()}]
-  @spec roll_message(String.t(), DiceMagick.Dice.Result.t(), roll_message_opts) :: String.t()
+  @spec roll_message(String.t(), map, roll_message_opts) :: String.t()
   def roll_message(character_name, result, opts \\ []) do
     %{expression: expression, total: total, faces: faces} = result
 
