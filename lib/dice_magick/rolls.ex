@@ -9,6 +9,41 @@ defmodule DiceMagick.Rolls do
   alias DiceMagick.Repo
 
   @doc """
+  Returns `DiceMagick.Dice.Result` of the given `DiceMagick.Rolls.Roll`'s
+  `expression`.
+
+  ## Options
+
+    * `record` - Asynchronously record the result as a `DiceMagick.Rolls.Result`?
+
+  ## Examples
+
+      iex> result_for_roll(%Roll{expression: "1d20"})
+      %DiceMagick.Dice.Result{}
+
+  """
+  @spec get_result(Roll.t(), [{:record, boolean}]) :: DiceMagick.Dice.Result.t()
+  def get_result(%Roll{expression: expression} = roll, opts \\ []) do
+    result = DiceMagick.Dice.roll!(expression)
+
+    if Keyword.get(opts, :record, true) do
+      Task.Supervisor.start_child(
+        DiceMagick.DBTaskSupervisor,
+        fn ->
+          roll
+          |> Map.from_struct()
+          |> Map.put(:total, result.total)
+          |> Map.put(:faces, result.faces)
+          |> create_result()
+        end,
+        restart: :transient
+      )
+    end
+
+    result
+  end
+
+  @doc """
   Creates a `DiceMagick.Rolls.Result`.
 
   ## Examples
@@ -25,30 +60,6 @@ defmodule DiceMagick.Rolls do
     %Result{}
     |> Result.changeset(attrs)
     |> Repo.insert()
-  end
-
-  @doc """
-  Gets the result of the given `DiceMagick.Rolls.Roll`'s `expression`. Records
-  the result as a `DiceMagick.Rolls.Result`.
-
-  ## Examples
-
-      iex> result_for_roll(%Roll{expression: "1d20"})
-      12
-
-      iex> result_for_roll(%Roll{expression: "d20"})
-      {:error, {:token_parsing_failed, ['syntax error before: ', ['"d"']]}}
-
-  """
-  @spec result_for_roll(Roll.t()) :: {:ok, Result.t()} | {:error, Ecto.Changeset.t()}
-  def result_for_roll(%Roll{expression: expression} = roll) do
-    %{total: total} = DiceMagick.Dice.roll!(expression)
-
-    # [todo] Make DB work asynchronous?
-    roll
-    |> Map.from_struct()
-    |> Map.put(:outcome, total)
-    |> create_result()
   end
 
   @doc """

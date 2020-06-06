@@ -20,7 +20,9 @@ defmodule DiceMagick.Application do
         start: {Characters.Supervisor, :start_link, [[]]}
       },
       # Start the Discord consumer
-      DiceMagick.Discord
+      DiceMagick.Discord,
+      # Start a task supervisor for async database work
+      {Task.Supervisor, name: DiceMagick.DBTaskSupervisor}
     ]
 
     opts = [strategy: :one_for_one, name: Supervisor]
