@@ -36,7 +36,7 @@ defmodule DiceMagick.Rolls.Result do
       :metadata,
       :character_id
     ])
-    |> validate_required([:name, :expression, :total, :character_id])
+    |> validate_required([:expression, :total, :character_id])
     |> validate_expression()
     |> assoc_constraint(:character)
   end
