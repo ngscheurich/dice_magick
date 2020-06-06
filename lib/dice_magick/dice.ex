@@ -65,6 +65,7 @@ defmodule DiceMagick.Dice do
       ** (ArgumentError) argument error
 
   """
+  @spec roll!(String.t()) :: Result.t()
   def roll!(expression) do
     if valid_expression?(expression) do
       process_expression(expression)
