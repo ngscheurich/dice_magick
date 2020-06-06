@@ -16,8 +16,7 @@ defmodule DiceMagick.Discord.RollTest do
     start_supervised!({DiceMagick.Characters.Worker, opts})
     assert {:ok, message} = Discord.Roll.process(["ste"], msg)
 
-    regex =
-      ~r/^\*\*Dust\*\* rolls _Stealth Check_ \(`1d20 \+ 2`\)…\n:game_die: Result: \*\*\d+\*\*$/
+    regex = ~r/^\*\*Dust\*\* rolls _Stealth Check_ \(`1d20 \+ 2`\)…\n:game_die: Result:/
 
     assert Regex.match?(regex, message)
   end
@@ -25,7 +24,7 @@ defmodule DiceMagick.Discord.RollTest do
   test "process/1 returns ad-hoc roll outcome", %{msg: msg, user: user} do
     insert(:character, name: "Dust", discord_channel_id: "123456", user: user)
     assert {:ok, message} = Discord.Roll.process(["3d4"], msg)
-    regex = ~r/^\*\*Dust\*\* rolls `3d4`…\n:game_die: Result: \*\*\d+\*\*$/
+    regex = ~r/^\*\*Dust\*\* rolls `3d4`…\n:game_die: Result:/
     assert Regex.match?(regex, message)
   end
 

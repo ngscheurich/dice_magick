@@ -9,8 +9,8 @@ defmodule DiceMagick.Rolls.Roll do
     :name,
     :expression,
     :character_id,
-    metadata: %{},
     favorite: false,
-    tags: []
+    tags: [],
+    metadata: %{},
   ]
 end
