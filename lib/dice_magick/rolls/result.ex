@@ -13,6 +13,7 @@ defmodule DiceMagick.Rolls.Result do
     field(:name, :string)
     field(:expression, :string)
     field(:total, :integer)
+    field(:faces, {:array, :integer}, default: [])
     field(:favorite, :boolean, default: false)
     field(:tags, {:array, :string}, default: [])
     field(:metadata, :map)
@@ -29,6 +30,7 @@ defmodule DiceMagick.Rolls.Result do
       :name,
       :expression,
       :total,
+      :faces,
       :favorite,
       :tags,
       :metadata,
