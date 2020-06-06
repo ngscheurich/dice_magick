@@ -38,7 +38,6 @@ defmodule DiceMagick.MixProject do
       {:cowlib, "~> 2.8.0", override: true},
       {:ecto_enum, "~> 1.4"},
       {:ecto_sql, "~> 3.1"},
-      {:ex_dice_roller, "~> 1.0.0-rc.2"},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:ex_machina, "~> 2.4"},
       {:floki, ">= 0.0.0", only: :test},

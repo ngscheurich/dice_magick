@@ -34,9 +34,6 @@ config :ueberauth, Ueberauth.Strategy.Discord.OAuth,
   client_id: System.get_env("DISCORD_CLIENT_ID"),
   client_secret: System.get_env("DISCORD_CLIENT_SECRET")
 
-config :ex_dice_roller,
-  cache_table: ExDiceRoller.Cache
-
 config :nostrum,
   token: System.get_env("DISCORD_BOT_TOKEN")
 

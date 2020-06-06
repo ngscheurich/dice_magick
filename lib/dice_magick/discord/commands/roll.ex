@@ -27,7 +27,7 @@ defmodule DiceMagick.Discord.Roll do
 
   """
 
-  alias DiceMagick.{Rolls, Discord, Characters}
+  alias DiceMagick.{Rolls, Discord, Characters, Dice}
   alias Characters.Character
 
   @behaviour Discord.Command
@@ -49,12 +49,9 @@ defmodule DiceMagick.Discord.Roll do
        Discord.roll_message(character.name, roll.expression, result.outcome, roll_name: roll.name)}
     else
       _ ->
-        # [todo] The use of `try/rescue` here smells to me. Is there a better way to
-        # handle direct user input?
-        try do
-          outcome = Rolls.roll(input)
-          {:ok, Discord.roll_message(character.name, input, outcome)}
-        rescue
+        # [todo] Should ad-hoc roll results be recorded as well? Probably?
+        case Dice.roll(input) do
+          {:ok, %{total: outcome}} -> {:ok, Discord.roll_message(character.name, input, outcome)}
           _ -> {:error, failure_message(input)}
         end
     end

@@ -42,12 +42,12 @@ defmodule DiceMagick.Rolls do
   """
   @spec result_for_roll(Roll.t()) :: {:ok, Result.t()} | {:error, Ecto.Changeset.t()}
   def result_for_roll(%Roll{expression: expression} = roll) do
-    outcome = ExDiceRoller.roll(expression)
+    %{total: total} = DiceMagick.Dice.roll!(expression)
 
     # [todo] Make DB work asynchronous?
     roll
     |> Map.from_struct()
-    |> Map.put(:outcome, outcome)
+    |> Map.put(:outcome, total)
     |> create_result()
   end
 
@@ -90,5 +90,8 @@ defmodule DiceMagick.Rolls do
   # [todo] Should this be in its own module?
   """
   @spec roll(String.t()) :: Integer.t() | {:error, any()}
-  def roll(expression), do: ExDiceRoller.roll(expression)
+  def roll(input) do
+    %{total: total} = DiceMagick.Dice.roll!(input)
+    total
+  end
 end
