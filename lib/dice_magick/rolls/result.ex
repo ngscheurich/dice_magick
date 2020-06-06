@@ -41,9 +41,10 @@ defmodule DiceMagick.Rolls.Result do
 
   @spec validate_expression(Changeset.t()) :: Changeset.t()
   defp validate_expression(%Changeset{changes: %{expression: expression}} = chset) do
-    case ExDiceRoller.compile(expression) do
-      {:ok, _} -> chset
-      {:error, _} -> add_error(chset, :expression, "Token parsing failed")
+    if DiceMagick.Dice.valid_expression?(expression) do
+      chset
+    else
+      add_error(chset, :expression, "Invalid expression")
     end
   end
 
