@@ -27,10 +27,15 @@ defmodule Factory do
 
   def result_factory do
     %DiceMagick.Rolls.Result{
-      name: "Stealth Check",
       expression: "1d20 + 9",
-      outcome: 23,
+      total: 23,
       character: build(:character)
     }
+  end
+
+  def named_result_factory do
+    struct!(result_factory(), %{
+      name: "Stealth Check"}
+    )
   end
 end
