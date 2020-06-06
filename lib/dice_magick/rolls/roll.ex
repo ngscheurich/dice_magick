@@ -11,6 +11,6 @@ defmodule DiceMagick.Rolls.Roll do
     :character_id,
     favorite: false,
     tags: [],
-    metadata: %{},
+    metadata: %{}
   ]
 end
