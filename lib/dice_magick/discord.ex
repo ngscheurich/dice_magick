@@ -34,21 +34,29 @@ defmodule DiceMagick.Discord do
 
   def handle_event(_event), do: :noop
 
-  @type opts() :: [{:roll_name, String.t()}]
-  @spec roll_message(String.t(), String.t(), Integer.t(), opts()) :: String.t()
   @doc """
-  [todo] Write documentation.
+  Returns a formatted roll result message.
   """
-  def roll_message(character_name, expression, outcome, opts \\ []) do
+  @type roll_message_opts :: [{:roll_name, String.t()}]
+  @spec roll_message(String.t(), DiceMagick.Dice.Result.t(), roll_message_opts) :: String.t()
+  def roll_message(character_name, result, opts \\ []) do
+    %{expression: expression, total: total, faces: faces} = result
+
     info =
       case Keyword.get(opts, :roll_name) do
         nil -> "**#{character_name}** rolls `#{expression}`…"
         roll_name -> "**#{character_name}** rolls _#{roll_name}_ (`#{expression}`)…"
       end
 
+    result =
+      case faces do
+        [] -> ":game_die: Result: **#{total}**"
+        _ -> ":game_die: Result: **#{total}** (`#{inspect(faces)}`)"
+      end
+
     """
     #{info}
-    :game_die: Result: **#{outcome}**
+    #{result}
     """
   end
 

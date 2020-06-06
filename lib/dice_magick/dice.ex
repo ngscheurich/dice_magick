@@ -1,23 +1,24 @@
 defmodule DiceMagick.Dice do
   @moduledoc """
-  Functions for determinig the outcome of dice rolling expressions.
+  Functions for determining the outcome of dice rolling expressions.
   """
 
-  defmodule Outcome do
+  defmodule Result do
     @moduledoc """
     Used to encapsulate dice rolling outcomes. Has two fields:
 
-      * `total` - The sum of all die rolls and modifiers
-      * `rolls` - A list of the outcome of every die rolled
+      * `expression` - The expression that was rolled
+      * `faces` - A list of the result (upward face) of every die rolled
+      * `total` - The sum of all die faces and modifiers
 
     """
     @type t :: %__MODULE__{}
-    defstruct [:total, rolls: []]
+    defstruct [:expression, :total, faces: []]
   end
 
   @doc """
-  Parses and rolls the given `expression`, then returns the resulting
-  `%DiceMagick.Dice.Outcome{}`.
+  Parses and rolls the given `expression`, then returns the
+  `%DiceMagick.Dice.Result{}`.
 
   If the `expression` is invalid, returns an error.
 
@@ -33,16 +34,16 @@ defmodule DiceMagick.Dice do
   ## Examples
 
       iex> roll("1d20 + 3")
-      {:ok, %Outcome{total: 15, rolls: [12])}
+      {:ok, %Result{total: 15, faces: [12])}
 
       iex> roll("1d20 + 1 + 3d4 + 2 - 15")
-      {:ok, %Outcome{total: 5, rolls: [8, 3, 2, 4])}
+      {:ok, %Result{total: 5, faces: [8, 3, 2, 4])}
 
       iex> roll("1d12 - x")
       {:error, :invalid_expression}
 
   """
-  @spec roll(String.t()) :: {:ok, Outcome.t()} | {:error, :invalid_expression}
+  @spec roll(String.t()) :: {:ok, Result.t()} | {:error, :invalid_expression}
   def roll(expression) do
     if valid_expression?(expression) do
       {:ok, process_expression(expression)}
@@ -58,7 +59,7 @@ defmodule DiceMagick.Dice do
   ## Examples
 
       iex> roll!("1d20 + 3")
-      %Outcome{total: 15, rolls: [12])}
+      %Result{total: 15, faces: [12])}
 
       iex> roll!("1d12 - x")
       ** (ArgumentError) argument error
@@ -72,18 +73,20 @@ defmodule DiceMagick.Dice do
     end
   end
 
-  @spec process_expression(String.t()) :: Outcome.t()
+  @spec process_expression(String.t()) :: Result.t()
   defp process_expression(expression) do
     input = process_input(expression)
     parsed = get_dice_parts(input) ++ get_mod_parts(input)
 
-    Enum.reduce(parsed, %Outcome{total: 0}, fn part, outcome ->
+    Enum.reduce(parsed, %Result{expression: expression, total: 0}, fn part, result ->
       case part do
         {fun, _, val} ->
-          %Outcome{total: apply(Kernel, fun, [outcome.total, val]), rolls: outcome.rolls ++ [val]}
+          total = apply(Kernel, fun, [result.total, val])
+          %Result{result | total: total, faces: result.faces ++ [val]}
 
         {fun, val} ->
-          %Outcome{outcome | total: apply(Kernel, fun, [outcome.total, val])}
+          total = apply(Kernel, fun, [result.total, val])
+          %Result{result | total: total}
       end
     end)
   end
@@ -113,9 +116,9 @@ defmodule DiceMagick.Dice do
   @spec dice_part_result(String.t(), String.t()) :: {atom, integer, integer}
   defp dice_part_result(sides, operator) do
     {sides, _} = Integer.parse(sides)
-    outcome = Enum.random(1..sides)
+    result = Enum.random(1..sides)
     operator = get_operator(operator)
-    {operator, sides, outcome}
+    {operator, sides, result}
   end
 
   @spec get_mod_parts(String.t()) :: [{atom, integer}]

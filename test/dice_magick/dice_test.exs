@@ -2,13 +2,13 @@ defmodule DiceMagick.DiceTest do
   use ExUnit.Case, async: true
 
   alias DiceMagick.Dice
-  alias Dice.Outcome
+  alias Dice.Result
 
   test "roll/1 with valid input returns success tuple" do
-    assert Dice.roll("1") == {:ok, %Outcome{total: 1, rolls: []}}
-    assert Dice.roll("1 + 2 - 4") == {:ok, %Outcome{total: -1, rolls: []}}
-    assert {:ok, %Outcome{rolls: rolls}} = Dice.roll("1d20 + 2d8 + 3")
-    assert Enum.count(rolls) == 3
+    assert Dice.roll("1") == {:ok, %Result{expression: "1", total: 1, faces: []}}
+    assert Dice.roll("1 + 2 - 4") == {:ok, %Result{expression: "1 + 2 - 4", total: -1, faces: []}}
+    assert {:ok, %Result{faces: faces}} = Dice.roll("1d20 + 2d8 + 3")
+    assert Enum.count(faces) == 3
   end
 
   test "roll/1 with invalid input returns error tuple" do
@@ -17,8 +17,8 @@ defmodule DiceMagick.DiceTest do
   end
 
   test "roll!/1 width valid input returns outcome" do
-    assert %Outcome{rolls: rolls} = Dice.roll!("1d20 + 2d8 + 3")
-    assert Enum.count(rolls) == 3
+    assert %Result{faces: faces} = Dice.roll!("1d20 + 2d8 + 3")
+    assert Enum.count(faces) == 3
   end
 
   test "roll/1 with invalid input raises" do

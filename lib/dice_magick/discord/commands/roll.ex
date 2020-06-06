@@ -16,18 +16,18 @@ defmodule DiceMagick.Discord.Roll do
 
   `!roll 1d20 + 1`
   > **Dust** rolls `1d20 + 1`…<br>
-  > 🎲 Result: **14**
+  > 🎲 Result: **14** (`[13]`)
 
   `!roll sne`
   > **Saidri** rolls _Sneak Attack_ (`1d8 + 4 + 2d6`)…<br>
-  > 🎲 Result: **21**
+  > 🎲 Result: **17** (`[3, 4, 6]`)
 
   `!roll foo`
   > 💀 I couldn’t find a roll matching “foo”.
 
   """
 
-  alias DiceMagick.{Rolls, Discord, Characters, Dice}
+  alias DiceMagick.{Rolls, Discord, Characters}
   alias Characters.Character
 
   @behaviour Discord.Command
@@ -43,26 +43,32 @@ defmodule DiceMagick.Discord.Roll do
 
   @spec roll_for_character(Character.t(), String.t()) :: Discord.Command.command_result()
   def roll_for_character(%Character{} = character, input) do
-    with roll when not is_nil(roll) <- Rolls.get_roll_by_name(character, input),
-         {:ok, result} <- Rolls.result_for_roll(roll) do
-      {:ok,
-       Discord.roll_message(character.name, roll.expression, result.outcome, roll_name: roll.name)}
-    else
-      _ ->
-        # [todo] Should ad-hoc roll results be recorded as well? Probably?
-        case Dice.roll(input) do
-          {:ok, %{total: outcome}} -> {:ok, Discord.roll_message(character.name, input, outcome)}
-          _ -> {:error, failure_message(input)}
+    case Rolls.get_roll_by_name(character, input) do
+      nil ->
+        if DiceMagick.Dice.valid_expression?(input) do
+          roll = %Rolls.Roll{expression: input, character_id: character.id}
+          {:ok, success_message(character.name, roll)}
+        else
+          {:error, failure_message(input)}
         end
+
+      roll ->
+        {:ok, success_message(character.name, roll, roll_name: roll.name)}
     end
   end
 
-  def roll_for_character(_character, _input) do
+  def roll_for_character(nil, _input) do
     {:error,
      """
      :crystal_ball: You don’t have any characters in this channel.
      You can use `!create` to create one here, or `!transfer` to transfer one from another channel.
      """}
+  end
+
+  @spec success_message(String.t(), Rolls.Roll.t(), Discord.roll_message_opts()) :: String.t()
+  defp success_message(name, roll, opts \\ []) do
+    result = Rolls.get_result(roll)
+    Discord.roll_message(name, result, opts)
   end
 
   @spec failure_message(String.t()) :: String.t()

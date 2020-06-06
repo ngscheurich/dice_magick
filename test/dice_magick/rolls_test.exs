@@ -12,17 +12,19 @@ defmodule DiceMagick.RollsTest do
                Rolls.create_result(%{
                  name: "Sneak Attack",
                  expression: "1d20 + 4 + 1d6",
+                 total: 28,
+                 faces: [18, 6],
                  favorite: true,
                  tags: ["combat", "dex"],
-                 outcome: 28,
                  character_id: character.id
                })
 
       assert result.name == "Sneak Attack"
       assert result.expression == "1d20 + 4 + 1d6"
+      assert result.total == 28
+      assert result.faces == [18, 6]
       assert result.favorite == true
       assert result.tags == ["combat", "dex"]
-      assert result.outcome == 28
       assert result.character_id == character.id
     end
 
