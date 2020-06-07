@@ -34,7 +34,9 @@ module.exports = {
 
       "dark-100": "#0E0B0B",
       "dark-200": "#0F0C0C",
-      "dark-300": "#272424",
+      "dark-300": "#171414",
+      "dark-400": "#201D1D",
+      "dark-500": "#272424",
 
       transparent: "transparent",
 

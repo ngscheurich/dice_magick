@@ -121,6 +121,24 @@
   @apply bg-secondary-400;
 }
 
+.sync-btn {
+  @apply font-mono text-xs text-neutral-300 rounded-sm bg-dark-300 px-4 py-2;
+
+  transition: background-color 0.2s;
+}
+
+.sync-btn:hover {
+  @apply bg-dark-400;
+}
+
+.sync-btn--working {
+  @apply bg-dark-500 text-neutral-700 cursor-not-allowed;
+}
+
+.sync-btn--working:hover {
+  @apply bg-dark-500;
+}
+
 .show-details {
   border-top: 4px solid hsla(360, 14%, 5%, 0.4);
 }
