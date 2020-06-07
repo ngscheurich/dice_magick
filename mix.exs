@@ -59,6 +59,7 @@ defmodule DiceMagick.MixProject do
       {:sentry, "~> 7.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
+      {:timex, "~> 3.0"},
       {:ueberauth_discord, "~> 0.5"}
     ]
   end
@@ -84,7 +85,8 @@ defmodule DiceMagick.MixProject do
         "Discord Bot": [
           DiceMagick.Discord.Command,
           DiceMagick.Discord.Create,
-          DiceMagick.Discord.Roll
+          DiceMagick.Discord.Roll,
+          DiceMagick.Discord.Sync
         ],
         "Data Sources": [
           DiceMagick.Sources.Source,

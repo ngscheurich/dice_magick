@@ -10,17 +10,18 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   @impl true
   def mount(%{"id" => character_id}, _session, socket) do
     character = Characters.get_character!(character_id, preload: :roll_results)
-    %{rolls: rolls, tags: tags} = Characters.Worker.state(character_id)
-    {favorites, rolls} = favorites(rolls)
+    state = Characters.Worker.state(character_id)
+    {favorites, rolls} = favorites(state.rolls)
 
     state = %{
       character: character,
       rolls: rolls,
       active_rolls: favorites,
-      tags: tags,
+      tags: state.tags,
       active_tags: [],
       allow_sync: true,
-      roll_results: character.roll_results |> trim_results() || [],
+      synced_at: format_synced_at(state.synced_at),
+      roll_results: trim_results(character.roll_results),
       last_result: %{},
       last_highlighted: false
     }
@@ -28,18 +29,28 @@ defmodule DiceMagickWeb.CharacterLive.Show do
     {:ok, assign(socket, state)}
   end
 
+  @spec trim_results([map]) :: [map]
+  defp trim_results([]), do: []
   defp trim_results(results), do: results |> Enum.chunk_every(12) |> List.first()
+
+  @spec format_synced_at(DateTime.t()) :: String.t()
+  defp format_synced_at(dt) do
+    case Timex.Format.DateTime.Formatters.Relative.format!(dt, "{relative}") do
+      "now" -> "Just now"
+      str -> str
+    end
+  end
 
   @impl true
   def render(assigns), do: Phoenix.View.render(DiceMagickWeb.CharacterView, "show.html", assigns)
 
   @impl true
   def handle_event("sync", _params, %{assigns: %{character: character}} = socket) do
-    state = Characters.Worker.update_sync(character.id)
-
+    %{rolls: rolls, synced_at: synced_at} = Characters.Worker.update_sync(character.id)
     Process.send_after(self(), :unblock, @throttle_time)
 
-    {:noreply, assign(socket, rolls: state.rolls, allow_sync: false)}
+    {:noreply,
+     assign(socket, rolls: rolls, synced_at: format_synced_at(synced_at), allow_sync: false)}
   end
 
   @impl true

@@ -16,7 +16,7 @@
 
         <dl class="font-mono text-sm text-primary-900">
           <dt class="inline font-semibold">Updated:</dt>
-          <dd class="inline">3 days ago</dd>
+          <dd class="inline"><%= @synced_at %></dd>
         </dl>
       </div>
 
@@ -33,12 +33,12 @@
         </div>
       </div>
 
-      <div></div>
-
-      <%# <button phx-click="update" phx-throttle="3000" class="btn btn--secondary<%= unless @can_update, do: " btn--working" %1>"> %>
-        <%#   <span class="fas fa-sync mr-3<%= unless @can_update, do: " fa-spin" %1>"></span> %>
-        <%#   Sync Rolls %>
-      <%# </button> %>
+      <div class="flex justify-end items-start">
+        <button phx-click="sync" phx-throttle="3000" class="sync-btn<%= unless @allow_sync, do: " sync-btn--working" %>">
+            <span class="fas fa-sync mr-2 text-neutral-500<%= unless @allow_sync, do: " fa-spin" %>"></span>
+            Sync Rolls
+        </button>
+      </div>
     </div>
   </section>
 </div>
