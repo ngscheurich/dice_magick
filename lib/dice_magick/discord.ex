@@ -48,10 +48,15 @@ defmodule DiceMagick.Discord do
         roll_name -> "**#{character_name}** rolls _#{roll_name}_ (`#{expression}`)…"
       end
 
+    faces =
+      faces
+      |> Enum.map(&to_string(&1))
+      |> Enum.join(", ")
+
     result =
       case faces do
         [] -> ":game_die: Result: **#{total}**"
-        _ -> ":game_die: Result: **#{total}** (`#{inspect(faces)}`)"
+        _ -> ":game_die: Result: **#{total}** (`[#{faces}]`)"
       end
 
     """
