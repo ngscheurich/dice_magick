@@ -16,6 +16,7 @@ defmodule DiceMagick.Characters.Character do
     field :source_type, SourceTypeEnum
     field :source_params, :map
     field :discord_channel_id, :string
+    field :archetype, ArchetypeEnum
 
     belongs_to :user, User
 
@@ -27,7 +28,7 @@ defmodule DiceMagick.Characters.Character do
   @doc false
   def changeset(%__MODULE__{} = character, params) do
     character
-    |> cast(params, [:name, :source_type, :source_params, :discord_channel_id, :user_id])
+    |> cast(params, [:name, :source_type, :source_params, :discord_channel_id, :archetype, :user_id])
     |> validate_required([:name, :discord_channel_id, :user_id])
     |> validate_source_params()
     |> assoc_constraint(:user)
