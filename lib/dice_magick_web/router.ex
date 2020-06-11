@@ -45,7 +45,6 @@ defmodule DiceMagickWeb.Router do
   scope "/manage", DiceMagickWeb do
     pipe_through [:browser, :authenticate_user]
 
-    live "/characters/new", CharacterLive.New
     live "/characters/:id", CharacterLive.Show
     live "/characters/:id/edit", CharacterLive.Edit
 
