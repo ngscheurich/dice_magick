@@ -72,10 +72,10 @@ defmodule DiceMagick.Rolls do
 
   ## Examples
 
-      iex> get_roll_starting_with(character, "sne")
+      iex> get_roll_by_name(character, "sne")
       %Roll{name: "Sneak Attack"}
 
-      iex> get_roll_starting_with(character, "foo")
+      iex> get_roll_by_name(character, "foo")
       nil
 
   """
