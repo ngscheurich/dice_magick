@@ -18,12 +18,12 @@ defmodule DiceMagick.Rolls do
 
   ## Examples
 
-      iex> result_for_roll(%Roll{expression: "1d20"})
+      iex> generate_result(%Roll{expression: "1d20"})
       %DiceMagick.Dice.Result{}
 
   """
-  @spec get_result(Roll.t(), [{:record, boolean}]) :: DiceMagick.Dice.Result.t()
-  def get_result(%Roll{expression: expression} = roll, opts \\ []) do
+  @spec generate_result(Roll.t(), [{:record, boolean}]) :: DiceMagick.Dice.Result.t()
+  def generate_result(%Roll{expression: expression} = roll, opts \\ []) do
     result = DiceMagick.Dice.roll!(expression)
 
     if Keyword.get(opts, :record, true) do

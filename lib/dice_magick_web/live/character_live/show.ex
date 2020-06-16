@@ -69,7 +69,7 @@ defmodule DiceMagickWeb.CharacterLive.Show do
     [roll] = Enum.filter(all_rolls, &(&1.name == name))
     roll = %{roll | character_id: character.id}
 
-    result = Rolls.get_result(roll) |> Map.put(:name, name)
+    result = Rolls.generate_result(roll) |> Map.put(:name, name)
     message = Discord.roll_message(character.name, result, roll_name: name)
     Discord.send_message(character.discord_channel_id, message)
 

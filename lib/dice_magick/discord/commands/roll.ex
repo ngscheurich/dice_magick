@@ -67,7 +67,7 @@ defmodule DiceMagick.Discord.Roll do
 
   @spec success_message(String.t(), Rolls.Roll.t(), Discord.roll_message_opts()) :: String.t()
   defp success_message(name, roll, opts \\ []) do
-    result = Rolls.get_result(roll)
+    result = Rolls.generate_result(roll)
     Discord.roll_message(name, result, opts)
   end
 
