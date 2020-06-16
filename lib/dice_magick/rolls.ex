@@ -26,7 +26,10 @@ defmodule DiceMagick.Rolls do
   def generate_result(%Roll{expression: expression} = roll, opts \\ []) do
     result = DiceMagick.Dice.roll!(expression)
 
-    if Keyword.get(opts, :record, true) do
+    # [fixme] We need to set up our tests to avoid
+    # `DBConnection.OwnershipError` rather than simply not running this in the
+    # test env
+    if Mix.env() != :test && Keyword.get(opts, :record, true) do
       Task.Supervisor.start_child(
         DiceMagick.DBTaskSupervisor,
         fn ->
