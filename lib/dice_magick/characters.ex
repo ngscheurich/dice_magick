@@ -160,7 +160,8 @@ defmodule DiceMagick.Characters do
     query =
       from c in Character,
         join: u in User,
-        on: u.discord_uid == ^discord_uid,
+        on: u.id == c.user_id,
+        where: u.discord_uid == ^discord_uid,
         where: c.discord_channel_id == ^discord_channel_id,
         limit: 1
 

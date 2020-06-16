@@ -10,6 +10,7 @@ defmodule DiceMagick.Discord.RollTest do
   end
 
   test "process/1 returns named roll outcome", %{msg: msg, user: user} do
+    insert(:character, discord_channel_id: "123456")
     character = insert(:character, name: "Dust", discord_channel_id: "123456", user: user)
     roll = %Rolls.Roll{name: "Stealth Check", expression: "1d20 + 2", character_id: character.id}
     opts = [character_id: character.id, state: %{rolls: [roll]}]
@@ -22,6 +23,7 @@ defmodule DiceMagick.Discord.RollTest do
   end
 
   test "process/1 returns ad-hoc roll outcome", %{msg: msg, user: user} do
+    insert(:character, discord_channel_id: "123456")
     insert(:character, name: "Dust", discord_channel_id: "123456", user: user)
     assert {:ok, message} = Discord.Roll.process(["3d4"], msg)
     regex = ~r/^\*\*Dust\*\* rolls `3d4`…\n:game_die: Result:/
