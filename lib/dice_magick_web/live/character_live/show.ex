@@ -169,6 +169,7 @@ defmodule DiceMagickWeb.CharacterLive.Show do
             Enum.any?(roll.tags, &Enum.member?(active_tags, &1))
           end)
       end
+      |> Enum.sort_by(&String.first(&1.name))
 
     rolls = Enum.filter(all_rolls, fn roll -> !Enum.member?(active_rolls, roll) end)
 
@@ -219,7 +220,9 @@ defmodule DiceMagickWeb.CharacterLive.Show do
 
   @spec favorites([map]) :: {[map], [map]}
   defp favorites(rolls) do
-    Enum.reduce(rolls, {[], []}, fn cur, {favorites, rest} ->
+    rolls
+    |> Enum.sort_by(&String.first(&1.name))
+    |> Enum.reduce({[], []}, fn cur, {favorites, rest} ->
       case cur.favorite do
         true -> {favorites ++ [cur], rest}
         false -> {favorites, rest ++ [cur]}
