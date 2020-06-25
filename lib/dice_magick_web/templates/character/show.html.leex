@@ -1,3 +1,63 @@
+<%= if @selected do %>
+  <div phx-click="deselect" class="modal-wrapper w-screen h-screen fixed">
+  </div>
+  <section class="modal-content p-10 bg-neutral-200 rounded-sm shadow-xl">
+    <div class="flex items-center mb-6 justify-between">
+      <h1 class="text-2xl font-semibold"><%= @selected.name %></h1>
+      <div>
+        <p class="text-sm font-mono bg-neutral-300 px-4 py-2 inline text-neutral-800 font-semibold">
+          <%= @selected.expression %>
+        </p>
+      </div>
+    </div>
+
+    <div class="font-mono">
+      <table class="table-auto w-full text-sm text-neutral-800">
+        <tr>
+          <th class="border-neutral-400 border px-4 py-2 font-semibold" scope="row">Times Rolled</th>
+          <td class="border-neutral-400 border px-4 py-2 text-neutral-900"><%= @selected.times_rolled %></td>
+        </tr>
+        <tr class="bg-neutral-300">
+          <th class="border-neutral-400 border px-4 py-2 font-semibold" scope="row">Average Roll</th>
+          <td class="border-neutral-400 border px4 py-2 text-neutral-900"><%= @selected.average_roll %></td>
+        </tr>
+        <tr>
+          <th class="border-neutral-400 border px-4 py-2 font-semibold" scope="row">Highest Roll</th>
+          <td class="border-neutral-400 border px-4 py-2 text-neutral-900"><%= @selected.highest_roll %></td>
+        </tr>
+        <tr>
+        <tr class="bg-neutral-300">
+          <th class="border-neutral-400 border px-4 py-2 font-semibold" scope="row">Lowest Roll</th>
+          <td class="border-neutral-400 border px-4 py-2 text-neutral-900"><%= @selected.lowest_roll %></td>
+        </tr>
+      </table>
+
+      <div class="flex mt-12">
+        <button phx-click="roll"
+                phx-value-name="<%= @selected.name %>"
+                phx-value-type="disadvantage"
+                class="text-xs text-neutral-200 bg-secondary-500 rounded-sm px-6 flex items-center">
+          <span class="fa fa-angle-double-down mr-2"></span>
+          DIS
+        </button>
+        <button phx-click="roll"
+                phx-value-name="<%= @selected.name %>"
+                class="btn text-sm mx-4">
+          <span class="fa fa-dice-d20 mr-2"></span>
+          Roll
+        </button>
+        <button phx-click="roll"
+                phx-value-name="<%= @selected.name %>"
+                phx-value-type="advantage"
+                class="text-xs text-neutral-200 bg-secondary-500 rounded-sm px-6 flex items-center">
+          <span class="fa fa-angle-double-up mr-2"></span>
+          ADV
+        </button>
+      </div>
+    </div>
+  </section>
+<% end %>
+
 <div class="show-details bg-primary-500 relative">
   <div class="circle-wrapper">
     <div class="bg-circle"></div>
@@ -10,14 +70,24 @@
 <div class="section flex items-start">
   <div class="grid grid-cols-3 gap-4" style="flex: 3;">
     <%= for roll <- @rolls do %>
-      <button class="roll-btn" phx-click="roll" phx-value-name="<%= roll.name %>">
-        <%= if roll.favorite do %>
-          <span class="text-highlight mr-3">✭</span>
-        <% else %>
-          <span class="text-neutral-600 mr-3">✩</span>
-        <% end %>
-        <%= roll.name %>
-      </button>
+			<div class="roll-btn active flex items-center justify-between">
+          <button phx-click="roll" phx-value-name="<%= roll.name %>">
+            <div>
+              <%= if roll.favorite do %>
+                <span class="text-highlight mr-3">✭</span>
+              <% else %>
+                <span class="text-highlight mr-3">✩</span>
+              <% end %>
+              <%= roll.name %>
+            </div>
+          </button>
+
+          <button phx-click="select"
+                  phx-value-name="<%= roll.name %>"
+                  phx-value-expression="<%= roll.expression %>">
+                  <span class="fa fa-info-circle opacity-25"></span>
+          </button>
+        </div>
     <% end %>
   </div>
 

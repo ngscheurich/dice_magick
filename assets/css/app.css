@@ -81,7 +81,7 @@
 }
 
 .btn {
-  @apply bg-primary-500 text-neutral-400 px-12 py-2 rounded-sm inline-flex items-center;
+  @apply bg-primary-500 text-neutral-200 px-12 py-2 rounded-sm inline-flex items-center;
 }
 
 .btn:hover {
@@ -161,4 +161,19 @@
 
 .tag--active {
   @apply bg-primary-800;
+}
+
+
+.modal-wrapper {
+  background: #000c;
+  z-index: 9999;
+}
+
+.modal-content {
+  position: absolute;
+  z-index: 9999;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -30%);
+  box-shadow: 0 6px 20px black;
 }

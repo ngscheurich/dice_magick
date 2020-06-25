@@ -41,4 +41,30 @@ defmodule DiceMagick.RollsTest do
 
     # [todo] Add tests for `Rolls.result_for_roll/1`.
   end
+
+  test "get_roll_stats/2 returns the stats if there are results" do
+    character = insert(:character)
+    %Rolls.Roll{name: "Persuasion", expression: "1d20 + 2"}
+
+    Enum.each([13, 2, 17], &insert(:result, name: "Persuasion", total: &1, character: character))
+
+    assert Rolls.get_roll_stats(character, "Persuasion") == %{
+             times_rolled: 3,
+             lowest_roll: 2,
+             highest_roll: 17,
+             average_roll: 11
+           }
+  end
+
+  test "get_roll_stats/2 returns empty stats if no results" do
+    character = insert(:character)
+    %Rolls.Roll{name: "Persuasion", expression: "1d20 + 2"}
+
+    assert Rolls.get_roll_stats(character, "Persuasion") == %{
+             times_rolled: 0,
+             lowest_roll: nil,
+             highest_roll: nil,
+             average_roll: 0
+           }
+  end
 end
