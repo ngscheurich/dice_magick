@@ -4,8 +4,11 @@ defmodule DiceMagick.Rolls do
   `DiceMagick.Rolls.Result`s.
   """
 
+  import Ecto.Query
+
   alias DiceMagick.Rolls.{Result, Roll}
   alias DiceMagick.Characters
+  alias Characters.Character
   alias DiceMagick.Repo
 
   @doc """
@@ -82,8 +85,8 @@ defmodule DiceMagick.Rolls do
       nil
 
   """
-  @spec get_roll_by_name(Characters.Character.t(), String.t()) :: Roll.t() | nil
-  def get_roll_by_name(%Characters.Character{id: character_id}, roll_name) do
+  @spec get_roll_by_name(Character.t(), String.t()) :: Roll.t() | nil
+  def get_roll_by_name(%Character{id: character_id}, roll_name) do
     character_id
     |> Characters.Worker.state()
     |> Map.get(:rolls)
@@ -107,5 +110,39 @@ defmodule DiceMagick.Rolls do
   def roll(input) do
     %{total: total} = DiceMagick.Dice.roll!(input)
     total
+  end
+
+
+
+  @doc """
+  [todo] Write documentation.
+  """
+  @spec get_roll_stats(Character.t(), String.t()) :: map
+  def get_roll_stats(%Character{id: character_id}, roll_name) do
+    # [todo] Should we group results on character ID, name, _and_ expression?
+    query =
+      from r in Result,
+        where: r.character_id == ^character_id,
+        where: r.name == ^roll_name
+
+    totals =
+      query
+      |> Repo.all()
+      |> Enum.map(& &1.total)
+      |> Enum.sort()
+
+    count = Enum.count(totals)
+    sum = Enum.sum(totals)
+
+    %{
+      times_rolled: count,
+      lowest_roll: List.first(totals),
+      highest_roll: List.last(totals),
+      average_roll:
+        case Enum.sum(totals) do
+          0 -> 0
+          sum -> round(sum / count)
+        end
+    }
   end
 end

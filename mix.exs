@@ -46,7 +46,7 @@ defmodule DiceMagick.MixProject do
       {:jason, "~> 1.1"},
       {:nimble_csv, "~> 0.6"},
       {:nimble_parsec, "~> 0.5"},
-      {:nostrum, "~> 0.4"},
+      {:nostrum, git: "https://github.com/Kraigie/nostrum.git"},
       {:phoenix, "~> 1.5.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},
