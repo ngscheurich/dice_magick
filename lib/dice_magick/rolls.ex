@@ -112,8 +112,6 @@ defmodule DiceMagick.Rolls do
     total
   end
 
-
-
   @doc """
   [todo] Write documentation.
   """
@@ -132,7 +130,6 @@ defmodule DiceMagick.Rolls do
       |> Enum.sort()
 
     count = Enum.count(totals)
-    sum = Enum.sum(totals)
 
     %{
       times_rolled: count,
