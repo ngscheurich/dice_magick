@@ -1,6 +1,6 @@
 <div class="bg-neutral-200 text-lg">
   <section class="section">
-    <h1 class="text-xl font-bold mb-5">Your Characters</h1>
+    <h1 class="text-2xl font-serif font-bold mb-5">Your Characters</h1>
     <%= if Enum.empty?(@characters) do %>
       <p class="text-gray-600 mb-5">Looks like no one’s home.</p>
     <% else %>

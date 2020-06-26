@@ -53,14 +53,14 @@
   top: 0;
   left: 0;
   z-index: 0;
-  overflow: hidden;
 }
 
 .bg-circle {
-  background: top right / 322px 322px no-repeat url(/images/magick_circle.svg);
+  background: top right / 290px 290px no-repeat url(/images/magick_circle.svg);
   margin: 20px auto 0;
-  height: 100%;
-  max-width: 60rem;
+  height: 110%;
+  opacity: 0.5;
+  max-width: 70rem;
 }
 
 .section {
@@ -81,7 +81,7 @@
 }
 
 .btn {
-  @apply bg-primary-500 text-neutral-200 px-12 py-2 rounded-sm inline-flex items-center;
+  @apply bg-primary-500 font-sans text-neutral-200 px-6 py-2 rounded-sm inline-flex items-center;
 }
 
 .btn:hover {
@@ -101,28 +101,27 @@
 }
 
 .roll-btn {
-  @apply text-neutral-200 px-3 py-2 rounded-sm inline-flex items-center border;
+  @apply text-neutral-900 bg-neutral-300 px-3 py-2 rounded-sm inline-flex items-center border-neutral-800;
 
-  background-color: #ffffff08;
-  border-color: #000;
   border-bottom-width: 3px;
 }
 
 .roll-btn:hover {
-  background-color: #ffffff12;
+  @apply bg-neutral-400;
+
   transition: background-color 0.2s;
 }
 
 .roll-btn--active {
-  @apply bg-secondary-500 border-primary-700;
+  @apply bg-secondary-200 text-neutral-900 border-primary-700;
 }
 
 .roll-btn--active:hover {
-  @apply bg-secondary-400;
+  @apply bg-secondary-300;
 }
 
 .sync-btn {
-  @apply font-mono text-xs text-neutral-300 rounded-sm bg-dark-300 px-4 py-2;
+  @apply font-mono text-xs text-neutral-300 rounded-sm bg-dark-300 px-4 py-2 antialiased;
 
   transition: background-color 0.2s;
 }
@@ -139,10 +138,6 @@
   @apply bg-dark-500;
 }
 
-.show-details {
-  border-top: 4px solid hsla(360, 14%, 5%, 0.4);
-}
-
 .character-header {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
@@ -150,19 +145,18 @@
 }
 
 .tag {
-  @apply mr-1 mb-2 px-4 py-1 rounded-full leading-tight text-xs font-mono bg-primary-600 text-primary-300;
+  @apply mr-1 mb-2 px-4 py-1 rounded-full leading-tight text-xs font-mono bg-primary-300 text-primary-900 antialiased;
 }
 
 .tag:hover {
-  @apply bg-primary-700;
+  @apply bg-primary-400;
 
   transition: background-color 0.2s;
 }
 
 .tag--active {
-  @apply bg-primary-800;
+  @apply bg-primary-600 text-primary-100;
 }
-
 
 .modal-wrapper {
   background: #000c;
