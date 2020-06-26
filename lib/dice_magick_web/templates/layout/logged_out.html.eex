@@ -1,11 +1,11 @@
-<body class="font-serif text-light antialiased font-thin flex w-screen h-screen items-center justify-center bg-dark-200 text-neutral-500 bg-plant">
+<body class="font-serif text-light antialiased font-thin flex w-screen h-screen items-center justify-center bg-dark-200 text-secondary-300 bg-plant">
   <main role="main">
-    <h1 class="text-4xl text-center mb-20">Perish all who gaze upon the Dice Wizard.</h1>
-    <p class="bg-keys text-3xl text-center text-neutral-400 mb-10"><strong class="font-medium">Will you log in with Discord?</strong></p>
+    <h1 class="text-3xl text-center mb-20">Perish all who gaze upon<br> the Dice Wizard.</h1>
+    <p class="bg-keys text-2xl text-center text-secondary-200 mb-10"><strong class="">Will you log in with Discord?</strong></p>
 
     <div class="flex justify-center">
-      <%= link "Yes", to: discord_oauth_url(), class: "btn text-2xl font-medium uppercase tracking-wider mr-6" %>
-      <%= link "No", to: "#", class: "btn btn--ghost text-2xl font-medium uppercase tracking-wider" %>
+      <%= link "Yes", to: discord_oauth_url(), class: "btn font-sans font-bold text-2xl uppercase tracking-wider mr-6" %>
+      <%= link "No", to: "#", class: "btn btn--ghost font-sans font-bold text-2xl uppercase tracking-wider" %>
     </div>
   </main>
 </body>
