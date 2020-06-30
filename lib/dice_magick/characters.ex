@@ -139,6 +139,7 @@ defmodule DiceMagick.Characters do
   @spec source_for_type(atom) :: atom
   def source_for_type(:test), do: Sources.Test
   def source_for_type(:google_sheets), do: Sources.GoogleSheets
+  def source_for_type(:tintagel_5e), do: Sources.Tintagel5E
 
   @doc """
   Gets the `DiceMagick.Characters.Character` for the given `discord_uid` and

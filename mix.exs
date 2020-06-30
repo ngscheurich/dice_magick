@@ -42,6 +42,8 @@ defmodule DiceMagick.MixProject do
       {:ex_machina, "~> 2.4"},
       {:floki, ">= 0.0.0", only: :test},
       {:gettext, "~> 0.11"},
+      {:google_api_sheets, "~> 0.22"},
+      {:goth, "~> 1.2.0"},
       {:httpoison, "~> 1.6"},
       {:jason, "~> 1.1"},
       {:nimble_csv, "~> 0.6"},
