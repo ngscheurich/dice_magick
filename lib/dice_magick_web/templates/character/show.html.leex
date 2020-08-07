@@ -1,116 +1,25 @@
-<%= if @selected do %>
-  <div phx-click="deselect" class="modal-wrapper w-screen h-screen fixed">
-  </div>
-  <section class="modal-content p-10 bg-neutral-200 rounded-sm shadow-xl">
-    <div class="flex items-center mb-6 justify-between">
-      <h1 class="text-2xl font-semibold"><%= @selected.name %></h1>
-      <div>
-        <p class="text-sm font-mono bg-neutral-300 px-4 py-2 inline text-neutral-800 font-semibold">
-          <%= @selected.expression %>
-        </p>
-      </div>
-    </div>
+<%= render "header.html", assigns %>
+<%= render "active_rolls.html", rolls: @active_rolls %>
 
-    <div class="font-mono">
-      <table class="table-auto w-full text-sm text-neutral-800">
-        <tr>
-          <th class="border-neutral-400 border px-4 py-2 font-semibold" scope="row">Times Rolled</th>
-          <td class="border-neutral-400 border px-4 py-2 text-neutral-900"><%= @selected.times_rolled %></td>
-        </tr>
-        <tr class="bg-neutral-300">
-          <th class="border-neutral-400 border px-4 py-2 font-semibold" scope="row">Average Roll</th>
-          <td class="border-neutral-400 border px4 py-2 text-neutral-900"><%= @selected.average_roll %></td>
-        </tr>
-        <tr>
-          <th class="border-neutral-400 border px-4 py-2 font-semibold" scope="row">Highest Roll</th>
-          <td class="border-neutral-400 border px-4 py-2 text-neutral-900"><%= @selected.highest_roll %></td>
-        </tr>
-        <tr>
-        <tr class="bg-neutral-300">
-          <th class="border-neutral-400 border px-4 py-2 font-semibold" scope="row">Lowest Roll</th>
-          <td class="border-neutral-400 border px-4 py-2 text-neutral-900"><%= @selected.lowest_roll %></td>
-        </tr>
-      </table>
-
-      <div class="flex mt-12">
-        <button phx-click="roll"
-                phx-value-name="<%= @selected.name %>"
-                phx-value-type="disadvantage"
-                class="text-xs text-neutral-200 bg-secondary-500 rounded-sm px-6 flex items-center">
-          <span class="fa fa-angle-double-down mr-2"></span>
-          DIS
-        </button>
-        <button phx-click="roll"
-                phx-value-name="<%= @selected.name %>"
-                class="btn text-sm mx-4">
-          <span class="fa fa-dice-d20 mr-2"></span>
-          Roll
-        </button>
-        <button phx-click="roll"
-                phx-value-name="<%= @selected.name %>"
-                phx-value-type="advantage"
-                class="text-xs text-neutral-200 bg-secondary-500 rounded-sm px-6 flex items-center">
-          <span class="fa fa-angle-double-up mr-2"></span>
-          ADV
-        </button>
-      </div>
-    </div>
-  </section>
+<%= for roll <- @rolls do %>
+  <button phx-click="roll" phx-value-name="<%= roll.name %>">
+    <%= if roll.favorite do %>
+      <span>✭</span>
+    <% else %>
+      <span>✩</span>
+    <% end %>
+    <%= roll.name %>
+  </button>
 <% end %>
 
-<div class="show-details relative">
-  <div class="circle-wrapper">
-    <div class="bg-circle"></div>
-  </div>
-
-  <%= render "header.html", assigns %>
-  <%= render "active_rolls.html", rolls: @active_rolls %>
-</div>
-
-<div class="section flex items-start">
-  <div class="grid grid-cols-3 gap-4" style="flex: 3;">
-    <%= for roll <- @rolls do %>
-			<div class="roll-btn active flex items-center justify-between">
-          <button phx-click="roll" phx-value-name="<%= roll.name %>">
-            <div>
-              <%= if roll.favorite do %>
-                <span class="text-highlight mr-3">✭</span>
-              <% else %>
-                <span class="text-highlight mr-3">✩</span>
-              <% end %>
-              <%= roll.name %>
-            </div>
-          </button>
-
-          <button phx-click="select"
-                  phx-value-name="<%= roll.name %>"
-                  phx-value-expression="<%= roll.expression %>">
-                  <span class="fa fa-info-circle opacity-25"></span>
-          </button>
-        </div>
+<section>
+  <h1>Recent Results</h1>
+  <ul>
+    <%= for result <- @roll_results do %>
+      <li>
+        <%= result.name %>
+        <%=  result.total %>
+      </li>
     <% end %>
-  </div>
-
-  <section class="flex-1">
-    <div class="ml-4 bg-neutral-200">
-      <div class="bg-neutral-200 px-4 pt-3">
-        <h1 class="font-mono font-semibold text-sm text-primary-900 uppercase tracking-wide">Recent Results</h1>
-      </div>
-      <ul class="p-4 pt-2">
-        <%= for result <- @roll_results do %>
-          <li class="font-mono text-sm mb-1">
-            <span class="text-neutral-800"><%= result.name %></span>
-            <% color =
-                 cond do
-                   result.total > 15 -> "highlight"
-                   result.total >= 10 -> "secondary-300"
-                   true -> "primary-400"
-                 end
-            %>
-            <span class="text-<%= color %>"><%=  result.total %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </section>
-</div>
+  </ul>
+</section>

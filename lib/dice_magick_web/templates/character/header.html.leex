@@ -1,44 +1,29 @@
-<div class="mb-8">
-  <section class="section relative">
-    <div class="character-header">
-      <div>
-        <h1 class="text-4xl leading-tight mb-1 font-semibold text-primary-900 font-serif">
-          <%= link @character.name, to: Routes.live_path(@socket, CharacterLive.Edit, @character) %>
-        </h1>
+<section>
+  <h1>
+    <%= link @character.name, to: Routes.live_path(@socket, CharacterLive.Edit, @character) %>
+  </h1>
 
-        <dl class="font-mono text-sm text-primary-900">
-          <dt class="inline font-semibold">Source:</dt>
-          <dd class="inline">
-          <%= link "Google Sheets", class: "text-primary-800 border-b border-primary-600", target: "_blank",
-                to: "https://docs.google.com/spreadsheets/d/#{@character.source_params["key"]}" %>
-          </dd>
-        </dl>
+  <dl>
+    <dt>Source:</dt>
+    <dd>
+      <%= link "Google Sheets", target: "_blank", to: "https://docs.google.com/spreadsheets/d/#{@character.source_params["key"]}" %>
+    </dd>
+  </dl>
 
-        <dl class="font-mono text-sm text-primary-900">
-          <dt class="inline font-semibold">Updated:</dt>
-          <dd class="inline"><%= @synced_at %></dd>
-        </dl>
-      </div>
+  <dl>
+    <dt>Updated:</dt>
+    <dd><%= @synced_at %></dd>
+  </dl>
 
-      <div>
-        <div>
-          <%= for tag <- @tags do %>
-            <button
-              class="tag inline-block<%= if Enum.member?(@active_tags, tag), do: " tag--active" %>"
-              phx-value-tag="<%= tag %>"
-              phx-click="apply-tag">
-              <%= tag %>
-            </button>
-          <% end %>
-        </div>
-      </div>
+  <%= for tag <- @tags do %>
+    <button
+      phx-value-tag="<%= tag %>"
+      phx-click="apply-tag">
+      <%= tag %>
+    </button>
+  <% end %>
 
-      <div class="flex justify-end items-start">
-        <button phx-click="sync" phx-throttle="3000" class="sync-btn<%= unless @allow_sync, do: " sync-btn--working" %>">
-            <span class="fas fa-sync mr-2 text-neutral-500<%= unless @allow_sync, do: " fa-spin" %>"></span>
-            Sync Rolls
-        </button>
-      </div>
-    </div>
-  </section>
-</div>
+  <button phx-click="sync" phx-throttle="3000">
+    Sync Rolls
+  </button>
+</section>

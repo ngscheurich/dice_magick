@@ -1,16 +1,11 @@
-<div class="bg-neutral-200 text-lg">
-  <section class="section">
-    <h1 class="text-xl font-bold mb-5">Create a Character</h1>
+<section>
+  <h1>Create a Character</h1>
 
-    <div class="mb-10">
-      <%= render "form.html", assigns %>
-    </div>
+  <div>
+    <%= render "form.html", assigns %>
+  </div>
 
-    <div class="flex items-center">
-      <span class="fas fa-chevron-left mr-3"></span>
-      <%= link to: Routes.character_path(@socket, :index), class: "link link--secondary text-base" do %>
-        Never mind
-      <% end %>
-      <div>
-  </section>
-</div>
+  <%= link to: Routes.character_path(@socket, :index) do %>
+    Never mind
+  <% end %>
+</section>

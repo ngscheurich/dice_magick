@@ -1,14 +1,12 @@
-<div class="bg-neutral-200 text-lg">
-  <section class="section">
-    <h1 class="text-2xl font-serif font-bold mb-5">Your Characters</h1>
-    <%= if Enum.empty?(@characters) do %>
-      <p class="text-gray-600 mb-5">Looks like no one’s home.</p>
-    <% else %>
-      <ul class="mb-8 list-disc">
-        <%= for character <- @characters do %>
-          <li class="mb-1"><%= link character.name, to: Routes.live_path(@conn, CharacterLive.Show, character), class: "link" %></li>
-        <% end %>
-      </ul>
-    <% end %>
-  </section>
-</div>
+<section>
+  <h1>Your Characters</h1>
+  <%= if Enum.empty?(@characters) do %>
+    <p>Looks like no one’s home.</p>
+  <% else %>
+    <ul>
+      <%= for character <- @characters do %>
+        <li><%= link character.name, to: Routes.live_path(@conn, CharacterLive.Show, character), class: "link" %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</section>
