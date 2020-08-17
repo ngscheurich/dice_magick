@@ -5,11 +5,12 @@
     "deploy": "webpack --mode production",
     "watch": "webpack --mode development --watch"
   },
+  "browserslist": "last 2 versions",
   "dependencies": {
+    "nprogress": "^0.2.0",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
-    "phoenix_live_view": "file:../deps/phoenix_live_view",
-    "nprogress": "^0.2.0"
+    "phoenix_live_view": "file:../deps/phoenix_live_view"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -26,8 +27,10 @@
     "json-schema": "^0.2.5",
     "mini-css-extract-plugin": "^0.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.1",
+    "postcss-normalize": "^9.0.0",
     "postcss-preset-env": "^6.7.0",
     "prettier": "^2.0.5",
     "stylelint": "^13.3.3",
