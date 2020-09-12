@@ -23,9 +23,9 @@ defmodule DiceMagickWeb.CharacterLive.Show do
     state = %{
       character: character,
       rolls: rolls,
-      active_rolls: favorites,
+      pinned_rolls: favorites,
       tags: state.tags,
-      active_tags: [],
+      pinned_tags: [],
       allow_sync: true,
       synced_at: synced_at,
       roll_results: trim_results(character.roll_results),
@@ -148,33 +148,33 @@ defmodule DiceMagickWeb.CharacterLive.Show do
 
   @impl true
   def handle_event("apply-tag", %{"tag" => tag}, socket) do
-    %{assigns: %{rolls: rolls, active_rolls: active_rolls, active_tags: active_tags}} = socket
+    %{assigns: %{rolls: rolls, pinned_rolls: pinned_rolls, pinned_tags: pinned_tags}} = socket
 
-    active_tags =
-      case Enum.member?(active_tags, tag) do
-        true -> Enum.filter(active_tags, &(&1 != tag))
-        false -> active_tags ++ [tag]
+    pinned_tags =
+      case Enum.member?(pinned_tags, tag) do
+        true -> Enum.filter(pinned_tags, &(&1 != tag))
+        false -> pinned_tags ++ [tag]
       end
 
-    all_rolls = active_rolls ++ rolls
+    all_rolls = pinned_rolls ++ rolls
 
-    active_rolls =
-      case Enum.count(active_tags) do
+    pinned_rolls =
+      case Enum.count(pinned_tags) do
         0 ->
           {favorites, _} = favorites(all_rolls)
           favorites
 
         _ ->
           Enum.filter(all_rolls, fn roll ->
-            Enum.any?(roll.tags, &Enum.member?(active_tags, &1))
+            Enum.any?(roll.tags, &Enum.member?(pinned_tags, &1))
           end)
       end
       |> Enum.sort_by(&String.first(&1.name))
 
-    rolls = Enum.filter(all_rolls, fn roll -> !Enum.member?(active_rolls, roll) end)
+    rolls = Enum.filter(all_rolls, fn roll -> !Enum.member?(pinned_rolls, roll) end)
 
     {:noreply,
-     assign(socket, %{active_tags: active_tags, rolls: rolls, active_rolls: active_rolls})}
+     assign(socket, %{pinned_tags: pinned_tags, rolls: rolls, pinned_rolls: pinned_rolls})}
   end
 
   @impl true
@@ -206,11 +206,11 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   defp roll(name, assigns) do
     %{
       character: character,
-      active_rolls: active_rolls,
+      pinned_rolls: pinned_rolls,
       rolls: rolls
     } = assigns
 
-    all_rolls = rolls ++ active_rolls
+    all_rolls = rolls ++ pinned_rolls
 
     [roll] = Enum.filter(all_rolls, &(&1.name == name))
     roll = %{roll | character_id: character.id}

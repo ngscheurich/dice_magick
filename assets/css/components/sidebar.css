@@ -1,0 +1,52 @@
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  padding: 6rem 2rem 2rem;
+  background-color: var(--base02);
+  color: var(--base2);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  &__character {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 2rem;
+  }
+
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+  }
+
+  &__color {
+    position: absolute;
+    right: 0.5rem;
+    bottom: -1rem;
+    width: 36px;
+    height: 36px;
+    background-color: var(--primary);
+    border-radius: 100px;
+  }
+
+  &__name {
+    margin-bottom: 4rem;
+    font: 3rem/1.15 var(--display);
+  }
+
+  &__info {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+
+    dl {
+      margin: 0 0 0.5rem;
+    }
+
+    dt,
+    dd {
+      display: inline;
+      margin-left: 0;
+    }
+  }
+}

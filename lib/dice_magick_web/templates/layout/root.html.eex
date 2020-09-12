@@ -7,9 +7,7 @@
     <title><%= assigns[:page_title] || "🎲 DiceMagick" %></title>
     <link href="<%= Routes.static_path(@conn, "/css/app.css") %>" rel="stylesheet">
     <script src="https://kit.fontawesome.com/7cd415e281.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,500&family=DM+Sans:wght@400;700&family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
-    <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
     <%= csrf_meta_tag() %>
   </head>
 
@@ -19,4 +17,3 @@
     <%= render "logged_out.html" %>
   <% end %>
 </html>
-

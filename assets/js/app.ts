@@ -4,8 +4,10 @@ import { Socket } from "phoenix";
 import LiveSocket from "phoenix_live_view";
 import NProgress from "nprogress";
 
-import "../css/app.css";
+import "./color-picker.ts";
 import "phoenix_html";
+
+import "../css/app.css";
 
 declare global {
   interface Window {

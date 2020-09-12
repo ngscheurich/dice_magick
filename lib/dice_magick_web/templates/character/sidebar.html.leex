@@ -1,0 +1,29 @@
+<section class="sidebar">
+  <div class="sidebar__character">
+    <img class="sidebar__avatar" src="/images/dust.png" />
+    <div class="sidebar__color"></div>
+  </div>
+
+  <h1 class="sidebar__name">
+    Dust the Archivist
+    <%# <%= link @character.name, to: Routes.live_path(@socket, CharacterLive.Edit, @character) %1> %>
+  </h1>
+
+  <div class="sidebar__info">
+    <dl>
+      <dt>Source:</dt>
+      <dd>
+      <%= link "Google Sheets", target: "_blank", to: "https://docs.google.com/spreadsheets/d/#{@character.source_params["key"]}" %>
+      </dd>
+    </dl>
+
+    <dl>
+      <dt>Updated:</dt>
+      <dd><%= @synced_at %></dd>
+    </dl>
+  </div>
+
+  <button phx-click="sync" phx-throttle="3000">
+    Sync Rolls
+  </button>
+</section>

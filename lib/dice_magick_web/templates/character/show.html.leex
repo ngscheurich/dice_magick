@@ -1,25 +1,49 @@
-<%= render "header.html", assigns %>
-<%= render "active_rolls.html", rolls: @active_rolls %>
+<div class="show">
+  <%= live_component(@socket,
+        DiceMagickWeb.CharacterLive.SidebarComponent,
+        character: @character, synced_at: @synced_at) %>
 
-<%= for roll <- @rolls do %>
-  <button phx-click="roll" phx-value-name="<%= roll.name %>">
-    <%= if roll.favorite do %>
-      <span>✭</span>
-    <% else %>
-      <span>✩</span>
-    <% end %>
-    <%= roll.name %>
-  </button>
-<% end %>
+  <div class="show__main">
+    <div class="show__upper">
+      <div class="show__tags">
+        <%= live_component(@socket,
+              DiceMagickWeb.CharacterLive.TagsComponent,
+              tags: @tags) %>
+      </div>
 
-<section>
-  <h1>Recent Results</h1>
-  <ul>
-    <%= for result <- @roll_results do %>
-      <li>
-        <%= result.name %>
-        <%=  result.total %>
-      </li>
-    <% end %>
-  </ul>
-</section>
+      <div class="show__pinned">
+        <%= live_component(@socket,
+              DiceMagickWeb.CharacterLive.PinnedRollsComponent,
+              rolls: @pinned_rolls) %>
+      </div>
+
+      <div class="show__deco magick-circle"></div>
+    </div>
+  </div>
+</div>
+
+<%#   <%= render "pinned_rolls.html", rolls: @pinned_rolls %1> %>
+
+  <%# <%= for roll <- @rolls do %1> %>
+  <%#   <button phx-click="roll" phx-value-name="<%= roll.name %1>"> %>
+    <%#     <%= if roll.favorite do %1> %>
+    <%#       <span>✭</span> %>
+    <%#     <% else %1> %>
+      <%#       <span>✩</span> %>
+      <%#     <% end %1> %>
+      <%#     <%= roll.name %1> %>
+      <%#   </button> %>
+    <%# <% end %1> %>
+
+    <%# <section> %>
+      <%#   <h1>Recent Results</h1> %>
+      <%#   <ul> %>
+        <%#     <%= for result <- @roll_results do %1> %>
+        <%#       <li> %>
+          <%#         <%= result.name %1> %>
+          <%#         <%=  result.total %1> %>
+          <%#       </li> %>
+        <%#     <% end %1> %>
+        <%#   </ul> %>
+      <%# </section> %>
+</div>

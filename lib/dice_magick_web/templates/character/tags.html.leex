@@ -1,0 +1,8 @@
+  <%= for tag <- @tags do %>
+    <button
+      class="tag"
+        phx-value-tag="<%= tag %>"
+        phx-click="apply-tag">
+        <%= tag %>
+      </button>
+  <% end %>
