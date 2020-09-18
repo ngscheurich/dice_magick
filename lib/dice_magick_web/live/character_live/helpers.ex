@@ -8,7 +8,16 @@ defmodule DiceMagickWeb.CharacterLive.Helpers do
   alias DiceMagickWeb.CharacterLive.State
 
   @doc """
-  TODO
+  Creates two sets of `DiceMagick.Rolls.Roll`s using the given `rolls`, one
+  containing all of the `Roll`s marked as `favorite`.
+
+  Both sets are returned as lists sorted by `name`.
+
+  ## Examples
+
+      iex> group_rolls_by_favorites(rolls)
+      {[%Roll{}, ...], [%Roll{}, ...]}
+
   """
   @spec group_rolls_by_favorites([Roll.t()]) :: {[Roll.t()], [Roll.t()]}
   def group_rolls_by_favorites(rolls) do
@@ -23,7 +32,16 @@ defmodule DiceMagickWeb.CharacterLive.Helpers do
   end
 
   @doc """
-  TODO
+  Creates two sets of `DiceMagick.Rolls.Roll`s using the given `rolls`, one
+  containing all of the `Roll`s tagged with one of the given `tags`.
+
+  Both sets are returned as lists sorted by `name`.
+
+  ## Examples
+
+      iex> group_rolls_by_tags(rolls)
+      {[%Roll{}, ...], [%Roll{}, ...]}
+
   """
   @spec group_rolls_by_tags([Roll.t()], [String.t()]) :: {[Roll.t()], [Roll.t()]}
   def group_rolls_by_tags(rolls, tags) do
@@ -48,23 +66,20 @@ defmodule DiceMagickWeb.CharacterLive.Helpers do
   defp sort_rolls(rolls), do: Enum.sort_by(rolls, &String.first(&1.name))
 
   @doc """
-  TODO
-  """
-  @spec trim_results([Rolls.Result.t()]) :: [Rolls.Result.t()]
-  def trim_results([]), do: []
+  Returns a relatively-formatted representation of the given `datetime`.
 
-  def trim_results(results) do
-    results
-    |> Enum.chunk_every(12)
-    |> List.first()
-  end
+  ## Examples
 
-  @doc """
-  TODO
+      iex> format_synced_at(datetime)
+      "2 minutes ago"
+
+      iex> format_synced_at(datetime)
+      "About a month ago"
+
   """
   @spec format_synced_at(DateTime.t()) :: String.t()
-  def format_synced_at(dt) do
-    case Timex.Format.DateTime.Formatters.Relative.format!(dt, "{relative}") do
+  def format_synced_at(datetime) do
+    case Timex.Format.DateTime.Formatters.Relative.format!(datetime, "{relative}") do
       "now" -> "Just now"
       str -> str
     end
@@ -73,7 +88,33 @@ defmodule DiceMagickWeb.CharacterLive.Helpers do
   @type roll_opts() :: [times: integer(), comparison_fun: String.t()]
 
   @doc """
-  TODO
+  Generates `DiceMagick.Rolls.Result`s for the `DiceMagickWeb.Rolls.Roll` named
+  `name` belonging to the given `DiceMagick.Characters.Character`.
+
+  The `Result` generation can be performed more than once, with a single
+  `Result` being returned based on the given `comparison_fun`.
+
+  For example, using `Kernel.>/2` and `Kernel.</2`, you could model the
+  advantage/disadvantage mechanic from Dungeons & Dragons 5th Edition.
+
+  The faces for each `Result` will always be returned along with the final
+  `Result`.
+
+  ## Options
+
+  * `times` - The number of times to roll, i.e. the number of `Result`s to
+    generate
+  * `comparison_fun` - A function that will be used to decide which `Result`
+    will be returned
+
+  ## Examples
+
+      iex> roll("Stealth Check", character)
+      {%Result{total: 10, expression: "1d20 + 3"}, [7]}
+
+      iex> roll("Stealth Check", character, times: 2, comparison_fun: &Kernel.>/2)
+      {%Result{total: 21, expression: "1d20 + 3"}, [2, 18]}
+
   """
   @spec roll(String.t(), State.t(), roll_opts()) :: {Result.t(), [integer()]}
   def roll(name, %State{character: character, rolls: rolls}, opts \\ []) do
@@ -92,22 +133,16 @@ defmodule DiceMagickWeb.CharacterLive.Helpers do
     |> process_results(comparison_fun)
   end
 
-  @doc """
-  TODO
-  """
   @spec get_roll_by_name!([Rolls.Roll.t()], String.t()) :: Rolls.Roll.t()
-  def get_roll_by_name!(rolls, name) do
+  defp get_roll_by_name!(rolls, name) do
     case Enum.find(rolls, &(&1.name == name)) do
       nil -> raise ~s(Could not find roll named "#{name}")
       roll -> roll
     end
   end
 
-  @doc """
-  TODO
-  """
   @spec process_results([Rolls.Result.t()], function()) :: {Rolls.Result.t(), [integer()]}
-  def process_results(results, comparison_fun) do
+  defp process_results(results, comparison_fun) do
     first = List.first(results)
 
     Enum.reduce(results, {first, []}, fn cur, {prev, faces} ->
