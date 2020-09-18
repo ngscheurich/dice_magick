@@ -8,7 +8,7 @@
   &__upper {
     position: relative;
     z-index: 1;
-    padding: 6rem 5rem 3rem;
+    padding: 6rem 4rem 3rem;
     background-color: var(--base1);
   }
 

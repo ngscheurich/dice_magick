@@ -1,5 +1,5 @@
 .magick-circle {
-  width: 267px;
-  height: 268px;
-  background: url(/images/magick_circle.svg);
+  width: 240px;
+  height: 240px;
+  background: center / contain url(/images/magick_circle.svg);
 }

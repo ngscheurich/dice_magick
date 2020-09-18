@@ -17,7 +17,7 @@ defmodule DiceMagick.Rolls do
 
   ## Options
 
-    * `record` - Asynchronously record the result as a `DiceMagick.Rolls.Result`?
+    * `record?` - Asynchronously record the result as a `DiceMagick.Rolls.Result`?
 
   ## Examples
 
@@ -25,14 +25,12 @@ defmodule DiceMagick.Rolls do
       %DiceMagick.Dice.Result{}
 
   """
-  @spec generate_result(Roll.t(), [{:record, boolean}]) :: DiceMagick.Dice.Result.t()
+  @spec generate_result(Roll.t(), [{:record?, boolean}]) :: DiceMagick.Dice.Result.t()
   def generate_result(%Roll{expression: expression} = roll, opts \\ []) do
     result = DiceMagick.Dice.roll!(expression)
+    record? = Keyword.get(opts, :record?, true)
 
-    # [fixme] We need to set up our tests to avoid
-    # `DBConnection.OwnershipError` rather than simply not running this in the
-    # test env
-    if Mix.env() != :test && Keyword.get(opts, :record, true) do
+    if Mix.env() != :test && record? do
       Task.Supervisor.start_child(
         DiceMagick.DBTaskSupervisor,
         fn ->
