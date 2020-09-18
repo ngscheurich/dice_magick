@@ -26,6 +26,7 @@ defmodule DiceMagickWeb.CharacterLive.State do
     tags: [],
     active_tags: [],
     allow_sync: true,
+    allow_roll: true,
     results: []
   ]
 
