@@ -5,12 +5,12 @@ defmodule DiceMagickWeb.CharacterLive.Show do
 
   use Phoenix.LiveView
 
-  alias DiceMagick.{Characters, Discord, Rolls}
-  alias DiceMagick.Characters.Character
+  alias DiceMagick.Characters
   alias DiceMagickWeb.CharacterLive.{State, Helpers}
 
   @sync_throttle 1000
   @roll_throttle 500
+  @results_shown 12
 
   @impl true
   def mount(%{"id" => character_id}, _session, socket) do
@@ -19,7 +19,7 @@ defmodule DiceMagickWeb.CharacterLive.Show do
 
     state = %State{
       character: character,
-      results: Helpers.trim_results(character.roll_results),
+      results: Enum.take(character.roll_results, @results_shown),
       synced_at:
         case state.synced_at do
           nil -> ""
@@ -64,49 +64,8 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   def handle_event("roll", %{"name" => name, "type" => "advantage"}, socket) do
     state = State.from_socket(socket)
     {result, _} = Helpers.roll(name, state, times: 2, comparison_fun: &Kernel.>/2)
-    Process.send_after(self(), :unblock, @throttle_time)
-    {:noreply, assign(socket, results: state.results ++ [result], allow_sync: false)}
-||||||| parent of 6a271cc... Modularize and improve UI code
-  def handle_event("roll", %{"name" => name, "type" => "advantage"}, socket) do
-    %{assigns: %{character: character, roll_results: results} = assigns} = socket
-
-    %{faces: [face1]} = result1 = roll(name, assigns)
-    %{faces: [face2]} = result2 = roll(name, assigns)
-
-    result = if result1.total > result2.total, do: result1, else: result2
-
-    roll_results = ([result] ++ results) |> trim_results()
-    last_result = result
-
-    message = """
-    **#{character.name}** rolls _#{name}_  (`#{result.expression}`) with **advantage**…
-    :game_die: Result: **#{result.total}** (`[#{face1}, #{face2}]`)
-    """
-
-    Discord.send_message(character.discord_channel_id, message)
-
-    Process.send_after(self(), :remove_highlight, 2000)
-
-    assigns = %{
-      roll_results: roll_results,
-      last_result: last_result,
-      last_highlighted: true,
-      selected: nil
-    }
-
-    {:noreply, assign(socket, assigns)}
-=======
-  def handle_event("roll", _params, %{assigns: %{allow_roll: false}} = socket) do
-    {:noreply, socket}
-  end
-
-  @impl true
-  def handle_event("roll", %{"name" => name, "type" => "advantage"}, socket) do
-    state = State.from_socket(socket)
-    {result, _} = Helpers.roll(name, state, times: 2, comparison_fun: &Kernel.>/2)
     Process.send_after(self(), :unblock_roll, @roll_throttle)
     {:noreply, assign(socket, results: state.results ++ [result], allow_roll: false)}
->>>>>>> 6a271cc... Modularize and improve UI code
   end
 
   @impl true
