@@ -1,6 +1,22 @@
 defmodule DiceMagick.Accounts.User do
   @moduledoc """
   A user of the application.
+
+  ## Fields
+
+  * `nickname` - How the `User` should be identified in the app UI
+  * `image` - An profile image
+  * `discord_uid` - Identifies the `User` in the context of Discord
+
+  ## Associations
+
+  * `characters` - The `DiceMagick.Characters.Character`s that belong to this `User`
+
+  ## Validations
+
+  * `nickname` - Required
+  * `discord_uid` - Required, unique
+
   """
 
   use DiceMagick.Schema
