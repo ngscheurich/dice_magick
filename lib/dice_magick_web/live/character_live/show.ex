@@ -1,6 +1,7 @@
 defmodule DiceMagickWeb.CharacterLive.Show do
   @moduledoc """
-  TODO
+  Implements `GenServer` callbacks to provide a `Phoenix.LiveView` module for
+  main application UI.
   """
 
   use Phoenix.LiveView
