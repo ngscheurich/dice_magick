@@ -4,8 +4,10 @@ defmodule DiceMagickWeb.CharacterLive.Helpers do
   """
 
   alias DiceMagick.Rolls
-  alias DiceMagick.Rolls.Roll
+  alias Rolls.Roll
+  alias Rolls.Characters.Character
   alias DiceMagickWeb.CharacterLive.State
+  alias DiceMagick.Discord
 
   @doc """
   Creates two sets of `DiceMagick.Rolls.Roll`s using the given `rolls`, one
@@ -145,10 +147,16 @@ defmodule DiceMagickWeb.CharacterLive.Helpers do
   defp process_results(results, comparison_fun) do
     first = List.first(results)
 
-    Enum.reduce(results, {first, []}, fn cur, {prev, faces} ->
-      next = if comparison_fun.(cur.total, prev.total), do: cur, else: prev
-      faces_total = Enum.reduce(cur.faces, &(&1 + &2))
-      {next, faces ++ [faces_total]}
+    Enum.reduce(results, first, fn cur, acc ->
+      if comparison_fun.(cur.total, acc.total), do: cur, else: acc
     end)
+  end
+
+  @doc "TODO"
+  @spec send_message(Rolls.Result.t(), Character.t(), keyword()) :: Rolls.Result.t()
+  def send_message(character, result, opts \\ []) do
+    msg = Discord.roll_message(character, result, opts)
+    Discord.send_message(character.discord_channel_id, msg)
+    result
   end
 end

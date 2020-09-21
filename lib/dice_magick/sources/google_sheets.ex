@@ -1,6 +1,7 @@
 defmodule DiceMagick.Sources.GoogleSheets do
   @moduledoc """
-  [todo] Add documentation.
+  Implements `DiceMagick.Sources.Source` to provide functions for retrieving
+  `DiceMagick.Rolls.Roll`s stored in a Google Sheets document.
 
   ## Params
 

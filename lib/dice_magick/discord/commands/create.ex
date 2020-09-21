@@ -1,4 +1,4 @@
-defmodule DiceMagick.Discord.Create do
+defmodule DiceMagick.Discord.Commands.Create do
   @moduledoc """
   Handles the `!create <NAME>` command.
 
@@ -25,7 +25,7 @@ defmodule DiceMagick.Discord.Create do
   @behaviour Discord.Command
 
   @impl true
-  def process([name], msg) do
+  def execute([name], msg) do
     discord_uid = to_string(msg.author.id)
     user = DiceMagick.Accounts.get_user_by_discord_uid!(discord_uid)
 

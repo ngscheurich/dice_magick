@@ -1,6 +1,27 @@
 defmodule DiceMagick.Rolls.Result do
   @moduledoc """
-  [todo] Write documentation
+  The outcome of a `DiceMagick.Rolls.Roll` being evaluated.
+
+  ## Fields
+
+  * `name` - The name of the `Roll`
+  * `expressions` - The dice expression that was evaluated
+  * `total` - The outcome of evaluating the `expression`
+  * `faces` - A list of die faces that were selected
+  * `tags` - A list of tags attached to the `Roll`
+  * `metadata` - The JSON metadata attached to the `Roll`
+
+  ## Associations
+
+  * `character` - The `DiceMagick.Characters.Character` the `Roll` belongs to
+
+  ## Validations
+
+  * `expression` - Required, must be valid
+  * `total` - Required
+  * `character_id` - Required
+  * `character` - Must exist
+
   """
 
   use DiceMagick.Schema

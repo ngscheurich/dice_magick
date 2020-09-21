@@ -34,10 +34,13 @@ defmodule DiceMagick.Sources.Tintagel5E do
     ranges = [
       # Ability Scores
       "Front!I9:K14",
+
       # Saving Throws
       "Front!N9:W14",
+
       # Skills
       "Front!B20:O37",
+
       # Weapons and Spells
       "Front!V29:BM34"
     ]

@@ -7,7 +7,9 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   use Phoenix.LiveView
 
   alias DiceMagick.Characters
+  alias Characters.Character
   alias DiceMagickWeb.CharacterLive.{State, Helpers}
+  alias DiceMagick.Discord
 
   @sync_throttle 1000
   @roll_throttle 500
@@ -64,7 +66,12 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   @impl true
   def handle_event("roll", %{"name" => name, "type" => "advantage"}, socket) do
     state = State.from_socket(socket)
-    {result, _} = Helpers.roll(name, state, times: 2, comparison_fun: &Kernel.>/2)
+
+    result =
+      name
+      |> Helpers.roll(state, times: 2, comparison_fun: &Kernel.>/2)
+      |> Helpers.send_message(state.character, variant: :advantage)
+
     Process.send_after(self(), :unblock_roll, @roll_throttle)
     {:noreply, assign(socket, results: state.results ++ [result], allow_roll: false)}
   end
@@ -72,7 +79,12 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   @impl true
   def handle_event("roll", %{"name" => name, "type" => "disadvantage"}, socket) do
     state = State.from_socket(socket)
-    {result, _} = Helpers.roll(name, state, times: 2, comparison_fun: &Kernel.</2)
+
+    result =
+      name
+      |> Helpers.roll(state, times: 2, comparison_fun: &Kernel.</2)
+      |> Helpers.send_message(state.character, variant: :disadvantage)
+
     Process.send_after(self(), :unblock_roll, @roll_throttle)
     {:noreply, assign(socket, results: state.results ++ [result], allow_roll: false)}
   end
@@ -80,7 +92,12 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   @impl true
   def handle_event("roll", %{"name" => name}, socket) do
     state = State.from_socket(socket)
-    {result, _} = Helpers.roll(name, state)
+
+    result =
+      name
+      |> Helpers.roll(state, times: 2)
+      |> Helpers.send_message(state.character)
+
     Process.send_after(self(), :unblock_roll, @roll_throttle)
     {:noreply, assign(socket, results: state.results ++ [result], allow_roll: false)}
   end

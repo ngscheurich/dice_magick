@@ -4,7 +4,7 @@ defmodule DiceMagick.Characters.Character do
 
   ## Fields
 
-    * `name` - The `DiceMagick.Characters.Character`’s name
+    * `name` - The `Character`’s name
     * `source_type` - The source from which to fetch rolls
     * `source_params` - Specifies how to fetch rolls from the source
     * `discord_channel_id` - Indicates the Discord channel this `Character` belongs to
