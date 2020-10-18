@@ -96,6 +96,7 @@ defmodule DiceMagickWeb.CharacterLive.Show do
     result =
       name
       |> Helpers.roll(state, times: 2)
+      |> IO.inspect()
       |> Helpers.send_message(state.character)
 
     Process.send_after(self(), :unblock_roll, @roll_throttle)

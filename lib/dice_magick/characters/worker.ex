@@ -52,18 +52,18 @@ defmodule DiceMagick.Characters.Worker do
   ## Client
 
   @doc """
-  Returns the name of the registered process for the given `id`.
+  Returns the name of the registered process for the given `character_id`.
   """
   @spec name(UUID.t()) :: {:global, {atom(), UUID.t()}}
-  def name(id), do: {:global, {__MODULE__, id}}
+  def name(character_id), do: {:global, {__MODULE__, character_id}}
 
   @doc """
   Returns the state of the worker process.
   """
   @spec state(String.t()) :: State.t()
-  def state(id) do
-    Characters.Supervisor.ensure_started(id)
-    GenServer.call(name(id), :state)
+  def state(character_id) do
+    Characters.Supervisor.ensure_started(character_id)
+    GenServer.call(name(character_id), :state)
   end
 
   @doc """
@@ -71,25 +71,25 @@ defmodule DiceMagick.Characters.Worker do
   updates that character's `DiceMagick.Rolls.Roll`s.
   """
   @spec update(String.t()) :: :ok
-  def update(id) do
-    Characters.Supervisor.ensure_started(id)
-    GenServer.cast(name(id), :update)
+  def update(character_id) do
+    Characters.Supervisor.ensure_started(character_id)
+    GenServer.cast(name(character_id), :update)
   end
 
   @doc """
   Similar to `update/1`, but performs the task synchronously.
   """
   @spec update_sync(String.t()) :: State.t()
-  def update_sync(id) do
-    Characters.Supervisor.ensure_started(id)
-    GenServer.call(name(id), :update)
+  def update_sync(character_id) do
+    Characters.Supervisor.ensure_started(character_id)
+    GenServer.call(name(character_id), :update)
   end
 
   @doc """
   Stops a worker process.
   """
   @spec stop(String.t()) :: :ok
-  def stop(id), do: GenServer.cast(name(id), :stop)
+  def stop(character_id), do: GenServer.cast(name(character_id), :stop)
 
   ## Server callbacks
 

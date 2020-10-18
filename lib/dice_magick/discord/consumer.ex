@@ -1,4 +1,4 @@
-defmodule DiceMagick.Discord.Server do
+defmodule DiceMagick.Discord.Consumer do
   @moduledoc """
   A `GenServer` that receives and responds to Discord messages.
   """
@@ -32,4 +32,8 @@ defmodule DiceMagick.Discord.Server do
     {_, message} = Commands.Sync.execute([], msg)
     Discord.send_dm!(msg.author.id, message)
   end
+
+  # TODO Maybe log these messages somewhere?
+  @impl true
+  def handle_event(_event), do: :ok
 end

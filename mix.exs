@@ -88,7 +88,7 @@ defmodule DiceMagick.MixProject do
         "Discord Bot": [
           DiceMagick.Discord.Command,
           DiceMagick.Discord.Create,
-          DiceMagick.Discord.Roll,
+          DiceMagick.Discord.Commands.Roll,
           DiceMagick.Discord.Sync
         ],
         "Data Sources": [

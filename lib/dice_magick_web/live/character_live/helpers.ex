@@ -154,7 +154,9 @@ defmodule DiceMagickWeb.CharacterLive.Helpers do
 
   @doc "TODO"
   @spec send_message(Rolls.Result.t(), Character.t(), keyword()) :: Rolls.Result.t()
-  def send_message(character, result, opts \\ []) do
+  def send_message(result, character, opts \\ []) do
+    require IEx
+    IEx.pry()
     msg = Discord.roll_message(character, result, opts)
     Discord.send_message(character.discord_channel_id, msg)
     result

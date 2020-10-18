@@ -42,11 +42,11 @@ defmodule DiceMagick.Discord.Commands.Roll do
   end
 
   @spec roll_for_character(Character.t(), String.t()) :: Discord.Command.command_result()
-  def roll_for_character(%Character{} = character, input) do
+  defp roll_for_character(%Character{} = character, input) do
     case Rolls.get_roll_by_name(character, input) do
       nil ->
         if DiceMagick.Dice.valid_expression?(input) do
-          roll = %Rolls.Roll{expression: input, character_id: character.id}
+          roll = %{expression: input, character_id: character.id}
           {:ok, success_message(character.name, roll)}
         else
           {:error, failure_message(input)}
@@ -57,7 +57,7 @@ defmodule DiceMagick.Discord.Commands.Roll do
     end
   end
 
-  def roll_for_character(nil, _input) do
+  defp roll_for_character(nil, _input) do
     {:error,
      """
      :crystal_ball: You don’t have any characters in this channel.
@@ -65,7 +65,7 @@ defmodule DiceMagick.Discord.Commands.Roll do
      """}
   end
 
-  @spec success_message(String.t(), Rolls.Roll.t(), Discord.roll_message_opts()) :: String.t()
+  @spec success_message(String.t(), Rolls.Roll.t(), keyword()) :: String.t()
   defp success_message(name, roll, opts \\ []) do
     result = Rolls.generate_result(roll)
     Discord.roll_message(name, result, opts)

@@ -105,7 +105,7 @@ defmodule DiceMagick.Sources.Tintagel5E do
     end)
   end
 
-  @spec d20_roll(String.t(), String.t(), [String.t()], boolean()) :: Roll.t()
+  @spec d20_roll(String.t(), String.t(), [String.t()], boolean()) :: map()
   defp d20_roll(<<sign::bytes-size(1)>> <> num, name, tags, favorite) do
     %Roll{
       name: name,

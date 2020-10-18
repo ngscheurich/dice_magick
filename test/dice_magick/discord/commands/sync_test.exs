@@ -1,6 +1,7 @@
 defmodule DiceMagick.Discord.SyncTest do
   use DiceMagick.DataCase
-  alias DiceMagick.Discord
+
+  alias DiceMagick.Discord.Commands
 
   setup do
     user = insert(:user, discord_uid: "1")
@@ -10,6 +11,6 @@ defmodule DiceMagick.Discord.SyncTest do
   end
 
   test "process/1 synchronizes rolls", %{msg: msg} do
-    assert {:ok, message} = Discord.Sync.process([], msg)
+    assert {:ok, message} = Commands.sync([], msg)
   end
 end
