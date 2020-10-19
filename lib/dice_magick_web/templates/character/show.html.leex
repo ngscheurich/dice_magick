@@ -1,35 +1,42 @@
-<div class="show">
+<div class="flex">
   <%= live_component(@socket,
         DiceMagickWeb.CharacterLive.SidebarComponent,
         character: @character, synced_at: @synced_at) %>
 
-  <div class="show__main">
-    <div class="show__upper">
-      <div class="show__tags">
+  <div class="flex-1">
+    <div class="relative pt-24 pb-12 px-16 bg-slate-100 bg-opacity-2">
+      <div class="flex mb-8 space-x-3">
         <%= live_component(@socket,
               DiceMagickWeb.CharacterLive.TagsComponent,
               tags: @tags) %>
       </div>
 
-      <div class="show__pinned">
+      <div class="pinned-rolls">
         <%= live_component(@socket,
-              DiceMagickWeb.CharacterLive.PinnedRollsComponent,
-              rolls: elem(@grouped_rolls, 0)) %>
+              DiceMagickWeb.CharacterLive.RollsComponent, rolls: elem(@grouped_rolls, 0)) %>
       </div>
 
-      <div class="show__deco magick-circle"></div>
+      <div class="magick-circle"></div>
 
-      <section>
-        <h1>Recent Results</h1>
-        <ul>
-          <%= for result <- @results do %>
-            <li>
-              <%= result.name <> " " %>
-              <%= result.total %>
-            </li>
-          <% end %>
-        </ul>
-      </section>
+      <%# <section> %>
+      <%#   <h1>Recent Results</h1> %>
+      <%#   <ul> %>
+      <%#     <%= for result <- @results do %1> %>
+      <%#       <li> %>
+      <%#         <%= result.name <> " " %1> %>
+      <%#         <%= result.total %1> %>
+      <%#       </li> %>
+      <%#     <% end %1> %>
+      <%#   </ul> %>
+      <%# </section> %>
+    </div>
+
+    <div class="p-16 pt-12">
+      <div class="rolls grid grid-cols-4 gap-5">
+        <%= live_component(@socket,
+              DiceMagickWeb.CharacterLive.RollsComponent,
+                rolls: elem(@grouped_rolls, 1) -- elem(@grouped_rolls, 0)) %>
+      </div>
     </div>
   </div>
 </div>

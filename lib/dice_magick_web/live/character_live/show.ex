@@ -7,9 +7,7 @@ defmodule DiceMagickWeb.CharacterLive.Show do
   use Phoenix.LiveView
 
   alias DiceMagick.Characters
-  alias Characters.Character
   alias DiceMagickWeb.CharacterLive.{State, Helpers}
-  alias DiceMagick.Discord
 
   @sync_throttle 1000
   @roll_throttle 500

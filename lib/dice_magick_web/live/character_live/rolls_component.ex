@@ -1,4 +1,4 @@
-defmodule DiceMagickWeb.CharacterLive.PinnedRollsComponent do
+defmodule DiceMagickWeb.CharacterLive.RollsComponent do
   use Phoenix.LiveComponent
   use Phoenix.HTML
 

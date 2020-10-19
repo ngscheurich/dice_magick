@@ -6,7 +6,7 @@ defmodule DiceMagickWeb.CharacterLive.SidebarComponent do
 
   def render(assigns) do
     ~L"""
-    <section class="sidebar p-8 pt-24 bg-slate-800 text-cream-200 tracking-wide antialiased">
+    <section class="w-72 p-8 pt-24 bg-slate-800 text-cream-200 antialiased">
       <div class="mb-8">
         <img class="w-32 h-32 rounded-full" src="/images/dust.png" />
         <div class="sidebar__color"></div>
@@ -29,7 +29,7 @@ defmodule DiceMagickWeb.CharacterLive.SidebarComponent do
         </dl>
       </div>
 
-      <button class="bg-slate-400 text-xs px-4 py-1 rounded-sm" phx-click="sync" phx-throttle="3000">Sync Rolls</button>
+      <button phx-click="sync" phx-throttle="3000">Sync Rolls</button>
 
       <div id="color-picker"></div>
     </section>

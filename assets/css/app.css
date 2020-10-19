@@ -1,63 +1,66 @@
-@import "components/magick-circle.css";
-@import "components/roll-btn.css";
-@import "components/sidebar.css";
-@import "components/tag.css";
-@import "show.css";
-@import "normalize.css";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-:root {
-  --base02: #0e0e0e;
-  --base01: #1a1a1a;
-  --base00: #222;
-  --base0: #e8e2d5;
-  --base1: #faf7f0;
-  --base2: #fffcf4;
-  --primary: #ca4548;
-  --buttons: #fef7e8;
-  --body: "DM Mono";
-  --display: "DM Serif Display";
+.sidebar {
+  width: 260px;
 }
 
-* {
-  box-sizing: border-box;
+.magick-circle {
+  @apply absolute;
+
+  z-index: -1;
+  top: 100px;
+  left: 730px;
+  width: 240px;
+  height: 240px;
+  background: center / contain url(/images/magick_circle.svg);
 }
 
-body {
-  border-top: 10px solid var(--primary);
-  /* border-right: 10px solid var(--primary); */
-  /* border-bottom: 10px solid var(--primary); */
-  /* border-left: 10px solid var(--primary); */
-  margin: 0;
-  background-color: var(--base2);
-  color: var(--base02);
-  font-family: var(--body);
+.pinned-rolls {
+  @apply grid gap-5;
+
+  grid-template-columns: 160px 160px 160px 160px;
 }
 
-input,
-textarea,
-button {
-  padding: 0;
-  border: 0;
-  background: none;
-  font-family: var(--body);
-  line-height: 1;
+.rolls {
+  @apply grid gap-5;
+
+  grid-template-columns: 160px 160px 160px;
 }
 
-h1 {
-  margin: 0;
-}
+.roll-btn {
+  @apply flex rounded-sm bg-cream-200 text-xs leading-tight;
 
-ul,
-ol {
-  padding: 0;
-}
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.1),
+    0 2px 2px rgba(0, 0, 0, 0.1),
+    0 2px 3px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.1);
 
-a {
-  color: var(--primary);
-  text-decoration: none;
-}
+  &__main {
+    @apply flex-1 px-4 cursor-pointer text-left truncate;
 
-.container {
-  max-width: 1020px;
-  margin: auto;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &__more {
+    @apply p-3 cursor-pointer bg-cream-800;
+
+    width: 33px;
+    border-left: 1px solid #ddd2ba;
+    background-image: url(/images/context-menu.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    text-indent: -9999rem;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }

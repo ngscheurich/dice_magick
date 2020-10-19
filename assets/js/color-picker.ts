@@ -6,17 +6,17 @@ interface PickrColor {
   toHEXA: () => string;
 }
 
-const pickr = Pickr.create({
-  el: "#color-picker",
-  theme: "nano",
-  showAlways: true,
-  components: {
-    preview: true,
-    hue: true,
-  },
-});
+// const pickr = Pickr.create({
+//   el: "#color-picker",
+//   theme: "nano",
+//   showAlways: true,
+//   components: {
+//     preview: true,
+//     hue: true,
+//   },
+// });
 
-pickr.on("change", (color: PickrColor) => changePrimaryColor(color.toHEXA()));
+// pickr.on("change", (color: PickrColor) => changePrimaryColor(color.toHEXA()));
 
 function changePrimaryColor(color: string) {
   const el = document.querySelector("#primary-color");

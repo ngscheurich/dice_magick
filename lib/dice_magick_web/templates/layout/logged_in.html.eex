@@ -1,4 +1,4 @@
-<body>
+<body class="font-body text-slate-800 bg-cream-100 border-t-10 border-primary">
   <%= @inner_content %>
 
   <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
