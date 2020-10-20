@@ -1,9 +1,10 @@
 defmodule DiceMagick.Sources.Source do
   @moduledoc """
-  [todo] Add documentation.
+  Defines a `Behaviour` which clients that retrieve `DiceMagick.Rolls.Roll`
+  should implement.
   """
 
-  @type data_response :: {:ok, map(), struct()} | {:error, any}
+  @type data_response :: {:ok, map() | struct()} | {:error, any}
 
   @callback validate_params(map) :: :ok | {:error, [String.t()]}
   @callback fetch_data(map()) :: data_response()

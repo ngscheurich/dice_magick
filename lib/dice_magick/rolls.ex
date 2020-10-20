@@ -6,47 +6,47 @@ defmodule DiceMagick.Rolls do
 
   import Ecto.Query
 
-  alias DiceMagick.Rolls.{Result, Roll}
+  alias DiceMagick.Rolls.{Roll, Result}
+  alias DiceMagick.Dice
   alias DiceMagick.Characters
   alias Characters.Character
   alias DiceMagick.Repo
 
   @doc """
-  Returns `DiceMagick.Dice.Result` of the given `DiceMagick.Rolls.Roll`'s
-  `expression`.
+  Returns a `DiceMagick.Rolls.Result` based on the given
+  `DiceMagick.Rolls.Roll`'s `expression`.
 
   ## Options
 
-    * `record` - Asynchronously record the result as a `DiceMagick.Rolls.Result`?
+  * `record?` - Asynchronously record the result as a `Result`?
 
   ## Examples
 
       iex> generate_result(%Roll{expression: "1d20"})
-      %DiceMagick.Dice.Result{}
+      %Result{}
 
   """
-  @spec generate_result(Roll.t(), [{:record, boolean}]) :: DiceMagick.Dice.Result.t()
+  @spec generate_result(map(), [{:record?, boolean}]) :: Result.t()
   def generate_result(%Roll{expression: expression} = roll, opts \\ []) do
-    result = DiceMagick.Dice.roll!(expression)
+    result =
+      expression
+      |> Dice.evaluate!()
+      |> Dice.to_roll_result(roll)
 
-    # [fixme] We need to set up our tests to avoid
-    # `DBConnection.OwnershipError` rather than simply not running this in the
-    # test env
-    if Mix.env() != :test && Keyword.get(opts, :record, true) do
-      Task.Supervisor.start_child(
-        DiceMagick.DBTaskSupervisor,
-        fn ->
-          roll
-          |> Map.from_struct()
-          |> Map.put(:total, result.total)
-          |> Map.put(:faces, result.faces)
-          |> create_result()
-        end,
-        restart: :transient
-      )
+    if Mix.env() != :test && Keyword.get(opts, :record?, true) do
+      record_result(result)
     end
 
     result
+  end
+
+  @spec record_result(Result.t()) :: DynamicSupervisor.on_start_child()
+  defp record_result(result) do
+    Task.Supervisor.start_child(
+      DiceMagick.DBTaskSupervisor,
+      fn -> result |> Map.from_struct() |> create_result() end,
+      restart: :transient
+    )
   end
 
   @doc """
@@ -61,7 +61,7 @@ defmodule DiceMagick.Rolls do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_result(map) :: {:ok, Result.t()} | {:error, Ecto.Changeset.t()}
+  @spec create_result(map()) :: {:ok, Result.t()} | {:error, Ecto.Changeset.t()}
   def create_result(attrs \\ %{}) do
     %Result{}
     |> Result.changeset(attrs)
@@ -108,7 +108,7 @@ defmodule DiceMagick.Rolls do
   """
   @spec roll(String.t()) :: Integer.t() | {:error, any()}
   def roll(input) do
-    %{total: total} = DiceMagick.Dice.roll!(input)
+    %{total: total} = DiceMagick.Dice.evaluate!(input)
     total
   end
 

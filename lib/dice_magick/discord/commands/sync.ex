@@ -1,4 +1,4 @@
-defmodule DiceMagick.Discord.Sync do
+defmodule DiceMagick.Discord.Commands.Sync do
   @moduledoc """
   Handles the `!sync` command.
 
@@ -19,7 +19,7 @@ defmodule DiceMagick.Discord.Sync do
   @behaviour Discord.Command
 
   @impl true
-  def process(_params, msg) do
+  def execute(_params, msg) do
     discord_uid = to_string(msg.author.id)
     channel_id = to_string(msg.channel_id)
     character = Characters.get_character_for_channel(discord_uid, channel_id)

@@ -1,15 +1,5 @@
-<body class="font-sans text-gray-300 bg-neutral-200">
-  <header role="banner" class="banner border-b-4 border-neutral-400 mb-4" style="background: #1e1d1c;">
-    <div class="max-w-5xl mx-auto px-10 py-4">
-      <%= link to: Routes.page_path(@conn, :index) do %>
-        <h1 class="text-neutral-300 text-sm font-bold font-serif antialiased uppercase tracking-wider">
-          <span class="fas fa-dice-d20 text-red-700 mr-1"></span>
-          DiceMagick
-        </h1>
-      <% end %>
-    </div>
-  </header>
-
+<body class="font-body text-slate-800 bg-cream-100 border-t-10 border-primary">
+<%# <body class="font-body text-slate-800 bg-cream-100 border-t-10 border-gray-500 sm:border-red-500 md:border-green-500 lg:border-blue-500 xl:border-purple-500"> %>
   <%= @inner_content %>
 
   <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>

@@ -1,0 +1,12 @@
+<div>
+  <%= for roll <- @rolls do %>
+    <button phx-click="roll" phx-value-name="<%= roll.name %>">
+      <%= if roll.favorite do %>
+        <span >✭</span>
+      <% else %>
+        <span >✩</span>
+      <% end %>
+      <%= roll.name %>
+    </button>
+  <% end %>
+</div>

@@ -1,0 +1,21 @@
+.tag {
+  display: block;
+  padding: 0.2rem 0.7rem 0.3rem;
+  margin-right: 0.5rem;
+  background-color: var(--primary);
+  border-radius: 100px;
+  color: var(--base2);
+  cursor: pointer;
+  font-size: 0.8rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  transition: opacity 0.2s;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

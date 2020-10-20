@@ -1,51 +1,54 @@
 module.exports = {
+  future: {
+    // removeDeprecatedGapUtilities: true,
+    // purgeLayersByDefault: true,
+  },
   purge: [],
   theme: {
-    colors: {
-      "primary-100": "#EFE8E8",
-      "primary-200": "#BDA4A4",
-      "primary-300": "#9D7676",
-      "primary-400": "#7C4949",
-      "primary-500": "#5B1B1B",
-      "primary-600": "#491616",
-      "primary-700": "#371010",
-      "primary-800": "#240B0B",
-      "primary-900": "#120505",
-
-      "secondary-100": "#F0EAE6",
-      "secondary-200": "#C3AD99",
-      "secondary-300": "#A48366",
-      "secondary-400": "#77461a",
-      "secondary-500": "#683100	",
-      "secondary-600": "#532700",
-      "secondary-700": "#3E1D00",
-      "secondary-800": "#2A1400",
-      "secondary-900": "#150A00",
-
-      "neutral-100": "#f1ecea",
-      "neutral-200": "#f7f5f5",
-      "neutral-300": "#d0cac6",
-      "neutral-400": "#b9b3b0",
-      "neutral-500": "#a29d9a",
-      "neutral-600": "#8b8684",
-      "neutral-700": "#74706e",
-      "neutral-800": "#5c5a58",
-      "neutral-900": "#2e2d2c",
-
-      "dark-100": "#0E0B0B",
-      "dark-200": "#0F0C0C",
-      "dark-300": "#171414",
-      "dark-400": "#201D1D",
-      "dark-500": "#272424",
-
-      transparent: "transparent",
-
-      highlight: "#E39C5E",
-    },
-    fontFamily: {
-      serif: ["Inria Serif", "serif"],
-      sans: ["DM Sans", "sans-serif"],
-      mono: ["DM Mono", "serif"],
+    extend: {
+      fontFamily: {
+        //{{{
+        body: ["DM Mono", "monospace"],
+        display: ["DM Serif Display", "serif"],
+      }, //}}}
+      colors: {
+        slate: {
+          100: "#767676",
+          200: "#5f5f5f",
+          300: "#484848",
+          400: "#222222",
+          500: "#1a1a1a",
+          600: "#161616",
+          700: "#121212",
+          800: "#0e0e0e",
+          900: "#080808",
+        },
+        cream: {
+          100: "#fffcf4",
+          200: "#fef7e8",
+          300: "#fcf9f3",
+          400: "#fbf7ef",
+          500: "#faf7f0",
+          600: "#f9f3e6",
+          700: "#f7efde",
+          800: "#f5ebd6",
+          900: "#c4bcab",
+        },
+        primary: "#ca4548",
+        primaryDk: "#8d3032",
+        primaryLt: "#da7d7f",
+      },
+      borderWidth: {
+        10: "10px",
+        10: "10px",
+      },
+      backgroundOpacity: {
+        2: "0.02",
+        10: "0.1",
+      },
+      width: {
+        72: "18rem",
+      },
     },
   },
   variants: {},

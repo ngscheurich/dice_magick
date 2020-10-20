@@ -1,7 +1,6 @@
 module.exports = {
-  extends: "stylelint-config-standard",
+  extends: ["stylelint-config-standard", "stylelint-config-idiomatic-order"],
   rules: {
-    "at-rule-no-unknown": [true, { ignoreAtRules: ["tailwind"] }],
-    "selector-type-no-unknown": [true, { ignore: ["custom-elements"] }],
+    "comment-empty-line-before": "ignore",
   },
 };

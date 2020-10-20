@@ -1,8 +1,27 @@
 defmodule DiceMagick.Characters.Character do
   @moduledoc """
-  A `DiceMagick.Accounts.User`’s character.
+  A `DiceMagick.Accounts.User`’s character in a Discord channel.
 
-  [todo] Write better documentation.
+  ## Fields
+
+    * `name` - The `Character`’s name
+    * `source_type` - The source from which to fetch rolls
+    * `source_params` - Specifies how to fetch rolls from the source
+    * `discord_channel_id` - Indicates the Discord channel this `Character` belongs to
+    * `archetype` - The particular TTRPG this character exists in
+    * `color` - A color used to help identify the character in the app and Discord channel
+
+  ## Associations
+
+    * `user` - The `User` that the `Character` belongs to
+
+  ## Validations
+
+    * `user_id` - Required
+    * `name` - Required, unique per `user_id`
+    * `discord_channel_id` - Required, unique per `user_id`
+    * `source_params` - Validated based on the `source_type`
+
   """
 
   use DiceMagick.Schema
@@ -17,6 +36,7 @@ defmodule DiceMagick.Characters.Character do
     field :source_params, :map
     field :discord_channel_id, :string
     field :archetype, ArchetypeEnum
+    field :color, :string, default: "#ca4548"
 
     belongs_to :user, User
 
@@ -34,9 +54,10 @@ defmodule DiceMagick.Characters.Character do
       :source_params,
       :discord_channel_id,
       :archetype,
-      :user_id
+      :user_id,
+      :color
     ])
-    |> validate_required([:name, :discord_channel_id, :user_id])
+    |> validate_required([:name, :discord_channel_id, :user_id, :color])
     |> validate_source_params()
     |> assoc_constraint(:user)
     |> unique_constraint([:discord_channel_id, :user_id])

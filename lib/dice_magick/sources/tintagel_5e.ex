@@ -34,10 +34,13 @@ defmodule DiceMagick.Sources.Tintagel5E do
     ranges = [
       # Ability Scores
       "Front!I9:K14",
+
       # Saving Throws
       "Front!N9:W14",
+
       # Skills
       "Front!B20:O37",
+
       # Weapons and Spells
       "Front!V29:BM34"
     ]
@@ -102,7 +105,7 @@ defmodule DiceMagick.Sources.Tintagel5E do
     end)
   end
 
-  @spec d20_roll(String.t(), String.t(), [String.t()], boolean()) :: Roll.t()
+  @spec d20_roll(String.t(), String.t(), [String.t()], boolean()) :: map()
   defp d20_roll(<<sign::bytes-size(1)>> <> num, name, tags, favorite) do
     %Roll{
       name: name,

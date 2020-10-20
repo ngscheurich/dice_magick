@@ -1,5 +1,7 @@
 defmodule DiceMagick.GoogleSheets.InMemory do
-  @moduledoc false
+  @moduledoc """
+  Functions that simulate getting data from Google Docs via HTTP.
+  """
 
   def fetch_data(%{key: "abc123", worksheet: "1"}),
     do:

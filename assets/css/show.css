@@ -1,0 +1,32 @@
+.show {
+  display: flex;
+
+  &__main {
+    flex: 1;
+  }
+
+  &__upper {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 4rem 3rem;
+    background-color: var(--base1);
+  }
+
+  &__tags {
+    display: flex;
+    margin-bottom: 2rem;
+  }
+
+  &__pinned {
+    display: grid;
+    grid-gap: 1.25rem;
+    grid-template-columns: 160px 160px 160px 160px;
+  }
+
+  &__deco {
+    position: absolute;
+    z-index: -1;
+    top: 100px;
+    left: 730px;
+  }
+}

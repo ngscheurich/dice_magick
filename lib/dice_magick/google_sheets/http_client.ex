@@ -1,6 +1,6 @@
 defmodule DiceMagick.GoogleSheets.HTTPClient do
   @moduledoc """
-  [todo] Write documentation.
+  Functions for getting data from Google Sheets via HTTP.
   """
 
   def fetch_data(%{key: key, worksheet: worksheet}) do

@@ -36,6 +36,7 @@ defmodule DiceMagick.MixProject do
     [
       {:assert_identity, "~> 0.1.0"},
       {:cowlib, "~> 2.8.0", override: true},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ecto_enum, "~> 1.4"},
       {:ecto_sql, "~> 3.1"},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false},
@@ -87,7 +88,7 @@ defmodule DiceMagick.MixProject do
         "Discord Bot": [
           DiceMagick.Discord.Command,
           DiceMagick.Discord.Create,
-          DiceMagick.Discord.Roll,
+          DiceMagick.Discord.Commands.Roll,
           DiceMagick.Discord.Sync
         ],
         "Data Sources": [

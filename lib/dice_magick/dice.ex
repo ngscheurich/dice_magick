@@ -1,50 +1,40 @@
 defmodule DiceMagick.Dice do
   @moduledoc """
-  Functions for determining the outcome of dice rolling expressions.
+  Functions for determining the result of dice expressions.
   """
 
-  defmodule Result do
-    @moduledoc """
-    Used to encapsulate dice rolling outcomes. Has two fields:
-
-      * `expression` - The expression that was rolled
-      * `faces` - A list of the result (upward face) of every die rolled
-      * `total` - The sum of all die faces and modifiers
-
-    """
-    @type t :: %__MODULE__{}
-    defstruct [:expression, :total, faces: []]
-  end
+  alias __MODULE__.Result
+  alias DiceMagick.Rolls
 
   @doc """
-  Parses and rolls the given `expression`, then returns the
-  `%DiceMagick.Dice.Result{}`.
+  Parses and evaluates the given `expression`, then returns the
+  `DiceMagick.Dice.Result`.
 
   If the `expression` is invalid, returns an error.
 
   The `expression` should be comprised of a series of _determinate_ and
-  _indeterminate_ expressions, with the former being simple integers and the
-  latter being strings representing a number of dice with _n_ sides, e.g.
+  _indeterminate_ sub-expressions, with the former being simple integers and
+  the latter being strings representing a number of dice with _n_ sides, e.g.
   "1d20", 8d4".
 
-  These expressions should be joined together with `+` or `-` symbols,
-  representing whether the result of the expression should be added or
-  subtracted to the total result.
+  These sub-expressions should be joined together with `+` or `-` symbols,
+  representing whether the outcome of each should be added or subtracted to the
+  total result.
 
   ## Examples
 
-      iex> roll("1d20 + 3")
-      {:ok, %Result{total: 15, faces: [12])}
+      iex> evaluate("1d20 + 3")
+      {:ok, %DiceMagick.Dice.Result{total: 15, faces: [12])}
 
-      iex> roll("1d20 + 1 + 3d4 + 2 - 15")
-      {:ok, %Result{total: 5, faces: [8, 3, 2, 4])}
+      iex> evaluate("1d20 + 1 + 3d4 + 2 - 15")
+      {:ok, %DiceMagick.Dice.Result{total: 5, faces: [8, 3, 2, 4])}
 
-      iex> roll("1d12 - x")
+      iex> evaluate("1d12 - x")
       {:error, :invalid_expression}
 
   """
-  @spec roll(String.t()) :: {:ok, Result.t()} | {:error, :invalid_expression}
-  def roll(expression) do
+  @spec evaluate(String.t()) :: {:ok, Result.t()} | {:error, :invalid_expression}
+  def evaluate(expression) do
     if valid_expression?(expression) do
       {:ok, process_expression(expression)}
     else
@@ -53,20 +43,20 @@ defmodule DiceMagick.Dice do
   end
 
   @doc """
-  Similar to `roll/1`, but raises `ArgumentError` if an invalid `expression` is
-  provided.
+  Similar to `evaluate/1`, but raises `ArgumentError` if `expression` is
+  invalid.
 
   ## Examples
 
-      iex> roll!("1d20 + 3")
+      iex> evaluate!("1d20 + 3")
       %Result{total: 15, faces: [12])}
 
-      iex> roll!("1d12 - x")
+      iex> evaluate!("1d12 - x")
       ** (ArgumentError) argument error
 
   """
-  @spec roll!(String.t()) :: Result.t()
-  def roll!(expression) do
+  @spec evaluate!(String.t()) :: Result.t()
+  def evaluate!(expression) do
     if valid_expression?(expression) do
       process_expression(expression)
     else
@@ -174,4 +164,35 @@ defmodule DiceMagick.Dice do
         end
     end
   end
+
+  @doc """
+  Converts the given `DiceMagick.Dice.Result` into a `DiceMagick.Rolls.Result`
+  based on the given `DiceMagick.Rolls.Roll`.
+
+  Raises `ArgumentError` if `expression`s do not match.
+
+  ## Examples
+
+  iex> result = %DiceMagick.Dice.Result{total: 22, faces: [18, 4]}
+  ...> roll = %DiceMagick.Rolls.Roll{name: "Stealth Check"}
+  ...> to_roll_result(result, roll)
+  %DiceMagick.Rolls.Result{name: "Stealth Check", total: 22, faces: [18, 4]}
+
+  iex> result = %DiceMagick.Dice.Result{expression: "1d20"}
+  ...> roll = %DiceMagick.Rolls.Roll{expression: "1d10"}
+  ...> to_roll_result(result, roll)
+  ** (ArgumentError) argument error
+
+  """
+  @spec to_roll_result(Result.t(), Rolls.Roll.t()) :: Rolls.Result.t()
+  def to_roll_result(%Result{expression: ex} = result, %Rolls.Roll{expression: ey} = roll)
+      when ex == ey do
+    roll
+    |> Map.from_struct()
+    |> Map.put(:total, result.total)
+    |> Map.put(:faces, result.faces)
+    |> struct!(Rolls.Result)
+  end
+
+  def to_roll_result(_, _), do: raise(ArgumentError)
 end
